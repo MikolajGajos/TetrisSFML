@@ -34,18 +34,20 @@ GameApp::GameApp(int statringLevel)
 			matrix[i][j].setPosition({ CELL * (i + x), CELL * (j + y) });
 		}
 	}
-
-	this->level = statringLevel;
+	if(this->level <= 29)
+		this->level = statringLevel;
+	else
+		this->level = 29;
 	setUpSC();
 }
 
 void GameApp::tetromnoMovement(Tetromino& tetromino, sf::Event& event)
 {
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::X) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::C) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 		rotationAllowed = true;
 
 	//ruszanie tetrominem w bok i w dol i rotacja
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X) && rotationAllowed)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && rotationAllowed)
 	{
 		tetromino.rotate(true);
 		rotationAllowed = false;
@@ -55,6 +57,7 @@ void GameApp::tetromnoMovement(Tetromino& tetromino, sf::Event& event)
 		tetromino.rotate(false);
 		rotationAllowed = false;
 	}
+
 	if (moveTimeCooldown <= 0.f)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) == true)
@@ -120,7 +123,8 @@ void GameApp::fullLines()
 		if (fullCollumn == COLUMNS)
 		{
 			this->clearedLines++;
-			if (this->linesUntilTransition-- == 0)
+			this->linesUntilTransition--;
+			if (this->linesUntilTransition == 0)
 				transtionLevel();
 			for (unsigned char _y = y; _y > 0; _y--)
 			{
@@ -141,9 +145,11 @@ void GameApp::drawBackGround()
 	sf::RectangleShape backgroundShape({ (float)window.getSize().x, (float)window.getSize().y });
 	sf::Texture text;
 	text.loadFromFile("src/rsrc/BackBackGround.png");
+	backgroundShape.setFillColor(sf::Color(50, 50, 50));
 	backgroundShape.setTexture(&text);
 	window.draw(backgroundShape);
 	text.loadFromFile("src/rsrc/Background.png");
+	backgroundShape.setFillColor(sf::Color::White);
 	backgroundShape.setTexture(&text);
 	window.draw(backgroundShape);
 }
@@ -288,11 +294,9 @@ int GameApp::run()
 		}
 
 		dropTime -= deltaTime;
-		moveTimeCooldown -= deltaTime;
 		hardDropCooldown -= deltaTime;
 		softDropCooldown -= deltaTime;
+		moveTimeCooldown -= deltaTime;
 	}
 	return 0;
 }
-
-

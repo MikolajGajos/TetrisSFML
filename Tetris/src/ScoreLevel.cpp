@@ -99,91 +99,91 @@ void GameApp::dropTimeReset()
 		this->dropTime = 0.8f;
 		break;
 	case 1:
-		this->dropTime = 0.717f;
+		this->dropTime = 0.75f;
 		break;
 	case 2:
-		this->dropTime = 0.63f;
+		this->dropTime = 0.7f;
 		break;
 	case 3:
-		this->dropTime = 0.55f;
+		this->dropTime = 0.63f;
 		break;
 	case 4:
-		this->dropTime = 0.47f;
+		this->dropTime = 0.54f;
 		break;
 	case 5:
-		this->dropTime = 0.38f;
+		this->dropTime = 0.46f;
 		break;
 	case 6:
-		this->dropTime = 0.3f;
+		this->dropTime = 0.4f;
 		break;
 	case 7:
-		this->dropTime = 0.217f;
+		this->dropTime = 0.33f;
 		break;
 	case 8:
-		this->dropTime = 0.13f;
+		this->dropTime = 0.27f;
 		break;
 	case 9:
-		this->dropTime = 0.1f;
+		this->dropTime = 0.23f;
 		break;
 	case 10:
-		this->dropTime = 0.083f;
+		this->dropTime = 0.2f;
 		break;
 	case 11:
-		this->dropTime = 0.083f;
+		this->dropTime = 0.2f;
 		break;
 	case 12:
-		this->dropTime = 0.083f;
+		this->dropTime = 0.2f;
 		break;
 	case 13:
-		this->dropTime = 0.067f;
+		this->dropTime = 0.2f;
 		break;
 	case 14:
-		this->dropTime = 0.067f;
+		this->dropTime = 0.16f;
 		break;
 	case 15:
-		this->dropTime = 0.067f;
+		this->dropTime = 0.16f;
 		break;
 	case 16:
-		this->dropTime = 0.05f;
+		this->dropTime = 0.11f;
 		break;
 	case 17:
-		this->dropTime = 0.05f;
+		this->dropTime = 0.11f;
 		break;
 	case 18:
-		this->dropTime = 0.05f;
+		this->dropTime = 0.11f;
 		break;
 	case 19:
-		this->dropTime = 0.05f;
+		this->dropTime = 0.11f;
 		break;
 	case 20:
-		this->dropTime = 0.033f;
+		this->dropTime = 0.75f;
 		break;
 	case 21:
-		this->dropTime = 0.033f;
+		this->dropTime = 0.75f;
 		break;
 	case 22:
-		this->dropTime = 0.033f;
+		this->dropTime = 0.75f;
 		break;
 	case 23:
-		this->dropTime = 0.033f;
+		this->dropTime = 0.75f;
 		break;
 	case 24:
-		this->dropTime = 0.033f;
+		this->dropTime = 0.75f;
 		break;
 	case 25:
-		this->dropTime = 0.033f;
+		this->dropTime = 0.75f;
 		break;
 	case 26:
-		this->dropTime = 0.033f;
+		this->dropTime = 0.75f;
 		break;
 	case 27:
-		this->dropTime = 0.033f;
+		this->dropTime = 0.75f;
 		break;
 	case 28:
-		this->dropTime = 0.033f;
+		this->dropTime = 0.75f;
 		break;
 	default:
-		this->dropTime = 0.017f;
+		this->dropTime = 0.0375f;
 		break;
 	}
 }

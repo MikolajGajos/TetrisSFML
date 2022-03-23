@@ -22,11 +22,12 @@ class GameApp {
 	sf::Texture gameBackgroundTexture;
 
 	float dropTime = 0.9f;			void dropTimeReset();
-	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset()	{ this->moveTimeCooldown = 0.12f; }
+	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset()	{ this->moveTimeCooldown = 0.045f; }
 	float hardDropCooldown = 0.f;	void hardDropCooldownReset()	{ this->hardDropCooldown = 0.5f; }
 	float softDropCooldown = 0.f;	void softDropCooldownReset()	{ this->softDropCooldown = 0.1f; }
 	bool update = false;
 	bool rotationAllowed = true;		
+	bool movementAllowed = true;
 
 	int clearedLines = 0;
 	int level = 1;
