@@ -16,32 +16,37 @@ class GameApp {
 
 	sf::RenderWindow window;
 	std::array<std::array<Cell, ROWS>, COLUMNS> matrix;
-	std::array<std::array<sf::RectangleShape, 22>, 24> background;
+	std::array<std::array<sf::RectangleShape, 22>, 24> windowPosition;
 	sf::Texture tileTexture;
 	sf::Texture ghostTexture;
-	sf::Texture backgroundTexture;
-	sf::Texture borderTexture;
+	sf::Texture gameBackgroundTexture;
 
-	float dropTime = 0.9f;			void dropTimeReset()			{ this->dropTime = 0.9f; }
+	float dropTime = 0.9f;			void dropTimeReset();
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset()	{ this->moveTimeCooldown = 0.12f; }
 	float hardDropCooldown = 0.f;	void hardDropCooldownReset()	{ this->hardDropCooldown = 0.5f; }
 	float softDropCooldown = 0.f;	void softDropCooldownReset()	{ this->softDropCooldown = 0.1f; }
-	float timeUntilReset = 0.f;;	void timeUntilResetReset()		{ this->timeUntilReset = 0.5f; }
 	bool update = false;
 	bool rotationAllowed = true;		
 
 	int clearedLines = 0;
+	int level = 1;
+	int linesUntilTransition = 0;
+	int score = 0;
 
 public:
-	GameApp();
+	GameApp(int statringLevel = 0);
 
 	void tetromnoMovement(Tetromino& tetromino, sf::Event& event);
 	void fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino);
-	int fullLines();
+	void fullLines();
 	void drawBackGround();
 	void drawBoard();
 	void drawTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino);
 	void drawNextTetromino(NextTetromino& nextTetromino);
 	bool gameOver();
-	void run();
+	int run();
+
+	void setUpSC();
+	void transtionLevel();
+	int scoreIncrease(unsigned char lines);
 };

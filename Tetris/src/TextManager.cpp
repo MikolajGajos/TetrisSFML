@@ -55,8 +55,10 @@ std::string displayScore(int number)
 	return result;
 }
 
-TextMenager::TextMenager(std::array<std::array<sf::RectangleShape, 22>, 24>* background, int* cleanedLines)
+TextMenager::TextMenager(std::array<std::array<sf::RectangleShape, 22>, 24>* background, int* cleanedLines, int* level, int* score)
 {
+	this->level = level;
+	this->score = score;
 	this->clearedLines = cleanedLines;
 	this->background = background;
 	this->font.loadFromFile("src/rsrc/slkscr.ttf");
@@ -68,9 +70,8 @@ TextMenager::TextMenager(std::array<std::array<sf::RectangleShape, 22>, 24>* bac
 	this->levelText.setCharacterSize(55);
 	this->levelText.setPosition((*background)[13][14].getPosition());
 	this->levelText.setFont(this->font);
-	this->levelText.setString("level - ");
 
-	this->scoreText.setCharacterSize(62);
+	this->scoreText.setCharacterSize(63);
 	this->scoreText.setPosition((*background)[13][1].getPosition());
 	this->scoreText.setFont(this->font);
 
@@ -87,8 +88,12 @@ void TextMenager::updateText()
 	this->clearedLinesText.setString(ssClenedLines.str());
 
 	std::ostringstream ssScore;
-	ssScore << "score\n" << displayScore(*this->clearedLines);
+	ssScore << "score\n" << displayScore(*this->score);
 	this->scoreText.setString(ssScore.str());	
+
+	std::ostringstream ssLevel;
+	ssLevel << "level - " << displayLL(*this->level);
+	this->levelText.setString(ssLevel.str());
 }
 
 void TextMenager::draw(sf::RenderTarget& target, sf::RenderStates state) const

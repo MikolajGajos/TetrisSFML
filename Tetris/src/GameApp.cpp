@@ -8,26 +8,24 @@ int random()
 	return distr(random_engine);
 }
 
-GameApp::GameApp()
+GameApp::GameApp(int statringLevel)
 	: window({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Close | sf::Style::Resize)
 {
 	this->tileTexture.loadFromFile("src/rsrc/Tile.png");
 	this->ghostTexture.loadFromFile("src/rsrc/GhostTile.png");
-	this->backgroundTexture.loadFromFile("src/rsrc/Background.png");
-	this->borderTexture.loadFromFile("src/rsrc/Border.png");
+	this->gameBackgroundTexture.loadFromFile("src/rsrc/GameBackground.png");
 
 	for (unsigned char i = 0; i < 23; i++)
 	{
 		for (unsigned char j = 0; j < 22; j++)
 		{
-			background[i][j].setSize(sf::Vector2f(CELL_SIZE, CELL_SIZE));
-			background[i][j].setTexture(&this->borderTexture);
-			background[i][j].setFillColor(sf::Color(150, 150, 150));
-			background[i][j].setPosition(i * (CELL), j * (CELL));
+			windowPosition[i][j].setSize(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+			windowPosition[i][j].setFillColor(sf::Color(150, 150, 150));
+			windowPosition[i][j].setPosition(i * (CELL), j * (CELL));
 		}
 	}
-	float x = background[1][1].getPosition().x / CELL;
-	float y = background[1][1].getPosition().y / CELL;
+	float x = windowPosition[1][1].getPosition().x / CELL;
+	float y = windowPosition[1][1].getPosition().y / CELL;
 	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
 		for (unsigned char j = 0; j < ROWS; j++)
@@ -36,6 +34,9 @@ GameApp::GameApp()
 			matrix[i][j].setPosition({ CELL * (i + x), CELL * (j + y) });
 		}
 	}
+
+	this->level = statringLevel;
+	setUpSC();
 }
 
 void GameApp::tetromnoMovement(Tetromino& tetromino, sf::Event& event)
@@ -83,15 +84,7 @@ void GameApp::tetromnoMovement(Tetromino& tetromino, sf::Event& event)
 
 void GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino)
 {
-	//sprawdzanie czy kolejny update to koniec planszy
-	Tetromino tempTetromino(tetromino);
-	if (tempTetromino.update() == true && this->update == false)
-	{
-		this->update = true;
-		this->timeUntilResetReset();
-	}
-
-	if (dropTime <= 0.f && timeUntilReset <= 0)
+	if (dropTime <= 0.f)
 	{
 		this->update = false;
 		//spadanie w dol pojedynczego tetromino
@@ -106,8 +99,9 @@ void GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetrom
 	}
 }
 
-int GameApp::fullLines()
+void GameApp::fullLines()
 {
+	unsigned char lines = this->clearedLines;
 	//znikanie zapelnionego rzedu 	
 	//zaczyna od dolu
 	for (unsigned char y = 19; y > 0; y--)
@@ -126,6 +120,8 @@ int GameApp::fullLines()
 		if (fullCollumn == COLUMNS)
 		{
 			this->clearedLines++;
+			if (this->linesUntilTransition-- == 0)
+				transtionLevel();
 			for (unsigned char _y = y; _y > 0; _y--)
 			{
 				for (unsigned char x = 0; x < COLUMNS; x++)
@@ -137,34 +133,19 @@ int GameApp::fullLines()
 			y = ROWS;
 		}
 	}
-	return 0;
+	this->score += scoreIncrease(this->clearedLines - lines);
 }
 
 void GameApp::drawBackGround()
 {
-	//borders
-	/*for (unsigned char i = 0; i < 23; i++)
-	{
-		window.draw(background[i][0]);
-		window.draw(background[i][21]);
-	}
-	for (unsigned char j = 0; j < 22; j++)
-	{
-		window.draw(background[0][j]);
-		window.draw(background[11][j]);
-		window.draw(background[22][j]);
-	}*/
-	//next tetromino borders
-	/*for (unsigned char i = 14; i < 20; i++)
-	{
-		window.draw(background[i][2]);
-		window.draw(background[i][7]);
-	}
-	for (unsigned char j = 3; j < 7; j++)
-	{
-		window.draw(background[14][j]);
-		window.draw(background[19][j]);
-	}*/
+	sf::RectangleShape backgroundShape({ (float)window.getSize().x, (float)window.getSize().y });
+	sf::Texture text;
+	text.loadFromFile("src/rsrc/BackBackGround.png");
+	backgroundShape.setTexture(&text);
+	window.draw(backgroundShape);
+	text.loadFromFile("src/rsrc/Background.png");
+	backgroundShape.setTexture(&text);
+	window.draw(backgroundShape);
 }
 
 void GameApp::drawBoard()
@@ -175,7 +156,7 @@ void GameApp::drawBoard()
 		{
 			if (!matrix[i][j].isFull())
 			{
-				matrix[i][j].setTexture(this->backgroundTexture);
+				matrix[i][j].setTexture(this->gameBackgroundTexture);
 				matrix[i][j].setColor(sf::Color(70, 70, 70, 255));
 				window.draw(matrix[i][j]);
 			}
@@ -199,6 +180,7 @@ void GameApp::drawTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino
 		cellShape.setPosition(CELL * mino.x + matrix[0][0].getPosition().x, mino.y * CELL + matrix[0][0].getPosition().y);
 		window.draw(cellShape);
 	}
+
 	cellShape.setTexture(&this->tileTexture);
 	//rysowanie pojedynczego tetromino
 	for (auto& mino : tetromino.getPosition())
@@ -254,28 +236,22 @@ bool GameApp::gameOver()
 	return false;
 }
 
-void GameApp::run()
+int GameApp::run()
 {
 	sf::Event event;
 	sf::Clock clock;
 	float deltaTime;
 
-	TextMenager textManager(&this->background, &this->clearedLines);
+	TextMenager textManager(&this->windowPosition, &this->clearedLines, &this->level, &this->score);
 	Tetromino tetromino(getShape(random()), &matrix);
 	GhostTetromino ghostTetromino(tetromino);
-	NextTetromino nextTetromino(getShape(random()), &this->background);
-
-	sf::RectangleShape backgroundShape({ (float)window.getSize().x, (float)window.getSize().y });
-	sf::Texture text;
-	text.loadFromFile("src/rsrc/cipa.png");
-	backgroundShape.setTexture(&text);
+	NextTetromino nextTetromino(getShape(random()), &this->windowPosition);
 
 	while (window.isOpen())
 	{
 		deltaTime = clock.restart().asSeconds();
 
-		window.clear(sf::Color::Black);
-		window.draw(backgroundShape);
+		window.clear(sf::Color::Black);	
 
 		//zamkniecie okienka
 		window.pollEvent(event);
@@ -308,13 +284,15 @@ void GameApp::run()
 		
 		if (gameOver() == true)
 		{
-			return;
+			return this->score;
 		}
 
 		dropTime -= deltaTime;
 		moveTimeCooldown -= deltaTime;
 		hardDropCooldown -= deltaTime;
 		softDropCooldown -= deltaTime;
-		timeUntilReset -= deltaTime;
 	}
+	return 0;
 }
+
+

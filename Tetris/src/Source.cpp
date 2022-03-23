@@ -6,7 +6,7 @@
 
 int main()
 {
-	GameApp app;
+	GameApp app(5);
 
-	app.run();
+	std::cout << "score: " << app.run() << std::endl;
 }

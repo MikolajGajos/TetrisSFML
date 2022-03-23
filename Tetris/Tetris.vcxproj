@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\Cell.cpp" />
     <ClCompile Include="src\GameApp.cpp" />
+    <ClCompile Include="src\ScoreLevel.cpp" />
     <ClCompile Include="src\Source.cpp" />
     <ClCompile Include="src\SpawnTetromino.cpp" />
     <ClCompile Include="src\Tetromino.cpp" />

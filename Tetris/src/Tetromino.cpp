@@ -12,12 +12,12 @@ void setStatringPosition(std::array<sf::Vector2i, 4>& minos)
 
 Tetromino::Tetromino(const TetrominoShape& tShape, std::array<std::array<Cell, ROWS>, COLUMNS>* matrix)
 {
-	this->rotation = 0;
 	this->tShape = tShape;
-	this->setColor();
 	this->minos = spawnTetromino(tShape);
-	this->matrix = matrix;
 	setStatringPosition(this->minos);
+	this->rotation = 0;
+	this->setColor();	
+	this->matrix = matrix;
 	
 }
 
@@ -58,11 +58,11 @@ void Tetromino::updateMatrix()
 
 void Tetromino::reset(const TetrominoShape& tShape)
 {
-	this->rotation = 0;
 	this->tShape = tShape;
-	this->setColor();
 	this->minos = spawnTetromino(tShape);
 	setStatringPosition(this->minos);
+	this->rotation = 0;
+	this->setColor();
 }
 
 void Tetromino::moveLeft()
@@ -225,6 +225,7 @@ void GhostTetromino::reset(Tetromino& tetromino)
 	this->tShape = tetromino.getShape();
 	this->color = MinoColors::ghostColor;
 	this->minos = spawnTetromino(this->tShape);
+	this->update(tetromino);
 }
 
 /// ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -250,9 +251,9 @@ void NextTetromino::setPosition()
 
 void NextTetromino::reset(const TetrominoShape& tShape)
 {
+	this->minos = spawnTetromino(tShape);
+	this->setPosition();
 	this->rotation = 0;
 	this->tShape = tShape;
 	this->setColor();
-	this->minos = spawnTetromino(tShape);
-	this->setPosition();
 }
