@@ -156,31 +156,31 @@ void GameApp::dropTimeReset()
 		this->dropTime = 0.11f;
 		break;
 	case 20:
-		this->dropTime = 0.75f;
+		this->dropTime = 0.075f;
 		break;
 	case 21:
-		this->dropTime = 0.75f;
+		this->dropTime = 0.075f;
 		break;
 	case 22:
-		this->dropTime = 0.75f;
+		this->dropTime = 0.075f;
 		break;
 	case 23:
-		this->dropTime = 0.75f;
+		this->dropTime = 0.075f;
 		break;
 	case 24:
-		this->dropTime = 0.75f;
+		this->dropTime = 0.075f;
 		break;
 	case 25:
-		this->dropTime = 0.75f;
+		this->dropTime = 0.075f;
 		break;
 	case 26:
-		this->dropTime = 0.75f;
+		this->dropTime = 0.075f;
 		break;
 	case 27:
-		this->dropTime = 0.75f;
+		this->dropTime = 0.075f;
 		break;
 	case 28:
-		this->dropTime = 0.75f;
+		this->dropTime = 0.075f;
 		break;
 	default:
 		this->dropTime = 0.0375f;

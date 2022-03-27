@@ -57,41 +57,21 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 			if (previousRotation == 3)
 			{
 				//test 2
-				
-				/*minos[0] += {-1, 0};
-				minos[1] += {-1, 0};
-				minos[2] += {-1, 0};
-				minos[3] += {-1, 0};*/
 				if (this->updateMinosWallkick({ -1,0 }) == true)
 					return true;
 
 				//test 3 
 				this->minos = prevoiusPosition;
-				
-				/*minos[0] += {-1, 1};
-				minos[1] += {-1, 1};
-				minos[2] += {-1, 1};
-				minos[3] += {-1, 1};*/
 				if (this->updateMinosWallkick({ -1,1 }) == true)
 					return true;
 
 				//test 4
 				this->minos = prevoiusPosition;
-				
-				/*minos[0] += {0, -2};
-				minos[1] += {0, -2};
-				minos[2] += {0, -2};
-				minos[3] += {0, -2};*/
 				if (this->updateMinosWallkick({ 0,-2 }) == true)
 					return true;
 
 				//test 5
 				this->minos = prevoiusPosition;
-				
-				/*minos[0] += {-1, -2};
-				minos[1] += {-1, -2};
-				minos[2] += {-1, -2};
-				minos[3] += {-1, -2};*/
 				if (this->updateMinosWallkick({ -1, -2 }) == true)
 					return true;
 

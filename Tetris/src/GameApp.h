@@ -22,7 +22,7 @@ class GameApp {
 	sf::Texture gameBackgroundTexture;
 
 	float dropTime = 0.9f;			void dropTimeReset();
-	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset()	{ this->moveTimeCooldown = 0.045f; }
+	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset()	{ this->moveTimeCooldown = 0.06f; }
 	float hardDropCooldown = 0.f;	void hardDropCooldownReset()	{ this->hardDropCooldown = 0.5f; }
 	float softDropCooldown = 0.f;	void softDropCooldownReset()	{ this->softDropCooldown = 0.1f; }
 	bool update = false;
@@ -40,7 +40,7 @@ public:
 	void tetromnoMovement(Tetromino& tetromino, sf::Event& event);
 	void fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino);
 	void fullLines();
-	void drawBackGround();
+	void drawBackGround(BackgroundManager);
 	void drawBoard();
 	void drawTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino);
 	void drawNextTetromino(NextTetromino& nextTetromino);

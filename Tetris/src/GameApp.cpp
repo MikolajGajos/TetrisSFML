@@ -1,5 +1,39 @@
 #include "GameApp.h"
 
+class FPS
+{
+public:
+	/// @brief Constructor with initialization.
+	///
+	FPS() : mFrame(0), mFps(0) {}
+
+	/// @brief Update the frame count.
+	/// 
+
+
+	/// @brief Get the current FPS count.
+	/// @return FPS count.
+	const unsigned int getFPS() const { return mFps; }
+
+private:
+	unsigned int mFrame;
+	unsigned int mFps;
+	sf::Clock mClock;
+
+public:
+	void update()
+	{
+		if (mClock.getElapsedTime().asSeconds() >= 1.f)
+		{
+			mFps = mFrame;
+			mFrame = 0;
+			mClock.restart();
+		}
+
+		++mFrame;
+	}
+};
+
 int random()
 {
 	std::random_device random_device;
@@ -140,18 +174,9 @@ void GameApp::fullLines()
 	this->score += scoreIncrease(this->clearedLines - lines);
 }
 
-void GameApp::drawBackGround()
+void GameApp::drawBackGround(BackgroundManager background)
 {
-	sf::RectangleShape backgroundShape({ (float)window.getSize().x, (float)window.getSize().y });
-	sf::Texture text;
-	text.loadFromFile("src/rsrc/BackBackGround.png");
-	backgroundShape.setFillColor(sf::Color(50, 50, 50));
-	backgroundShape.setTexture(&text);
-	window.draw(backgroundShape);
-	text.loadFromFile("src/rsrc/Background.png");
-	backgroundShape.setFillColor(sf::Color::White);
-	backgroundShape.setTexture(&text);
-	window.draw(backgroundShape);
+	this->window.draw(background);
 }
 
 void GameApp::drawBoard()
@@ -248,10 +273,13 @@ int GameApp::run()
 	sf::Clock clock;
 	float deltaTime;
 
+	BackgroundManager background;
 	TextMenager textManager(&this->windowPosition, &this->clearedLines, &this->level, &this->score);
 	Tetromino tetromino(getShape(random()), &matrix);
 	GhostTetromino ghostTetromino(tetromino);
 	NextTetromino nextTetromino(getShape(random()), &this->windowPosition);
+
+	FPS fps;
 
 	while (window.isOpen())
 	{
@@ -276,7 +304,7 @@ int GameApp::run()
 		fullLines();
 
 		//WYSWIETLANIE
-		drawBackGround();
+		drawBackGround(background);
 		//rysowanie planszy z kwadratow na ktorych toczy sie gra
 		drawBoard();
 		//rysowanie tetromina, ktore jeszcze nie spadlo (nie jest w macierzy)
@@ -297,6 +325,12 @@ int GameApp::run()
 		hardDropCooldown -= deltaTime;
 		softDropCooldown -= deltaTime;
 		moveTimeCooldown -= deltaTime;
+
+		fps.update();
+		std::ostringstream ss;
+		ss << fps.getFPS();
+
+		window.setTitle(ss.str());
 	}
 	return 0;
 }

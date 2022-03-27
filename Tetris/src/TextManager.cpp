@@ -2,57 +2,16 @@
 
 std::string displayLL(int number)
 {
-	std::string result;
-	if (number < 10)
-	{
-		result += "00";
-		result += std::to_string(number);
-	}
-	else if (number < 100)
-	{
-		result += "0";
-		result += std::to_string(number);
-	}
-	else
-	{
-		result += std::to_string(number);
-	}
-	return result;
+	std::ostringstream os;
+	os << std::setfill('0') << std::setw(3) << number;	
+	return os.str();
 }
 
 std::string displayScore(int number)
 {
-	std::string result;
-	if (number < 10)
-	{
-		result += "00000";
-		result += std::to_string(number);
-	}
-	else if (number < 100)
-	{
-		result += "0000";
-		result += std::to_string(number);
-	}
-	else if (number < 1000)
-	{
-		result += "000";
-		result += std::to_string(number);
-	}
-	else if (number < 10000)
-	{
-		result += "00";
-		result += std::to_string(number);
-	}
-	else if (number < 100000)
-	{
-		result += "0";
-		result += std::to_string(number);
-	}
-	else
-	{
-		result += std::to_string(number);
-	}
-	return result;
+	std::ostringstream os;
+	os << std::setfill('0') << std::setw(6) << number;
+	return os.str();
 }
 
 TextMenager::TextMenager(std::array<std::array<sf::RectangleShape, 22>, 24>* background, int* cleanedLines, int* level, int* score)
@@ -102,4 +61,24 @@ void TextMenager::draw(sf::RenderTarget& target, sf::RenderStates state) const
 	target.draw(this->levelText, state);
 	target.draw(this->scoreText, state);
 	target.draw(this->nextTetrominoText, state);
+}
+
+
+BackgroundManager::BackgroundManager()
+{
+	this->bbackgroundShape.setSize({ WINDOW_SIZE_X,WINDOW_SIZE_Y });
+	this->bbackgroundTexture.loadFromFile("src/rsrc/BackBackGround.png");
+	this->bbackgroundShape.setFillColor(sf::Color(50, 50, 50));
+	this->bbackgroundShape.setTexture(&bbackgroundTexture);
+
+	this->backgroundShape.setSize({ WINDOW_SIZE_X, WINDOW_SIZE_Y });
+	this->backgroundTexture.loadFromFile("src/rsrc/Background.png");
+	this->backgroundShape.setFillColor(sf::Color::White);
+	this->backgroundShape.setTexture(&backgroundTexture);
+}
+
+void BackgroundManager::draw(sf::RenderTarget& target, sf::RenderStates state) const
+{
+	target.draw(this->bbackgroundShape);
+	target.draw(this->backgroundShape);
 }
