@@ -34,6 +34,7 @@ public:
 	}
 };
 
+//Returns random number between [0,6].
 int random()
 {
 	std::random_device random_device;
@@ -80,7 +81,6 @@ void GameApp::tetromnoMovement(Tetromino& tetromino, sf::Event& event)
 	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::C) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 		rotationAllowed = true;
 
-	//ruszanie tetrominem w bok i w dol i rotacja
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && rotationAllowed)
 	{
 		tetromino.rotate(true);
@@ -124,8 +124,7 @@ void GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetrom
 	if (dropTime <= 0.f)
 	{
 		this->update = false;
-		//spadanie w dol pojedynczego tetromino
-		if (tetromino.update() == true) //true == dojechal na sam koniec
+		if (tetromino.update() == true) //true == at the end
 		{
 			tetromino.updateMatrix();
 			tetromino.reset(nextTetromino.getShape());
@@ -139,27 +138,29 @@ void GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetrom
 void GameApp::fullLines()
 {
 	unsigned char lines = this->clearedLines;
-	//znikanie zapelnionego rzedu 	
-	//zaczyna od dolu
+	//loop begins from bottom
 	for (unsigned char y = 19; y > 0; y--)
 	{
 		unsigned char fullCollumn = 0;
-		//sprawdza kazda kolumne
+		//loop checks every collumn in one row
 		for (unsigned char x = 0; x < COLUMNS; x++)
 		{
-			//jezeli komorka jest zapleniona
+			//if the tile is full it increases the value
 			if (matrix[x][y].isFull() == true)
 			{
 				fullCollumn++;
 			}
 		}
-		//jesli kazda jest zapleniona przesuwa z rzedu wyzej i zaczyna od poczatku
+		//if every tile was full it cleares a row
 		if (fullCollumn == COLUMNS)
 		{
+			//score and level manage
 			this->clearedLines++;
 			this->linesUntilTransition--;
 			if (this->linesUntilTransition == 0)
 				transtionLevel();
+
+			//loop moves every line one row down
 			for (unsigned char _y = y; _y > 0; _y--)
 			{
 				for (unsigned char x = 0; x < COLUMNS; x++)
@@ -205,7 +206,7 @@ void GameApp::drawTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino
 	sf::RectangleShape cellShape(sf::Vector2f(CELL_SIZE, CELL_SIZE));
 	cellShape.setFillColor(tetromino.getColor());
 	cellShape.setTexture(&this->ghostTexture);
-	//rysowanie ducha
+	//ghost
 	for (auto& mino : ghostTetromino.getPosition())
 	{
 		cellShape.setPosition(CELL * mino.x + matrix[0][0].getPosition().x, mino.y * CELL + matrix[0][0].getPosition().y);
@@ -213,7 +214,7 @@ void GameApp::drawTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino
 	}
 
 	cellShape.setTexture(&this->tileTexture);
-	//rysowanie pojedynczego tetromino
+	//tetromino
 	for (auto& mino : tetromino.getPosition())
 	{
 		cellShape.setPosition(CELL * mino.x + matrix[0][0].getPosition().x, mino.y * CELL + matrix[0][0].getPosition().y);
@@ -271,7 +272,7 @@ int GameApp::run()
 {
 	sf::Event event;
 	sf::Clock clock;
-	float deltaTime;
+	float deltaTime = 0.f;
 
 	BackgroundManager background;
 	TextMenager textManager(&this->windowPosition, &this->clearedLines, &this->level, &this->score);
@@ -283,53 +284,38 @@ int GameApp::run()
 
 	while (window.isOpen())
 	{
-		deltaTime = clock.restart().asSeconds();
-
-		window.clear(sf::Color::Black);	
-
-		//zamkniecie okienka
 		window.pollEvent(event);
 		if (event.type == sf::Event::Closed)
-		{
 			this->window.close();
-		}
+		window.clear(sf::Color::Black);	
 
-		//ruch w lewo prawo, rotacja i szybki spadek
+		//UPDATE
 		tetromnoMovement(tetromino, event);
 		ghostTetromino.update(tetromino);
-
-		//spadanie na dol bez udzialu gracza
+		textManager.updateText();
 		fallingTetromino(tetromino, ghostTetromino, nextTetromino);
-		//sprawdza ile jest pelych rzedow i zwraca liczbe
 		fullLines();
+		if (gameOver() == true)
+			return this->score;
 
-		//WYSWIETLANIE
+		//DISPLAY
 		drawBackGround(background);
-		//rysowanie planszy z kwadratow na ktorych toczy sie gra
 		drawBoard();
-		//rysowanie tetromina, ktore jeszcze nie spadlo (nie jest w macierzy)
 		drawTetromino(tetromino, ghostTetromino);
 		drawNextTetromino(nextTetromino);
-
-		textManager.updateText();
 		window.draw(textManager);
-
 		window.display();
-		
-		if (gameOver() == true)
-		{
-			return this->score;
-		}
 
+		//TIME
 		dropTime -= deltaTime;
 		hardDropCooldown -= deltaTime;
 		softDropCooldown -= deltaTime;
 		moveTimeCooldown -= deltaTime;
+		deltaTime = clock.restart().asSeconds();
 
 		fps.update();
 		std::ostringstream ss;
 		ss << fps.getFPS();
-
 		window.setTitle(ss.str());
 	}
 	return 0;

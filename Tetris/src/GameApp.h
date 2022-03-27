@@ -37,17 +37,25 @@ class GameApp {
 public:
 	GameApp(int statringLevel = 0);
 
-	void tetromnoMovement(Tetromino& tetromino, sf::Event& event);
-	void fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino);
+	//Manages all tetromino movement based on user's input.
+	void tetromnoMovement(Tetromino&, sf::Event&);
+	//Manages tetromino falling without user interaction. Updates tetromino if it falls to the end.
+	void fallingTetromino(Tetromino&, GhostTetromino&, NextTetromino&);
+	//Searches game's matrix and cleares full lines. If the line was cleared it adds points to the game score.
 	void fullLines();
+	//Draws background.
 	void drawBackGround(BackgroundManager);
+	//Drawes game board with tetromino which already fallen.
 	void drawBoard();
-	void drawTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino);
-	void drawNextTetromino(NextTetromino& nextTetromino);
+	//Draws currently falling tetromino and its ghost.
+	void drawTetromino(Tetromino&, GhostTetromino&);
+	//Draws next tetromino.
+	void drawNextTetromino(NextTetromino&);
+	//Checks if tetromino hit the celling.
 	bool gameOver();
 	int run();
 
 	void setUpSC();
 	void transtionLevel();
-	int scoreIncrease(unsigned char lines);
+	int scoreIncrease(unsigned char);
 };

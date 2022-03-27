@@ -10,15 +10,15 @@ class Cell : public sf::Drawable
 public:
 
 	Cell();
-	Cell(const sf::Color& color);
-	Cell(const sf::Vector2f& position);
-	void setColor(const sf::Color& color);
+	Cell(const sf::Color&);
+	Cell(const sf::Vector2f&);
+	void setColor(const sf::Color&);
 	sf::Color getColor();
-	void setPosition(const sf::Vector2f& position);
+	void setPosition(const sf::Vector2f&);
 	sf::Vector2f getPosition();
 	bool isFull() const { return this->full; }
-	void setFull(const bool b);
-	void setTexture(const sf::Texture& texture);
+	void setFull(const bool);
+	void setTexture(const sf::Texture&);
 
-	void draw(sf::RenderTarget& target, sf::RenderStates state) const override;
+	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 };

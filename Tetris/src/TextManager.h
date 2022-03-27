@@ -22,10 +22,10 @@ public:
 	sf::Text nextTetrominoText;
 
 public:
-	TextMenager(std::array<std::array<sf::RectangleShape, 22>, 24>* background, int* cleanedLines, int* level, int* score);
+	TextMenager(std::array<std::array<sf::RectangleShape, 22>, 24>*, int*, int*, int*);
 	void updateText();
 
-	void draw(sf::RenderTarget& target, sf::RenderStates state) const override;
+	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 };
 
 class BackgroundManager : public sf::Drawable
@@ -38,5 +38,5 @@ class BackgroundManager : public sf::Drawable
 public:
 	BackgroundManager();
 	
-	void draw(sf::RenderTarget& target, sf::RenderStates state) const override;
+	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 };

@@ -27,7 +27,6 @@ bool Tetromino::legalRotation()
 	bool legal = true;
 	for (auto& mino : this->minos)
 	{
-		//jesli nie wychodzi poza tablice sprawdzam czy miejsce jest zajete
 		if (mino.x < COLUMNS && mino.x >= 0 && mino.y < ROWS && mino.y >= 0)
 		{
 			if ((*matrix)[mino.x][mino.y].isFull() == true)
@@ -102,7 +101,6 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 
 				return false;
 			}
-			break;
 		case 1:
 		{
 			//dla jedynki testy sa jednakowe w obydwu przypadkach
@@ -176,7 +174,6 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 
 				return false;
 			}
-			break;
 		case 3:
 		{
 			//dla trojki obie takie same
@@ -200,7 +197,6 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 				return true;
 
 			return false;
-			break;
 		}		
 		}
 	}
@@ -230,7 +226,6 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 				if (this->updateMinosWallkick({ -2, -1 }) == true)
 					return true;
 
-				//jesli zaden test nie spelnil wymagan to nie mozna zrobic kicka
 				return false;
 
 			}
@@ -257,7 +252,6 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 
 				return false;
 			}
-			break;
 		case 1:
 			if (previousRotation == 0)
 			{
@@ -306,7 +300,6 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 
 				return false;
 			}
-			break;
 		case 2:
 			if (previousRotation == 1)
 			{
@@ -355,7 +348,6 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 
 				return false;
 			}
-			break;
 		case 3:
 			if (previousRotation == 2)
 			{
@@ -404,7 +396,6 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 
 				return false;
 			}
-			break;
 		}
 	}
 	return false;

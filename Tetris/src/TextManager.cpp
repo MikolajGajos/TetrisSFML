@@ -63,6 +63,7 @@ void TextMenager::draw(sf::RenderTarget& target, sf::RenderStates state) const
 	target.draw(this->nextTetrominoText, state);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////
 
 BackgroundManager::BackgroundManager()
 {

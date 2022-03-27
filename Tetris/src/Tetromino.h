@@ -20,23 +20,37 @@ public:
 public:
 	
 	Tetromino() {};
-	Tetromino(const TetrominoShape& tShape, std::array<std::array<Cell, ROWS>, COLUMNS>* matrix);
-	Tetromino(const Tetromino& tetromio, std::array<std::array<Cell, ROWS>, COLUMNS>* matrix);
+	Tetromino(const TetrominoShape&, std::array<std::array<Cell, ROWS>, COLUMNS>*);
+	Tetromino(const Tetromino&, std::array<std::array<Cell, ROWS>, COLUMNS>*);
 
+	//Moves tetromino one line down. Retruns true if the move was valid.
 	bool update();
+	//Updates game matrix when tetromino gets to the end.
 	void updateMatrix();
-	void reset(const TetrominoShape& tShape);
+	//Resets tetromino shape and sets it to the starting position.
+	void reset(const TetrominoShape&);
+
+	//Moves tetromino left by one tile.
 	void moveLeft();
+	//Moves tetromino right by one tile.
 	void moveRight();
+	//Moves tetromino down, to the end of its way.
 	void hardDrop();
-	bool rotate(bool clockwise);
-	bool wallKick(unsigned char previousRotation);
-	bool updateMinosWallkick(const sf::Vector2i& v);
+
+	//Rotates tetromino between four states. Whether you press C or Z tetromino will rotate clockwise or not. Put true value to rotate clockwise. Retruns true if the roattion was legal.
+	bool rotate(bool);
+	//When the player attempts to rotate a tetromino, but the position it would normally occupy after basic rotation is obstructed, the game will attempt to "kick" the tetromino into an alternative position nearby.
+	bool wallKick(unsigned char);
+	bool updateMinosWallkick(const sf::Vector2i&);
+	//Checks whether rotation was legel.
 	bool legalRotation();
 
+	//Returns tetromino's position.
 	std::array<sf::Vector2i, 4> getPosition();
+	//Retruns tetromino's color.
 	sf::Color getColor();
 	void setColor();
+	//Retruns tetromino's shape.
 	TetrominoShape getShape();
 	int getRotation() { return this->rotation; }
 };
@@ -44,16 +58,18 @@ public:
 class GhostTetromino : public Tetromino
 {
 public:
-	GhostTetromino(Tetromino& tetromino);
-	void update(Tetromino& tetromino);
-	void reset(Tetromino& tetromino);
+	GhostTetromino(Tetromino&);
+	//Updates ghost based on current tetromino's position.
+	void update(Tetromino&);
+	//Updates ghost's shape on current tetromino.
+	void reset(Tetromino&);
 };
 
 class NextTetromino : public Tetromino
 {
 	std::array < std::array < sf::RectangleShape, 22>, 24>* background;
 public:
-	NextTetromino(const TetrominoShape& tShape, std::array < std::array < sf::RectangleShape, 22>, 24>* background);
+	NextTetromino(const TetrominoShape&, std::array < std::array < sf::RectangleShape, 22>, 24>*);
 	void setPosition();
-	void reset(const TetrominoShape& tShape);
+	void reset(const TetrominoShape&);
 };
