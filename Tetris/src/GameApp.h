@@ -33,6 +33,7 @@ class GameApp {
 	int level = 1;
 	int linesUntilTransition = 0;
 	int score = 0;
+	bool gameOverbool = false;
 
 public:
 	GameApp(int statringLevel = 0);
@@ -51,8 +52,10 @@ public:
 	void drawTetromino(Tetromino&, GhostTetromino&);
 	//Draws next tetromino.
 	void drawNextTetromino(NextTetromino&);
-	//Checks if tetromino hit the celling.
-	bool gameOver();
+	//Checks if new tetromino is able to spawn.
+	bool gameOver(Tetromino&);
+	//Ends game when gameOver returns true
+	void endGame();
 	int run();
 
 	void setUpSC();

@@ -121,18 +121,25 @@ void GameApp::tetromnoMovement(Tetromino& tetromino, sf::Event& event)
 
 void GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino)
 {
-	if (dropTime <= 0.f)
+	if (dropTime > 0.f)
+		return;
+
+	this->update = false;
+	if (tetromino.update() == true) //true == at the end
 	{
-		this->update = false;
-		if (tetromino.update() == true) //true == at the end
+		tetromino.updateMatrix();
+		tetromino.reset(nextTetromino.getShape());
+
+		if (this->gameOver(tetromino)) //check if tetrmino can spawn
 		{
-			tetromino.updateMatrix();
-			tetromino.reset(nextTetromino.getShape());
-			nextTetromino.reset(getShape(random()));
-			ghostTetromino.reset(tetromino);
+			this->gameOverbool = true;
+			return;
 		}
-		dropTimeReset();
+
+		nextTetromino.reset(getShape(random()));
+		ghostTetromino.reset(tetromino);		
 	}
+	dropTimeReset();
 }
 
 void GameApp::fullLines()
@@ -255,9 +262,16 @@ void GameApp::drawNextTetromino(NextTetromino& nextTetromino)
 	}
 }
 
-bool GameApp::gameOver()
+bool GameApp::gameOver(Tetromino& tetromino)
 {
-	bool gameOver = false;
+	for (auto& mino : tetromino.getPosition())
+	{
+		if (this->matrix[mino.x][mino.y].isFull())
+			return true;
+	}
+	return false;
+	
+	/*bool gameOver = false;
 	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
 		if (matrix[i][0].isFull() == true)
@@ -265,7 +279,35 @@ bool GameApp::gameOver()
 			return true;
 		}		
 	}
-	return false;
+	return false;*/
+}
+
+void GameApp::endGame()
+{
+	for (unsigned char i = 0; i < COLUMNS; i++)
+	{
+		for (unsigned char j = 0; j < ROWS; j++)
+		{
+			if (!matrix[i][j].isFull())
+			{
+				matrix[i][j].setTexture(this->gameBackgroundTexture);
+				matrix[i][j].setColor(sf::Color(70, 70, 70, 255));
+				window.draw(matrix[i][j]);
+			}
+			else
+			{
+				matrix[i][j].setTexture(this->tileTexture);
+				matrix[i][j].setColor(sf::Color(70, 70, 70, 255));
+				window.draw(matrix[i][j]);
+			}
+		}
+	}
+	this->window.display();
+
+	sf::Event event;
+	window.pollEvent(event);
+	if (event.type == sf::Event::Closed)
+		this->window.close();
 }
 
 int GameApp::run()
@@ -284,6 +326,12 @@ int GameApp::run()
 
 	while (window.isOpen())
 	{
+		if (gameOverbool)
+		{
+			endGame();
+			continue;
+		}
+			
 		window.pollEvent(event);
 		if (event.type == sf::Event::Closed)
 			this->window.close();
@@ -295,8 +343,6 @@ int GameApp::run()
 		textManager.updateText();
 		fallingTetromino(tetromino, ghostTetromino, nextTetromino);
 		fullLines();
-		if (gameOver() == true)
-			return this->score;
 
 		//DISPLAY
 		drawBackGround(background);
