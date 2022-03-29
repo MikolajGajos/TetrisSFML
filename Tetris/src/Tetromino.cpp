@@ -31,6 +31,7 @@ Tetromino::Tetromino(const Tetromino& tetromio, std::array<std::array<Cell, ROWS
 
 bool Tetromino::update()
 {
+	//checks if all minos can be moved down
 	for (auto& mino : this->minos)
 	{
 		if (mino.y + 1 == ROWS)

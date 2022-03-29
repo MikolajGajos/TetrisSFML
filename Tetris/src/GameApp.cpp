@@ -124,8 +124,8 @@ void GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetrom
 	if (dropTime > 0.f)
 		return;
 
-	this->update = false;
-	if (tetromino.update() == true) //true == at the end
+	//this->update = false;
+	if (tetromino.update()) //true == at the end
 	{
 		tetromino.updateMatrix();
 		tetromino.reset(nextTetromino.getShape());
@@ -270,16 +270,6 @@ bool GameApp::gameOver(Tetromino& tetromino)
 			return true;
 	}
 	return false;
-	
-	/*bool gameOver = false;
-	for (unsigned char i = 0; i < COLUMNS; i++)
-	{
-		if (matrix[i][0].isFull() == true)
-		{
-			return true;
-		}		
-	}
-	return false;*/
 }
 
 void GameApp::endGame()
@@ -364,5 +354,5 @@ int GameApp::run()
 		ss << fps.getFPS();
 		window.setTitle(ss.str());
 	}
-	return 0;
+	return this->score;
 }
