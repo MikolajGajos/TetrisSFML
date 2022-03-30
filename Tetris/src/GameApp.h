@@ -22,11 +22,11 @@ class GameApp {
 	sf::Texture gameBackgroundTexture;
 
 	float dropTime = 0.9f;			void dropTimeReset();
-	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset()	{ this->moveTimeCooldown = 0.06f; }
-	float hardDropCooldown = 0.f;	void hardDropCooldownReset()	{ this->hardDropCooldown = 0.5f; }
-	float softDropCooldown = 0.f;	void softDropCooldownReset()	{ this->softDropCooldown = 0.1f; }
+	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }
+	float hardDropCooldown = 0.f;	void hardDropCooldownReset() { this->hardDropCooldown = 0.5f; }
+	float softDropCooldown = 0.f;	void softDropCooldownReset() { this->softDropCooldown = 0.1f; }
 	bool update = false;
-	bool rotationAllowed = true;		
+	bool rotationAllowed = true;
 	bool movementAllowed = true;
 
 	int clearedLines = 0;
@@ -42,8 +42,10 @@ public:
 	void tetromnoMovement(Tetromino&, sf::Event&);
 	//Manages tetromino falling without user interaction. Updates tetromino if it falls to the end.
 	void fallingTetromino(Tetromino&, GhostTetromino&, NextTetromino&);
-	//Searches game's matrix and cleares full lines. If the line was cleared it adds points to the game score.
-	void fullLines();
+	//Searches game's matrix for full lines. Returns vector with lines number.
+	std::vector<int> fullLines();
+	//Clear full lines
+	void clearLines(std::vector<int>& linesNumber);
 	//Draws background.
 	void drawBackGround(BackgroundManager);
 	//Drawes game board with tetromino which already fallen.

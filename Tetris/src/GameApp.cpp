@@ -43,6 +43,14 @@ int random()
 	return distr(random_engine);
 }
 
+void prepareVector(std::vector<int>& v)
+{
+	for (int i = 0; i < v.size(); i++)
+	{
+		v[i] += i;
+	}
+}
+
 GameApp::GameApp(int statringLevel)
 	: window({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Close | sf::Style::Resize)
 {
@@ -69,7 +77,7 @@ GameApp::GameApp(int statringLevel)
 			matrix[i][j].setPosition({ CELL * (i + x), CELL * (j + y) });
 		}
 	}
-	if(this->level <= 29)
+	if (this->level <= 29)
 		this->level = statringLevel;
 	else
 		this->level = 29;
@@ -137,14 +145,14 @@ void GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetrom
 		}
 
 		nextTetromino.reset(getShape(random()));
-		ghostTetromino.reset(tetromino);		
+		ghostTetromino.reset(tetromino);
 	}
 	dropTimeReset();
 }
 
-void GameApp::fullLines()
+std::vector<int> GameApp::fullLines()
 {
-	unsigned char lines = this->clearedLines;
+	std::vector<int> v;
 	//loop begins from bottom
 	for (unsigned char y = 19; y > 0; y--)
 	{
@@ -160,26 +168,34 @@ void GameApp::fullLines()
 		}
 		//if every tile was full it cleares a row
 		if (fullCollumn == COLUMNS)
-		{
-			//score and level manage
-			this->clearedLines++;
-			this->linesUntilTransition--;
-			if (this->linesUntilTransition == 0)
-				transtionLevel();
-
-			//loop moves every line one row down
-			for (unsigned char _y = y; _y > 0; _y--)
-			{
-				for (unsigned char x = 0; x < COLUMNS; x++)
-				{
-					matrix[x][_y].setFull(matrix[x][_y - 1].isFull());
-					matrix[x][_y].setColor(matrix[x][_y - 1].getColor());
-				}
-			}
-			y = ROWS;
-		}
+			v.push_back(y);
 	}
-	this->score += scoreIncrease(this->clearedLines - lines);
+	return v;
+}
+
+void GameApp::clearLines(std::vector<int>& linesNumber)
+{
+	//score and level manage
+	this->clearedLines += linesNumber.size();
+	this->score += scoreIncrease(linesNumber.size());
+	this->linesUntilTransition -= linesNumber.size();
+	if (this->linesUntilTransition == 0)
+		transtionLevel();
+
+	prepareVector(linesNumber);
+
+	//loop moves every line one row down
+	for (int y : linesNumber)
+	{
+		for (unsigned char _y = y; _y > 0; _y--)
+		{
+			for (unsigned char x = 0; x < COLUMNS; x++)
+			{
+				matrix[x][_y].setFull(matrix[x][_y - 1].isFull());
+				matrix[x][_y].setColor(matrix[x][_y - 1].getColor());
+			}
+		}
+	}	
 }
 
 void GameApp::drawBackGround(BackgroundManager background)
@@ -305,6 +321,7 @@ int GameApp::run()
 	sf::Event event;
 	sf::Clock clock;
 	float deltaTime = 0.f;
+	std::vector<int> linesToClear;
 
 	BackgroundManager background;
 	TextMenager textManager(&this->windowPosition, &this->clearedLines, &this->level, &this->score);
@@ -321,18 +338,19 @@ int GameApp::run()
 			endGame();
 			continue;
 		}
-			
+
 		window.pollEvent(event);
 		if (event.type == sf::Event::Closed)
 			this->window.close();
-		window.clear(sf::Color::Black);	
+		window.clear(sf::Color::Black);
 
 		//UPDATE
 		tetromnoMovement(tetromino, event);
 		ghostTetromino.update(tetromino);
 		textManager.updateText();
 		fallingTetromino(tetromino, ghostTetromino, nextTetromino);
-		fullLines();
+		linesToClear = fullLines();
+		clearLines(linesToClear);
 
 		//DISPLAY
 		drawBackGround(background);
