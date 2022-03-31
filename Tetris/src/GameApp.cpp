@@ -67,8 +67,8 @@ GameApp::GameApp(int statringLevel)
 			windowPosition[i][j].setPosition(i * (CELL), j * (CELL));
 		}
 	}
-	float x = windowPosition[1][1].getPosition().x / CELL;
-	float y = windowPosition[1][1].getPosition().y / CELL;
+	float x = windowPosition[matrix_position_x][matrix_position_x].getPosition().x / CELL;
+	float y = windowPosition[matrix_position_y][matrix_position_y].getPosition().y / CELL;
 	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
 		for (unsigned char j = 0; j < ROWS; j++)
@@ -156,32 +156,41 @@ std::vector<int> GameApp::fullLines()
 	//loop begins from bottom
 	for (unsigned char y = 19; y > 0; y--)
 	{
-		unsigned char fullCollumn = 0;
+		bool clear = true;
 		//loop checks every collumn in one row
 		for (unsigned char x = 0; x < COLUMNS; x++)
 		{
-			//if the tile is full it increases the value
-			if (matrix[x][y].isFull() == true)
+			//if the tile is not full stops
+			if (!matrix[x][y].isFull())
 			{
-				fullCollumn++;
+				clear = false;
+				break;
 			}
+				
 		}
-		//if every tile was full it cleares a row
-		if (fullCollumn == COLUMNS)
+		//if every tile was full
+		if (clear)
+		{
 			v.push_back(y);
+			inAnimation = true;
+		}
+			
 	}
 	return v;
 }
 
 void GameApp::clearLines(std::vector<int>& linesNumber)
 {
+	for (int i : linesNumber)
+	{
+		this->linesUntilTransition -= 1;
+		if (this->linesUntilTransition == 0)
+			transtionLevel();
+	}
 	//score and level manage
 	this->clearedLines += linesNumber.size();
 	this->score += scoreIncrease(linesNumber.size());
-	this->linesUntilTransition -= linesNumber.size();
-	if (this->linesUntilTransition == 0)
-		transtionLevel();
-
+	
 	prepareVector(linesNumber);
 
 	//loop moves every line one row down
@@ -196,6 +205,18 @@ void GameApp::clearLines(std::vector<int>& linesNumber)
 			}
 		}
 	}	
+	linesNumber.clear();
+}
+
+void GameApp::animationManager(std::vector<int>& linesNumber, float deltaTime, Animation& animation)
+{
+	this->inAnimation = true;
+	this->animationTime -= deltaTime;
+	if (animationTime <= 0.f)
+	{
+		this->inAnimation = false;
+		animationTimeReset();
+	}
 }
 
 void GameApp::drawBackGround(BackgroundManager background)
@@ -328,6 +349,7 @@ int GameApp::run()
 	Tetromino tetromino(getShape(random()), &matrix);
 	GhostTetromino ghostTetromino(tetromino);
 	NextTetromino nextTetromino(getShape(random()), &this->windowPosition);
+	Animation animation(this->matrix);
 
 	FPS fps;
 
@@ -344,13 +366,18 @@ int GameApp::run()
 			this->window.close();
 		window.clear(sf::Color::Black);
 
-		//UPDATE
-		tetromnoMovement(tetromino, event);
-		ghostTetromino.update(tetromino);
-		textManager.updateText();
-		fallingTetromino(tetromino, ghostTetromino, nextTetromino);
-		linesToClear = fullLines();
-		clearLines(linesToClear);
+		if (!inAnimation)
+		{
+			//UPDATE
+			tetromnoMovement(tetromino, event);
+			ghostTetromino.update(tetromino);
+			textManager.updateText();
+			fallingTetromino(tetromino, ghostTetromino, nextTetromino);
+			clearLines(linesToClear);
+			linesToClear = fullLines();
+		}
+		else
+			animationManager(linesToClear, deltaTime, animation);
 
 		//DISPLAY
 		drawBackGround(background);
@@ -358,6 +385,7 @@ int GameApp::run()
 		drawTetromino(tetromino, ghostTetromino);
 		drawNextTetromino(nextTetromino);
 		window.draw(textManager);
+		animation.display(window, linesToClear);
 		window.display();
 
 		//TIME

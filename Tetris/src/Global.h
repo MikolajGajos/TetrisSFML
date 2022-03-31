@@ -10,6 +10,9 @@ const unsigned char COLUMNS = 10;
 
 const unsigned char ROWS = 20;
 
+const unsigned char matrix_position_x = 1;
+const unsigned char matrix_position_y = 1;
+
 const int WINDOW_SIZE_X = 2 * CELL * (COLUMNS + 2);
 const int WINDOW_SIZE_Y = CELL * (ROWS + 2);
 

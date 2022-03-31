@@ -39,7 +39,7 @@ void Cell::setPosition(const sf::Vector2f& position)
 	this->cellShape.setPosition({ x,y });
 }
 
-sf::Vector2f Cell::getPosition()
+sf::Vector2f Cell::getPosition() const
 {
 	return this->cellShape.getPosition();
 }

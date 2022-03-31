@@ -11,6 +11,7 @@
 #include "Color.h"
 #include "Cell.h"
 #include "TextManager.h"
+#include "Animation.h"
 
 class GameApp {
 
@@ -25,15 +26,17 @@ class GameApp {
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }
 	float hardDropCooldown = 0.f;	void hardDropCooldownReset() { this->hardDropCooldown = 0.5f; }
 	float softDropCooldown = 0.f;	void softDropCooldownReset() { this->softDropCooldown = 0.1f; }
+	float animationTime = 0.5f;		void animationTimeReset()	 { this->animationTime = 0.5f; }
 	bool update = false;
 	bool rotationAllowed = true;
 	bool movementAllowed = true;
 
 	int clearedLines = 0;
-	int level = 1;
+	int level = 0;
 	int linesUntilTransition = 0;
 	int score = 0;
 	bool gameOverbool = false;
+	bool inAnimation = false;
 
 public:
 	GameApp(int statringLevel = 0);
@@ -46,6 +49,8 @@ public:
 	std::vector<int> fullLines();
 	//Clear full lines
 	void clearLines(std::vector<int>& linesNumber);
+	//Animation xd
+	void animationManager(std::vector<int>& linesNumber, float deltaTime, Animation&);
 	//Draws background.
 	void drawBackGround(BackgroundManager);
 	//Drawes game board with tetromino which already fallen.

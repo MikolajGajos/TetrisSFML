@@ -15,7 +15,7 @@ public:
 	void setColor(const sf::Color&);
 	sf::Color getColor();
 	void setPosition(const sf::Vector2f&);
-	sf::Vector2f getPosition();
+	sf::Vector2f getPosition() const;
 	bool isFull() const { return this->full; }
 	void setFull(const bool);
 	void setTexture(const sf::Texture&);
