@@ -171,6 +171,11 @@ std::vector<int> GameApp::fullLines()
 		//if every tile was full
 		if (clear)
 		{
+			for (unsigned char x = 0; x < COLUMNS; x++)
+			{
+				matrix[x][y].setFull(false);
+			}
+
 			v.push_back(y);
 			inAnimation = true;
 		}
@@ -212,10 +217,12 @@ void GameApp::animationManager(std::vector<int>& linesNumber, float deltaTime, A
 {
 	this->inAnimation = true;
 	this->animationTime -= deltaTime;
+	animation.update(deltaTime);
 	if (animationTime <= 0.f)
 	{
 		this->inAnimation = false;
 		animationTimeReset();
+		animation.reset();
 	}
 }
 
@@ -342,14 +349,13 @@ int GameApp::run()
 	sf::Event event;
 	sf::Clock clock;
 	float deltaTime = 0.f;
-	std::vector<int> linesToClear;
 
 	BackgroundManager background;
 	TextMenager textManager(&this->windowPosition, &this->clearedLines, &this->level, &this->score);
 	Tetromino tetromino(getShape(random()), &matrix);
 	GhostTetromino ghostTetromino(tetromino);
 	NextTetromino nextTetromino(getShape(random()), &this->windowPosition);
-	Animation animation(this->matrix);
+	Animation animation(this->matrix, this->animationTime);
 
 	FPS fps;
 
@@ -364,7 +370,6 @@ int GameApp::run()
 		window.pollEvent(event);
 		if (event.type == sf::Event::Closed)
 			this->window.close();
-		window.clear(sf::Color::Black);
 
 		if (!inAnimation)
 		{
@@ -398,7 +403,7 @@ int GameApp::run()
 		fps.update();
 		std::ostringstream ss;
 		ss << fps.getFPS();
-		window.setTitle(ss.str());
+		std::cout << fps.getFPS() << std::endl;
 	}
 	return this->score;
 }

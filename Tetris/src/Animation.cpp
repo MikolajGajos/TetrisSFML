@@ -1,16 +1,59 @@
 #include "Animation.h"
 
-Animation::Animation(const std::array<std::array<Cell, ROWS>, COLUMNS>& matrix)
+Animation::Animation(const std::array<std::array<Cell, ROWS>, COLUMNS>& matrix, float animationTime)
 {
-	this->switchTime = 0.5f;
-
-	this->texture.loadFromFile("src/rsrc/Tile.png");
-	for (unsigned char i = 0; i < ROWS; i++)
+	this->animationTime = animationTime;
+	setSwitchTime();
+	this->texture.loadFromFile("src/rsrc/animation.png");
+	currentTexture.height = 36;
+	currentTexture.width = 36;
+	for (unsigned char x = 0; x < COLUMNS; x++)
 	{
-		this->rows[i].setSize({CELL * COLUMNS, CELL});
-		this->rows[i].setPosition(matrix[0][i].getPosition());
-		this->rows[i].setTexture(&this->texture);
-		this->rows[i].setFillColor(sf::Color::White);
+		for (unsigned char y = 0; y < ROWS; y++)
+		{
+			this->spriteMatrix[x][y].setTexture(texture);
+			this->spriteMatrix[x][y].setTextureRect(currentTexture);
+			this->spriteMatrix[x][y].setPosition(matrix[x][y].getPosition());
+		}
+	}	
+}
+
+void Animation::update(float deltaTime)
+{
+	this->switchTime -= deltaTime;
+	if (switchTime <= 0.f)
+	{
+		setSwitchTime();
+		textureChange();
+	}
+}
+
+void Animation::textureChange()
+{
+	currentTexture.left += 36;
+	for (unsigned char x = 0; x < COLUMNS; x++)
+	{
+		for (unsigned char y = 0; y < ROWS; y++)
+		{
+			this->spriteMatrix[x][y].setTextureRect(currentTexture);
+		}
+	}
+}
+
+void Animation::setSwitchTime()
+{
+	switchTime = animationTime / 4;
+}
+
+void Animation::reset()
+{
+	currentTexture.left = 0;
+	for (unsigned char x = 0; x < COLUMNS; x++)
+	{
+		for (unsigned char y = 0; y < ROWS; y++)
+		{
+			this->spriteMatrix[x][y].setTextureRect(currentTexture);
+		}
 	}
 }
 
@@ -19,8 +62,12 @@ void Animation::display(sf::RenderWindow& window, std::vector<int>& linesToDispl
 	if (linesToDisplay.empty())
 		return;
 
+
 	for (int y : linesToDisplay)
 	{
-		window.draw(this->rows[y]);
-	}
+		for (unsigned char x = 0; x < COLUMNS; x++)
+		{
+			window.draw(this->spriteMatrix[x][y]);
+		}
+	}	
 }

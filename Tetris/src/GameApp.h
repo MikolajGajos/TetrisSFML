@@ -21,11 +21,12 @@ class GameApp {
 	sf::Texture tileTexture;
 	sf::Texture ghostTexture;
 	sf::Texture gameBackgroundTexture;
+	std::vector<int> linesToClear;
 
 	float dropTime = 0.9f;			void dropTimeReset();
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }
 	float hardDropCooldown = 0.f;	void hardDropCooldownReset() { this->hardDropCooldown = 0.5f; }
-	float softDropCooldown = 0.f;	void softDropCooldownReset() { this->softDropCooldown = 0.1f; }
+	float softDropCooldown = 0.f;	void softDropCooldownReset() { this->softDropCooldown = 0.05f; }
 	float animationTime = 0.5f;		void animationTimeReset()	 { this->animationTime = 0.5f; }
 	bool update = false;
 	bool rotationAllowed = true;
@@ -49,7 +50,7 @@ public:
 	std::vector<int> fullLines();
 	//Clear full lines
 	void clearLines(std::vector<int>& linesNumber);
-	//Animation xd
+	//Displaying animation.
 	void animationManager(std::vector<int>& linesNumber, float deltaTime, Animation&);
 	//Draws background.
 	void drawBackGround(BackgroundManager);
