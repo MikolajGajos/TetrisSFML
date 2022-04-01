@@ -1,20 +1,20 @@
 #include "Tetromino.h"
 #include <iostream>
 
-void setStatringPosition(std::array<sf::Vector2i, 4>& minos)
+void setStatringPosition(std::array<sf::Vector2i, 4>& tiles)
 {
-	for (auto& mino : minos)
+	for (auto& tile : tiles)
 	{
-		mino.x += SPAWN_POINT.x;
-		mino.y += SPAWN_POINT.y;
+		tile.x += SPAWN_POINT.x;
+		tile.y += SPAWN_POINT.y;
 	}
 }
 
 Tetromino::Tetromino(const TetrominoShape& tShape, std::array<std::array<Cell, ROWS>, COLUMNS>* matrix)
 {
 	this->tShape = tShape;
-	this->minos = spawnTetromino(tShape);
-	setStatringPosition(this->minos);
+	this->tiles = spawnTetromino(tShape);
+	setStatringPosition(this->tiles);
 	this->rotation = 0;
 	this->setColor();	
 	this->matrix = matrix;
@@ -24,7 +24,7 @@ Tetromino::Tetromino(const TetrominoShape& tShape, std::array<std::array<Cell, R
 Tetromino::Tetromino(const Tetromino& tetromio, std::array<std::array<Cell, ROWS>, COLUMNS>* matrix)
 {
 	this->tShape = tetromio.tShape;
-	this->minos = tetromio.minos;
+	this->tiles = tetromio.tiles;
 	this->rotation = tetromio.rotation;
 	this->matrix = matrix;
 }
@@ -32,50 +32,50 @@ Tetromino::Tetromino(const Tetromino& tetromio, std::array<std::array<Cell, ROWS
 bool Tetromino::update()
 {
 	//checks if all minos can be moved down
-	for (auto& mino : this->minos)
+	for (auto& tile : this->tiles)
 	{
-		if (mino.y + 1 == ROWS)
-			return 1;
+		if (tile.y + 1 == ROWS)
+			return true;
 
-		if ((*matrix)[mino.x][mino.y + 1].isFull() == true)
-			return 1;
+		if ((*matrix)[tile.x][tile.y + 1].isFull() == true)
+			return true;
 	}
 
-	for (auto& mino : this->minos)
+	for (auto& tile : this->tiles)
 	{
-		mino.y++;
+		tile.y++;
 	}
-	return 0;
+	return false;
 }
 
 void Tetromino::updateMatrix()
 {
-	for (auto& mino : this->minos)
+	for (auto& tile : this->tiles)
 	{
-		(*matrix)[mino.x][mino.y].setFull(true);
-		(*matrix)[mino.x][mino.y].setColor(this->getColor());
+		(*matrix)[tile.x][tile.y].setFull(true);
+		(*matrix)[tile.x][tile.y].setColor(this->getColor());
 	}
 }
 
 void Tetromino::reset(const TetrominoShape& tShape)
 {
 	this->tShape = tShape;
-	this->minos = spawnTetromino(tShape);
-	setStatringPosition(this->minos);
+	this->tiles = spawnTetromino(tShape);
+	setStatringPosition(this->tiles);
 	this->rotation = 0;
 	this->setColor();
 }
 
 void Tetromino::moveLeft()
 {
-	for (auto& mino : this->minos)
+	for (auto& tile : this->tiles)
 	{
-		if (mino.x - 1 < 0)
+		if (tile.x - 1 < 0)
 			return;
-		if ((*matrix)[mino.x - 1][mino.y].isFull() == true)
+		if ((*matrix)[tile.x - 1][tile.y].isFull() == true)
 			return;
 	}
-	for (auto& mino : this->minos)
+	for (auto& mino : this->tiles)
 	{
 		mino.x -= 1;
 	}
@@ -83,14 +83,14 @@ void Tetromino::moveLeft()
 
 void Tetromino::moveRight()
 {
-	for (auto& mino : this->minos)
+	for (auto& tile : this->tiles)
 	{
-		if (mino.x + 1 > (*matrix).size() - 1)
+		if (tile.x + 1 > (*matrix).size() - 1)
 			return;
-		if ((*matrix)[mino.x + 1][mino.y].isFull() == true)
+		if ((*matrix)[tile.x + 1][tile.y].isFull() == true)
 			return;
 	}
-	for (auto& mino : this->minos)
+	for (auto& mino : this->tiles)
 	{
 		mino.x += 1;
 	}
@@ -100,24 +100,24 @@ void Tetromino::hardDrop()
 {
 	while (true)
 	{
-		for (auto& mino : this->minos)
+		for (auto& tile : this->tiles)
 		{
-			if (mino.y + 1 == ROWS)
+			if (tile.y + 1 == ROWS)
 				return;
 
-			if ((*matrix)[mino.x][mino.y + 1].isFull() == true)
+			if ((*matrix)[tile.x][tile.y + 1].isFull() == true)
 				return;
 		}
-		for (auto& mino : this->minos)
+		for (auto& tile : this->tiles)
 		{
-			mino.y++;
+			tile.y++;
 		}
 	}
 }
 
 std::array<sf::Vector2i, 4> Tetromino::getPosition()
 {
-	return this->minos;
+	return this->tiles;
 }
 
 void Tetromino::setColor()
@@ -196,25 +196,25 @@ GhostTetromino::GhostTetromino(Tetromino& tetromino)
 {
 	this->tShape = tetromino.getShape();
 	this->color = MinoColors::ghostColor;
-	this->minos = spawnTetromino(this->tShape);
+	this->tiles = spawnTetromino(this->tShape);
 	this->matrix = tetromino.matrix;
 }
 
 void GhostTetromino::update(Tetromino& tetromino)
 {
-	this->minos = tetromino.getPosition();
+	this->tiles = tetromino.getPosition();
 
 	while (true)
 	{
-		for (auto& mino : this->minos)
+		for (auto& tile : this->tiles)
 		{
-			if (mino.y + 1 == ROWS)
+			if (tile.y + 1 == ROWS)
 				return;
 
-			if ((*matrix)[mino.x][mino.y + 1].isFull() == true)
+			if ((*matrix)[tile.x][tile.y + 1].isFull() == true)
 				return;
 		}
-		for (auto& mino : this->minos)
+		for (auto& mino : this->tiles)
 		{
 			mino.y++;
 		}
@@ -225,7 +225,7 @@ void GhostTetromino::reset(Tetromino& tetromino)
 {
 	this->tShape = tetromino.getShape();
 	this->color = MinoColors::ghostColor;
-	this->minos = spawnTetromino(this->tShape);
+	this->tiles = spawnTetromino(this->tShape);
 	this->update(tetromino);
 }
 
@@ -237,22 +237,22 @@ NextTetromino::NextTetromino(const TetrominoShape& tShape, std::array < std::arr
 	this->rotation = 0;
 	this->tShape = tShape;
 	this->setColor();
-	this->minos = spawnTetromino(tShape);
+	this->tiles = spawnTetromino(tShape);
 	this->setPosition();
 }
 
 void NextTetromino::setPosition()
 {
-	for (auto& mino : this->minos)
+	for (auto& tile : this->tiles)
 	{
-		mino.x += 15;
-		mino.y += 8;
+		tile.x += 15;
+		tile.y += 8;
 	}
 }
 
 void NextTetromino::reset(const TetrominoShape& tShape)
 {
-	this->minos = spawnTetromino(tShape);
+	this->tiles = spawnTetromino(tShape);
 	this->setPosition();
 	this->rotation = 0;
 	this->tShape = tShape;

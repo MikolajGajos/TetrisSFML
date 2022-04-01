@@ -52,7 +52,7 @@ void prepareVector(std::vector<int>& v)
 }
 
 GameApp::GameApp(int statringLevel)
-	: window({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Close | sf::Style::Resize)
+	: window({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Close | sf::Style::Default)
 {
 	this->tileTexture.loadFromFile("src/rsrc/Tile.png");
 	this->ghostTexture.loadFromFile("src/rsrc/GhostTile.png");
@@ -132,7 +132,6 @@ void GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetrom
 	if (dropTime > 0.f)
 		return;
 
-	//this->update = false;
 	if (tetromino.update()) //true == at the end
 	{
 		tetromino.updateMatrix();
@@ -146,6 +145,8 @@ void GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetrom
 
 		nextTetromino.reset(getShape(random()));
 		ghostTetromino.reset(tetromino);
+
+		
 	}
 	dropTimeReset();
 }
@@ -186,16 +187,16 @@ std::vector<int> GameApp::fullLines()
 
 void GameApp::clearLines(std::vector<int>& linesNumber)
 {
+	//score and level manage
 	for (int i : linesNumber)
 	{
 		this->linesUntilTransition -= 1;
 		if (this->linesUntilTransition == 0)
 			transtionLevel();
 	}
-	//score and level manage
-	this->clearedLines += linesNumber.size();
-	this->score += scoreIncrease(linesNumber.size());
 	
+	this->clearedLines += linesNumber.size();
+	this->score += scoreIncrease(linesNumber.size());	
 	prepareVector(linesNumber);
 
 	//loop moves every line one row down
@@ -215,7 +216,6 @@ void GameApp::clearLines(std::vector<int>& linesNumber)
 
 void GameApp::animationManager(std::vector<int>& linesNumber, float deltaTime, Animation& animation)
 {
-	this->inAnimation = true;
 	this->animationTime -= deltaTime;
 	animation.update(deltaTime);
 	if (animationTime <= 0.f)
@@ -356,6 +356,7 @@ int GameApp::run()
 	GhostTetromino ghostTetromino(tetromino);
 	NextTetromino nextTetromino(getShape(random()), &this->windowPosition);
 	Animation animation(this->matrix, this->animationTime);
+	std::vector<int> linesToClear;
 
 	FPS fps;
 
@@ -374,11 +375,11 @@ int GameApp::run()
 		if (!inAnimation)
 		{
 			//UPDATE
+			clearLines(linesToClear);
 			tetromnoMovement(tetromino, event);
 			ghostTetromino.update(tetromino);
 			textManager.updateText();
-			fallingTetromino(tetromino, ghostTetromino, nextTetromino);
-			clearLines(linesToClear);
+			fallingTetromino(tetromino, ghostTetromino, nextTetromino);		
 			linesToClear = fullLines();
 		}
 		else

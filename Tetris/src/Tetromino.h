@@ -10,7 +10,7 @@
 class Tetromino
 {
 protected:
-	std::array<sf::Vector2i, 4> minos;
+	std::array<sf::Vector2i, 4> tiles;
 	TetrominoShape tShape;
 	MinoColors color;
 	unsigned char rotation;
@@ -37,11 +37,14 @@ public:
 	//Moves tetromino down, to the end of its way.
 	void hardDrop();
 
-	//Rotates tetromino between four states. Whether you press C or Z tetromino will rotate clockwise or not. Put true value to rotate clockwise. Retruns true if the roattion was legal.
-	bool rotate(bool);
+	//Rotates tetromino between four states. Put true value to rotate clockwise.
+	void rotate(bool);
+	//Performs the actual rotation.
+	bool rotationAlgorithm(bool);
+	bool IrotationAlgorithm(bool);
 	//When the player attempts to rotate a tetromino, but the position it would normally occupy after basic rotation is obstructed, the game will attempt to "kick" the tetromino into an alternative position nearby.
 	bool wallKick(unsigned char);
-	bool updateMinosWallkick(const sf::Vector2i&);
+	bool changeMinosByVector(const sf::Vector2i&);
 	//Checks whether rotation was legel.
 	bool legalRotation();
 

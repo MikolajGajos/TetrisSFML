@@ -21,7 +21,6 @@ class GameApp {
 	sf::Texture tileTexture;
 	sf::Texture ghostTexture;
 	sf::Texture gameBackgroundTexture;
-	std::vector<int> linesToClear;
 
 	float dropTime = 0.9f;			void dropTimeReset();
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }
@@ -30,14 +29,13 @@ class GameApp {
 	float animationTime = 0.5f;		void animationTimeReset()	 { this->animationTime = 0.5f; }
 	bool update = false;
 	bool rotationAllowed = true;
-	bool movementAllowed = true;
+	bool gameOverbool = false;
+	bool inAnimation = false;
 
 	int clearedLines = 0;
 	int level = 0;
 	int linesUntilTransition = 0;
 	int score = 0;
-	bool gameOverbool = false;
-	bool inAnimation = false;
 
 public:
 	GameApp(int statringLevel = 0);

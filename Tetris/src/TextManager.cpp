@@ -68,7 +68,7 @@ void TextMenager::draw(sf::RenderTarget& target, sf::RenderStates state) const
 BackgroundManager::BackgroundManager()
 {
 	this->bbackgroundShape.setSize({ WINDOW_SIZE_X,WINDOW_SIZE_Y });
-	this->bbackgroundTexture.loadFromFile("src/rsrc/BackBackGround.png");
+	this->bbackgroundTexture.loadFromFile("src/rsrc/xd.jpg");
 	this->bbackgroundShape.setFillColor(sf::Color(50, 50, 50));
 	this->bbackgroundShape.setTexture(&bbackgroundTexture);
 
