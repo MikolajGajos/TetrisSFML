@@ -54,9 +54,8 @@ void prepareVector(std::vector<int>& v)
 GameApp::GameApp(int statringLevel)
 	: window({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Close | sf::Style::Default)
 {
-	this->tileTexture.loadFromFile("src/rsrc/Tilexd.png");
+	this->tileTexture.loadFromFile("src/rsrc/Tile.png");
 	this->ghostTexture.loadFromFile("src/rsrc/GhostTile.png");
-	this->gameBackgroundTexture.loadFromFile("src/rsrc/GameBackground.png");
 	this->gameoOverTexture.loadFromFile("src/rsrc/GameOver.png");
 
 	for (unsigned char i = 0; i < 23; i++)
@@ -76,6 +75,7 @@ GameApp::GameApp(int statringLevel)
 		{
 			matrix[i][j].setFull(false);
 			matrix[i][j].setPosition({ CELL * (i + x), CELL * (j + y) });
+			matrix[i][j].setTexture(this->tileTexture);
 		}
 	}
 	if (this->level <= 29)
@@ -248,15 +248,8 @@ void GameApp::drawBoard()
 	{
 		for (unsigned char j = 0; j < ROWS; j++)
 		{
-			if (!matrix[i][j].isFull())
-			{
-				matrix[i][j].setTexture(this->gameBackgroundTexture);
-				matrix[i][j].setColor(sf::Color(70, 70, 70, 255));
-				window.draw(matrix[i][j]);
-			}
-			else
-			{
-				matrix[i][j].setTexture(this->tileTexture);
+			if (matrix[i][j].isFull())
+			{				
 				window.draw(matrix[i][j]);
 			}
 		}
@@ -265,6 +258,9 @@ void GameApp::drawBoard()
 
 void GameApp::drawTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino)
 {
+	if (gameOverbool)
+		return;
+
 	sf::RectangleShape cellShape(sf::Vector2f(CELL_SIZE, CELL_SIZE));
 	cellShape.setFillColor(tetromino.getColor());
 	cellShape.setTexture(&this->ghostTexture);
@@ -319,9 +315,9 @@ void GameApp::drawNextTetromino(NextTetromino& nextTetromino)
 
 bool GameApp::gameOver(Tetromino& tetromino)
 {
-	for (auto& mino : tetromino.getPosition())
+	for (auto& tile : tetromino.getPosition())
 	{
-		if (this->matrix[mino.x][mino.y].isFull())
+		if (this->matrix[tile.x][tile.y].isFull())
 		{
 			sound.play(Sounds::gameOver);
 			return true;
@@ -337,13 +333,7 @@ void GameApp::endGame(sf::Sprite& sprite)
 	{
 		for (unsigned char j = 0; j < ROWS; j++)
 		{
-			if (!matrix[i][j].isFull())
-			{
-				matrix[i][j].setTexture(this->gameBackgroundTexture);
-				matrix[i][j].setColor(sf::Color(70, 70, 70, 255));
-				window.draw(matrix[i][j]);
-			}
-			else
+			if (matrix[i][j].isFull())
 			{
 				matrix[i][j].setTexture(this->tileTexture);
 				matrix[i][j].setColor(sf::Color(70, 70, 70, 255));

@@ -21,7 +21,6 @@ class GameApp {
 	std::array<std::array<sf::RectangleShape, 22>, 24> windowPosition;
 	sf::Texture tileTexture;
 	sf::Texture ghostTexture;
-	sf::Texture gameBackgroundTexture;
 	sf::Texture gameoOverTexture;
 	SoundManager sound;
 
