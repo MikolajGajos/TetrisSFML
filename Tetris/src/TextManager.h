@@ -31,9 +31,7 @@ public:
 class BackgroundManager : public sf::Drawable
 {
 	sf::RectangleShape backgroundShape;
-	sf::RectangleShape bbackgroundShape;
 	sf::Texture backgroundTexture;
-	sf::Texture bbackgroundTexture;
 
 public:
 	BackgroundManager();

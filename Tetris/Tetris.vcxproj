@@ -23,6 +23,7 @@
     <ClCompile Include="src\Cell.cpp" />
     <ClCompile Include="src\GameApp.cpp" />
     <ClCompile Include="src\ScoreLevel.cpp" />
+    <ClCompile Include="src\SoundManager.cpp" />
     <ClCompile Include="src\Source.cpp" />
     <ClCompile Include="src\SpawnTetromino.cpp" />
     <ClCompile Include="src\Tetromino.cpp" />
@@ -35,6 +36,7 @@
     <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\GameApp.h" />
     <ClInclude Include="src\Global.h" />
+    <ClInclude Include="src\SoundManager.h" />
     <ClInclude Include="src\SpawnTetromino.h" />
     <ClInclude Include="src\Tetromino.h" />
     <ClInclude Include="src\TextManager.h" />
@@ -144,7 +146,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\Public\Documents\SFML-2.5.1\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;sfml-graphics-d.lib;sfml-audio-d.lib;sfml-main-d.lib;sfml-system-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

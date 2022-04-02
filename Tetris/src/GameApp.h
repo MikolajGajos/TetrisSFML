@@ -12,6 +12,7 @@
 #include "Cell.h"
 #include "TextManager.h"
 #include "Animation.h"
+#include "SoundManager.h"
 
 class GameApp {
 
@@ -21,6 +22,8 @@ class GameApp {
 	sf::Texture tileTexture;
 	sf::Texture ghostTexture;
 	sf::Texture gameBackgroundTexture;
+	sf::Texture gameoOverTexture;
+	SoundManager sound;
 
 	float dropTime = 0.9f;			void dropTimeReset();
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }
@@ -61,7 +64,7 @@ public:
 	//Checks if new tetromino is able to spawn.
 	bool gameOver(Tetromino&);
 	//Ends game when gameOver returns true
-	void endGame();
+	void endGame(sf::Sprite&);
 	int run();
 
 	void setUpSC();

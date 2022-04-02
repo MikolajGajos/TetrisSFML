@@ -54,9 +54,10 @@ void prepareVector(std::vector<int>& v)
 GameApp::GameApp(int statringLevel)
 	: window({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Close | sf::Style::Default)
 {
-	this->tileTexture.loadFromFile("src/rsrc/Tile.png");
+	this->tileTexture.loadFromFile("src/rsrc/Tilexd.png");
 	this->ghostTexture.loadFromFile("src/rsrc/GhostTile.png");
 	this->gameBackgroundTexture.loadFromFile("src/rsrc/GameBackground.png");
+	this->gameoOverTexture.loadFromFile("src/rsrc/GameOver.png");
 
 	for (unsigned char i = 0; i < 23; i++)
 	{
@@ -93,11 +94,13 @@ void GameApp::tetromnoMovement(Tetromino& tetromino, sf::Event& event)
 	{
 		tetromino.rotate(true);
 		rotationAllowed = false;
+		sound.play(Sounds::rotation);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && rotationAllowed)
 	{
 		tetromino.rotate(false);
 		rotationAllowed = false;
+		sound.play(Sounds::rotation);
 	}
 
 	if (moveTimeCooldown <= 0.f)
@@ -106,24 +109,27 @@ void GameApp::tetromnoMovement(Tetromino& tetromino, sf::Event& event)
 		{
 			tetromino.moveLeft();
 			moveTimeCooldownReset();
+			sound.play(Sounds::moveSound);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) == true)
 		{
 			tetromino.moveRight();
 			moveTimeCooldownReset();
+			sound.play(Sounds::moveSound);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) == true && softDropCooldown <= 0.f)
 	{
 		this->dropTime = 0.f;
 		softDropCooldownReset();
-		return;
+		sound.play(Sounds::softDrop);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) == true && hardDropCooldown <= 0.f)
 	{
 		tetromino.hardDrop();
 		hardDropCooldownReset();
 		this->dropTime = 0.f;
+		sound.play(Sounds::hardDrop);
 	}
 }
 
@@ -157,20 +163,20 @@ std::vector<int> GameApp::fullLines()
 	//loop begins from bottom
 	for (unsigned char y = 19; y > 0; y--)
 	{
-		bool clear = true;
+		bool full = true;
 		//loop checks every collumn in one row
 		for (unsigned char x = 0; x < COLUMNS; x++)
 		{
 			//if the tile is not full stops
 			if (!matrix[x][y].isFull())
 			{
-				clear = false;
+				full = false;
 				break;
 			}
 				
 		}
 		//if every tile was full
-		if (clear)
+		if (full)
 		{
 			for (unsigned char x = 0; x < COLUMNS; x++)
 			{
@@ -179,6 +185,7 @@ std::vector<int> GameApp::fullLines()
 
 			v.push_back(y);
 			inAnimation = true;
+			sound.play(Sounds::lineCleared);
 		}
 			
 	}
@@ -192,7 +199,11 @@ void GameApp::clearLines(std::vector<int>& linesNumber)
 	{
 		this->linesUntilTransition -= 1;
 		if (this->linesUntilTransition == 0)
+		{
 			transtionLevel();
+			sound.play(Sounds::transition);
+		}
+			
 	}
 	
 	this->clearedLines += linesNumber.size();
@@ -311,12 +322,16 @@ bool GameApp::gameOver(Tetromino& tetromino)
 	for (auto& mino : tetromino.getPosition())
 	{
 		if (this->matrix[mino.x][mino.y].isFull())
+		{
+			sound.play(Sounds::gameOver);
 			return true;
+		}
+			
 	}
 	return false;
 }
 
-void GameApp::endGame()
+void GameApp::endGame(sf::Sprite& sprite)
 {
 	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
@@ -336,6 +351,7 @@ void GameApp::endGame()
 			}
 		}
 	}
+	this->window.draw(sprite);
 	this->window.display();
 
 	sf::Event event;
@@ -357,6 +373,10 @@ int GameApp::run()
 	NextTetromino nextTetromino(getShape(random()), &this->windowPosition);
 	Animation animation(this->matrix, this->animationTime);
 	std::vector<int> linesToClear;
+	sf::Sprite gameOverSprite;
+	gameOverSprite.setTexture(this->gameoOverTexture);
+
+	sound.playBackgroundMusic();
 
 	FPS fps;
 
@@ -364,10 +384,10 @@ int GameApp::run()
 	{
 		if (gameOverbool)
 		{
-			endGame();
+			endGame(gameOverSprite);
 			continue;
 		}
-
+		
 		window.pollEvent(event);
 		if (event.type == sf::Event::Closed)
 			this->window.close();
