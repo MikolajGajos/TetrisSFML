@@ -14,6 +14,9 @@ protected:
 	TetrominoShape tShape;
 	MinoColors color;
 	unsigned char rotation;
+
+	sf::RectangleShape cellShape;
+	sf::Texture texture;
 public:
 	std::array<std::array<Cell, ROWS>, COLUMNS>* matrix;
 
@@ -56,6 +59,7 @@ public:
 	//Retruns tetromino's shape.
 	TetrominoShape getShape();
 	int getRotation() { return this->rotation; }
+	void display(sf::RenderWindow& window);
 };
 
 class GhostTetromino : public Tetromino
@@ -75,4 +79,5 @@ public:
 	NextTetromino(const TetrominoShape&, std::array < std::array < sf::RectangleShape, 22>, 24>*);
 	void setPosition();
 	void reset(const TetrominoShape&);
+	void display(sf::RenderWindow& window);
 };

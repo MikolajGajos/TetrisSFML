@@ -247,11 +247,6 @@ void GameApp::animationManager(std::vector<int>& linesNumber, float deltaTime, A
 	}
 }
 
-void GameApp::drawBackGround(BackgroundManager background)
-{
-	this->window.draw(background);
-}
-
 void GameApp::drawBoard()
 {
 	for (unsigned char i = 0; i < COLUMNS; i++)
@@ -266,61 +261,14 @@ void GameApp::drawBoard()
 	}
 }
 
-void GameApp::drawTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino)
+void GameApp::drawTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino)
 {
 	if (gameOverbool)
 		return;
 
-	sf::RectangleShape cellShape(sf::Vector2f(CELL_SIZE, CELL_SIZE));
-	cellShape.setFillColor(tetromino.getColor());
-	cellShape.setTexture(&this->ghostTexture);
-	//ghost
-	for (auto& mino : ghostTetromino.getPosition())
-	{
-		cellShape.setPosition(CELL * mino.x + matrix[0][0].getPosition().x, mino.y * CELL + matrix[0][0].getPosition().y);
-		window.draw(cellShape);
-	}
-
-	cellShape.setTexture(&this->tileTexture);
-	//tetromino
-	for (auto& mino : tetromino.getPosition())
-	{
-		cellShape.setPosition(CELL * mino.x + matrix[0][0].getPosition().x, mino.y * CELL + matrix[0][0].getPosition().y);
-		window.draw(cellShape);
-	}
-}
-
-void GameApp::drawNextTetromino(NextTetromino& nextTetromino)
-{
-	//rysowanie nastepnego
-	sf::RectangleShape cellShape(sf::Vector2f(CELL_SIZE, CELL_SIZE));
-	cellShape.setFillColor(nextTetromino.getColor());
-	cellShape.setTexture(&this->tileTexture);
-	cellShape.setFillColor(nextTetromino.getColor());
-	if (nextTetromino.getShape() != TetrominoShape::I && nextTetromino.getShape() != TetrominoShape::O)
-	{
-		for (auto& mino : nextTetromino.getPosition())
-		{
-			cellShape.setPosition((mino.x + 0.5f) * CELL, mino.y * CELL);
-			window.draw(cellShape);
-		}
-	}
-	else if (nextTetromino.getShape() == TetrominoShape::I)
-	{
-		for (auto& mino : nextTetromino.getPosition())
-		{
-			cellShape.setPosition(mino.x * (CELL), (mino.y + 0.5) * CELL);
-			window.draw(cellShape);
-		}
-	}
-	else
-	{
-		for (auto& mino : nextTetromino.getPosition())
-		{
-			cellShape.setPosition(mino.x * (CELL), mino.y * CELL);
-			window.draw(cellShape);
-		}
-	}
+	tetromino.display(this->window);
+	ghostTetromino.display(this->window);
+	nextTetromino.display(this->window);
 }
 
 bool GameApp::gameOver(Tetromino& tetromino)
@@ -405,10 +353,9 @@ int GameApp::run()
 			animationManager(linesToClear, deltaTime, animation);
 
 		//DISPLAY
-		drawBackGround(background);
+		window.draw(background);
 		drawBoard();
-		drawTetromino(tetromino, ghostTetromino);
-		drawNextTetromino(nextTetromino);
+		drawTetromino(tetromino, ghostTetromino, nextTetromino);
 		window.draw(textManager);
 		animation.display(window, linesToClear);
 		window.display();

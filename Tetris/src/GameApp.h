@@ -52,14 +52,10 @@ public:
 	void clearLines(std::vector<int>& linesNumber, TextMenager&);
 	//Displaying animation.
 	void animationManager(std::vector<int>& linesNumber, float deltaTime, Animation&);
-	//Draws background.
-	void drawBackGround(BackgroundManager);
 	//Drawes game board with tetromino which already fallen.
 	void drawBoard();
-	//Draws currently falling tetromino and its ghost.
-	void drawTetromino(Tetromino&, GhostTetromino&);
-	//Draws next tetromino.
-	void drawNextTetromino(NextTetromino&);
+	//Draws every tetromino.
+	void drawTetromino(Tetromino&, GhostTetromino&, NextTetromino&);
 	//Checks if new tetromino is able to spawn.
 	bool gameOver(Tetromino&);
 	//Ends game when gameOver returns true
