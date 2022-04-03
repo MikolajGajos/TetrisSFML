@@ -30,7 +30,8 @@ void Animation::update(float deltaTime)
 
 void Animation::textureChange()
 {
-	currentTexture.left += 36;
+	if(currentTexture.left < 143)
+		currentTexture.left += 36;
 	for (unsigned char x = 0; x < COLUMNS; x++)
 	{
 		for (unsigned char y = 0; y < ROWS; y++)
@@ -42,7 +43,7 @@ void Animation::textureChange()
 
 void Animation::setSwitchTime()
 {
-	switchTime = animationTime / 4;
+	switchTime = animationTime / 5;
 }
 
 void Animation::reset()

@@ -43,13 +43,13 @@ public:
 	GameApp(int statringLevel = 0);
 
 	//Manages all tetromino movement based on user's input.
-	void tetromnoMovement(Tetromino&, sf::Event&);
-	//Manages tetromino falling without user interaction. Updates tetromino if it falls to the end.
-	void fallingTetromino(Tetromino&, GhostTetromino&, NextTetromino&);
+	void tetromnoMovement(Tetromino&);
+	//Manages tetromino falling without user interaction. Updates tetromino if it falls to the end. Returns true if the tetromino hit the ground.
+	bool fallingTetromino(Tetromino&, GhostTetromino&, NextTetromino&);
 	//Searches game's matrix for full lines. Returns vector with lines number.
 	std::vector<int> fullLines();
-	//Clear full lines
-	void clearLines(std::vector<int>& linesNumber);
+	//Clear full lines and updates the scoreboard.
+	void clearLines(std::vector<int>& linesNumber, TextMenager&);
 	//Displaying animation.
 	void animationManager(std::vector<int>& linesNumber, float deltaTime, Animation&);
 	//Draws background.

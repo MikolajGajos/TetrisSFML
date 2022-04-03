@@ -33,7 +33,6 @@ public:
 		++mFrame;
 	}
 };
-
 //Returns random number between [0,6].
 int random()
 {
@@ -85,46 +84,52 @@ GameApp::GameApp(int statringLevel)
 	setUpSC();
 }
 
-void GameApp::tetromnoMovement(Tetromino& tetromino, sf::Event& event)
-{
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::C) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-		rotationAllowed = true;
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && rotationAllowed)
+void GameApp::tetromnoMovement(Tetromino& tetromino)
+{	
+	if (rotationAllowed)
 	{
-		tetromino.rotate(true);
-		rotationAllowed = false;
-		sound.play(Sounds::rotation);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+		{
+			tetromino.rotate(true);
+			rotationAllowed = false;
+			sound.play(Sounds::rotation);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+		{
+			tetromino.rotate(false);
+			rotationAllowed = false;
+			sound.play(Sounds::rotation);
+		}
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && rotationAllowed)
+	else
 	{
-		tetromino.rotate(false);
-		rotationAllowed = false;
-		sound.play(Sounds::rotation);
+		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::C) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+			rotationAllowed = true;
 	}
 
 	if (moveTimeCooldown <= 0.f)
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) == true)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
 			tetromino.moveLeft();
 			moveTimeCooldownReset();
 			sound.play(Sounds::moveSound);
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) == true)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
 			tetromino.moveRight();
 			moveTimeCooldownReset();
 			sound.play(Sounds::moveSound);
 		}
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) == true && softDropCooldown <= 0.f)
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && softDropCooldown <= 0.f)
 	{
 		this->dropTime = 0.f;
 		softDropCooldownReset();
 		sound.play(Sounds::softDrop);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) == true && hardDropCooldown <= 0.f)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && hardDropCooldown <= 0.f)
 	{
 		tetromino.hardDrop();
 		hardDropCooldownReset();
@@ -133,10 +138,10 @@ void GameApp::tetromnoMovement(Tetromino& tetromino, sf::Event& event)
 	}
 }
 
-void GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino)
+bool GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino)
 {
 	if (dropTime > 0.f)
-		return;
+		return false;
 
 	if (tetromino.update()) //true == at the end
 	{
@@ -146,15 +151,17 @@ void GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetrom
 		if (this->gameOver(tetromino)) //check if tetrmino can spawn
 		{
 			this->gameOverbool = true;
-			return;
+			return false;
 		}
 
 		nextTetromino.reset(getShape(random()));
 		ghostTetromino.reset(tetromino);
+		dropTimeReset();
+		return true;
 
-		
 	}
 	dropTimeReset();
+	return false;
 }
 
 std::vector<int> GameApp::fullLines()
@@ -192,9 +199,12 @@ std::vector<int> GameApp::fullLines()
 	return v;
 }
 
-void GameApp::clearLines(std::vector<int>& linesNumber)
+void GameApp::clearLines(std::vector<int>& linesNumber, TextMenager& text)
 {
-	//score and level manage
+	if (linesNumber.empty())
+		return;
+
+	//score and level management
 	for (int i : linesNumber)
 	{
 		this->linesUntilTransition -= 1;
@@ -204,8 +214,7 @@ void GameApp::clearLines(std::vector<int>& linesNumber)
 			sound.play(Sounds::transition);
 		}
 			
-	}
-	
+	}	
 	this->clearedLines += linesNumber.size();
 	this->score += scoreIncrease(linesNumber.size());	
 	prepareVector(linesNumber);
@@ -223,6 +232,7 @@ void GameApp::clearLines(std::vector<int>& linesNumber)
 		}
 	}	
 	linesNumber.clear();
+	text.updateText();
 }
 
 void GameApp::animationManager(std::vector<int>& linesNumber, float deltaTime, Animation& animation)
@@ -385,12 +395,11 @@ int GameApp::run()
 		if (!inAnimation)
 		{
 			//UPDATE
-			clearLines(linesToClear);
-			tetromnoMovement(tetromino, event);
+			clearLines(linesToClear, textManager);
+			tetromnoMovement(tetromino);
 			ghostTetromino.update(tetromino);
-			textManager.updateText();
-			fallingTetromino(tetromino, ghostTetromino, nextTetromino);		
-			linesToClear = fullLines();
+			if(fallingTetromino(tetromino, ghostTetromino, nextTetromino))	
+				linesToClear = fullLines();
 		}
 		else
 			animationManager(linesToClear, deltaTime, animation);

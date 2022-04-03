@@ -38,6 +38,8 @@ TextMenager::TextMenager(std::array<std::array<sf::RectangleShape, 22>, 24>* bac
 	this->nextTetrominoText.setPosition((*background)[14][6].getPosition().x - CELL/2, (*background)[14][6].getPosition().y);
 	this->nextTetrominoText.setFont(this->font);
 	this->nextTetrominoText.setString("next");
+
+	updateText();
 }
 
 void TextMenager::updateText()
