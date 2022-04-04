@@ -1,6 +1,6 @@
 #pragma once
 
-enum class MinoColors
+enum class TetrominoColor
 {
-	red, cyan, yellow, pink, blue, green, orange, ghostColor
+	red, cyan, yellow, pink, blue, green, orange
 };

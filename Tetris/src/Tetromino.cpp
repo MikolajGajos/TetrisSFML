@@ -19,7 +19,7 @@ Tetromino::Tetromino(const TetrominoShape& tShape, std::array<std::array<Cell, R
 	this->setColor();	
 	this->matrix = matrix;
 	this->texture.loadFromFile("src/rsrc/Tile.png");
-	this->cellShape.setSize({ CELL_SIZE, CELL_SIZE });
+	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
 	this->cellShape.setFillColor(this->getColor());
 	this->cellShape.setTexture(&texture);
 }
@@ -31,7 +31,7 @@ Tetromino::Tetromino(const Tetromino& tetromio, std::array<std::array<Cell, ROWS
 	this->rotation = tetromio.rotation;
 	this->matrix = matrix;
 	this->texture.loadFromFile("src/rsrc/Tile.png");
-	this->cellShape.setSize({ CELL_SIZE, CELL_SIZE });
+	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
 	this->cellShape.setFillColor(this->getColor());
 	this->cellShape.setTexture(&texture);
 }
@@ -133,25 +133,25 @@ void Tetromino::setColor()
 	switch (this->tShape)
 	{
 	case TetrominoShape::I:
-		this->color = MinoColors::cyan;
+		this->color = TetrominoColor::cyan;
 		break;
 	case TetrominoShape::T:
-		this->color = MinoColors::pink;
+		this->color = TetrominoColor::pink;
 		break;
 	case TetrominoShape::O:
-		this->color = MinoColors::yellow;
+		this->color = TetrominoColor::yellow;
 		break;
 	case TetrominoShape::L:
-		this->color = MinoColors::orange;
+		this->color = TetrominoColor::orange;
 		break;
 	case TetrominoShape::J:
-		this->color = MinoColors::blue;
+		this->color = TetrominoColor::blue;
 		break;
 	case TetrominoShape::S:
-		this->color = MinoColors::red;
+		this->color = TetrominoColor::red;
 		break;
 	case TetrominoShape::Z:
-		this->color = MinoColors::green;
+		this->color = TetrominoColor::green;
 		break;
 	default:
 		break;
@@ -167,7 +167,7 @@ void Tetromino::display(sf::RenderWindow& window)
 {
 	for (auto& tile : tiles)
 	{
-		cellShape.setPosition(CELL * tile.x + (*matrix)[0][0].getPosition().x, tile.y * CELL + (*matrix)[0][0].getPosition().y);
+		cellShape.setPosition(CELL_SIZE * tile.x + (*matrix)[0][0].getPosition().x, tile.y * CELL_SIZE + (*matrix)[0][0].getPosition().y);
 		window.draw(cellShape);
 	}
 }
@@ -178,29 +178,26 @@ sf::Color Tetromino::getColor()
 
 	switch (this->color)
 	{
-	case MinoColors::red:
+	case TetrominoColor::red:
 		color = { 255,0,0,255 };
 		break;
-	case MinoColors::orange:
+	case TetrominoColor::orange:
 		color = { 255,170,0,255 };
 		break;
-	case MinoColors::cyan:
+	case TetrominoColor::cyan:
 		color = { 0,255,255,255 };
 		break;
-	case MinoColors::yellow:
+	case TetrominoColor::yellow:
 		color = { 255,255,0,255 };
 		break;
-	case MinoColors::pink:
+	case TetrominoColor::pink:
 		color = { 255,0,255,255 };
 		break;
-	case MinoColors::blue:
+	case TetrominoColor::blue:
 		color = { 39,39,160,255 };
 		break;
-	case MinoColors::green:
+	case TetrominoColor::green:
 		color = { 0,255,0,255 };
-		break;
-	case MinoColors::ghostColor:
-		color = { 37,37,45,255 };
 		break;
 	}
 
@@ -216,7 +213,7 @@ GhostTetromino::GhostTetromino(Tetromino& tetromino)
 	this->tiles = spawnTetromino(this->tShape);
 	this->matrix = tetromino.matrix;
 	this->texture.loadFromFile("src/rsrc/GhostTile.png");
-	this->cellShape.setSize({ CELL_SIZE, CELL_SIZE });
+	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
 	this->cellShape.setFillColor(this->getColor());
 	this->cellShape.setTexture(&texture);
 }
@@ -262,7 +259,7 @@ NextTetromino::NextTetromino(const TetrominoShape& tShape, std::array < std::arr
 	this->tiles = spawnTetromino(tShape);
 	this->setPosition();
 	this->texture.loadFromFile("src/rsrc/Tile.png");
-	this->cellShape.setSize({ CELL_SIZE, CELL_SIZE });
+	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
 	this->cellShape.setFillColor(this->getColor());
 	this->cellShape.setTexture(&texture);
 }
@@ -292,7 +289,7 @@ void NextTetromino::display(sf::RenderWindow& window)
 	{
 		for (auto& tile : tiles)
 		{
-			cellShape.setPosition(tile.x * (CELL), tile.y * CELL);
+			cellShape.setPosition(tile.x * (CELL_SIZE), tile.y * CELL_SIZE);
 			window.draw(cellShape);
 		}
 	}
@@ -300,7 +297,7 @@ void NextTetromino::display(sf::RenderWindow& window)
 	{
 		for (auto& tile : tiles)
 		{
-			cellShape.setPosition(tile.x * (CELL), (tile.y + 0.5) * CELL);
+			cellShape.setPosition(tile.x * (CELL_SIZE), (tile.y + 0.5) * CELL_SIZE);
 			window.draw(cellShape);
 		}
 	}
@@ -308,7 +305,7 @@ void NextTetromino::display(sf::RenderWindow& window)
 	{
 		for (auto& tile : tiles)
 		{
-			cellShape.setPosition((tile.x + 0.5f) * CELL, tile.y * CELL);
+			cellShape.setPosition((tile.x + 0.5f) * CELL_SIZE, tile.y * CELL_SIZE);
 			window.draw(cellShape);
 		}
 	}

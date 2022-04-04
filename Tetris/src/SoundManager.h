@@ -26,4 +26,5 @@ public:
 
 	void play(Sounds sound);
 	void playBackgroundMusic();
+	void stopBackgroundMusic();
 };

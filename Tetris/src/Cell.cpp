@@ -3,13 +3,13 @@
 Cell::Cell()
 {
 	this->full = false;
-	this->cellShape.setSize(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+	this->cellShape.setSize(sf::Vector2f(INNER_CELL, INNER_CELL));
 }
 
 Cell::Cell(const sf::Color& color)
 {
 	this->full = false;
-	this->cellShape.setSize(sf::Vector2f(CELL_SIZE - CELL_SPCACE, CELL_SIZE - CELL_SPCACE));
+	this->cellShape.setSize(sf::Vector2f(INNER_CELL - CELL_BORDER, INNER_CELL - CELL_BORDER));
 	this->color = color;
 	this->cellShape.setFillColor(this->color);
 }
@@ -17,7 +17,7 @@ Cell::Cell(const sf::Color& color)
 Cell::Cell(const sf::Vector2f& position)
 {
 	this->full = false;
-	this->cellShape.setSize(sf::Vector2f(CELL_SIZE - CELL_SPCACE, CELL_SIZE - CELL_SPCACE));
+	this->cellShape.setSize(sf::Vector2f(INNER_CELL - CELL_BORDER, INNER_CELL - CELL_BORDER));
 	this->cellShape.setPosition(position);
 }
 

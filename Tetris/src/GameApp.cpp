@@ -33,6 +33,7 @@ public:
 		++mFrame;
 	}
 };
+
 //Returns random number between [0,6].
 int random()
 {
@@ -54,26 +55,25 @@ GameApp::GameApp(int statringLevel)
 	: window({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Close | sf::Style::Default)
 {
 	this->tileTexture.loadFromFile("src/rsrc/Tile.png");
-	this->ghostTexture.loadFromFile("src/rsrc/GhostTile.png");
-	this->gameoOverTexture.loadFromFile("src/rsrc/GameOver.png");
+	this->gameOverTexture.loadFromFile("src/rsrc/GameOver.png");
 
 	for (unsigned char i = 0; i < 23; i++)
 	{
 		for (unsigned char j = 0; j < 22; j++)
 		{
-			windowPosition[i][j].setSize(sf::Vector2f(CELL_SIZE, CELL_SIZE));
-			windowPosition[i][j].setFillColor(sf::Color(150, 150, 150));
-			windowPosition[i][j].setPosition(i * (CELL), j * (CELL));
+			/*windowPosition[i][j].setSize(sf::Vector2f(INNER_CELL, INNER_CELL));
+			windowPosition[i][j].setFillColor(sf::Color(150, 150, 150));*/
+			windowPosition[i][j].setPosition(i * (CELL_SIZE), j * (CELL_SIZE));
 		}
 	}
-	float x = windowPosition[matrix_position_x][matrix_position_x].getPosition().x / CELL;
-	float y = windowPosition[matrix_position_y][matrix_position_y].getPosition().y / CELL;
+	float x = windowPosition[MATRIX_POS_X][MATRIX_POS_X].getPosition().x / CELL_SIZE;
+	float y = windowPosition[MATRIX_POS_Y][MATRIX_POS_Y].getPosition().y / CELL_SIZE;
 	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
 		for (unsigned char j = 0; j < ROWS; j++)
 		{
 			matrix[i][j].setFull(false);
-			matrix[i][j].setPosition({ CELL * (i + x), CELL * (j + y) });
+			matrix[i][j].setPosition({ CELL_SIZE * (i + x), CELL_SIZE * (j + y) });
 			matrix[i][j].setTexture(this->tileTexture);
 		}
 	}
@@ -158,7 +158,6 @@ bool GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetrom
 		ghostTetromino.reset(tetromino);
 		dropTimeReset();
 		return true;
-
 	}
 	dropTimeReset();
 	return false;
@@ -168,7 +167,7 @@ std::vector<int> GameApp::fullLines()
 {
 	std::vector<int> v;
 	//loop begins from bottom
-	for (unsigned char y = 19; y > 0; y--)
+	for (unsigned char y = ROWS - 1; y > 0; y--)
 	{
 		bool full = true;
 		//loop checks every collumn in one row
@@ -278,6 +277,7 @@ bool GameApp::gameOver(Tetromino& tetromino)
 		if (this->matrix[tile.x][tile.y].isFull())
 		{
 			sound.play(Sounds::gameOver);
+			sound.stopBackgroundMusic();
 			return true;
 		}
 			
@@ -322,7 +322,7 @@ int GameApp::run()
 	Animation animation(this->matrix, this->animationTime);
 	std::vector<int> linesToClear;
 	sf::Sprite gameOverSprite;
-	gameOverSprite.setTexture(this->gameoOverTexture);
+	gameOverSprite.setTexture(this->gameOverTexture);
 
 	sound.playBackgroundMusic();
 

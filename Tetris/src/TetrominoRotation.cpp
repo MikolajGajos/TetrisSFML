@@ -1,6 +1,6 @@
 #include "Tetromino.h"
 
-void updateMinosPosition(std::array<sf::Vector2i, 4>& minos, const sf::Vector2i& v0, const sf::Vector2i& v1, const sf::Vector2i& v2, const sf::Vector2i& v3)
+void updateTilesPosition(std::array<sf::Vector2i, 4>& minos, const sf::Vector2i& v0, const sf::Vector2i& v1, const sf::Vector2i& v2, const sf::Vector2i& v3)
 {
 	minos[0] += v0;
 	minos[1] += v1;
@@ -8,7 +8,7 @@ void updateMinosPosition(std::array<sf::Vector2i, 4>& minos, const sf::Vector2i&
 	minos[3] += v3;
 }
 
-bool Tetromino::changeMinosByVector(const sf::Vector2i& v)
+bool Tetromino::changeTilesByVector(const sf::Vector2i& v)
 {
 	tiles[0] += v;
 	tiles[1] += v;
@@ -57,22 +57,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 			if (previousRotation == 3)
 			{
 				//test 2
-				if (this->changeMinosByVector({ -1,0 }) == true)
+				if (this->changeTilesByVector({ -1,0 }))
 					return true;
 
 				//test 3 
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -1,1 }) == true)
+				if (this->changeTilesByVector({ -1,1 }))
 					return true;
 
 				//test 4
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 0,-2 }) == true)
+				if (this->changeTilesByVector({ 0,-2 }))
 					return true;
 
 				//test 5
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -1, -2 }) == true)
+				if (this->changeTilesByVector({ -1, -2 }))
 					return true;
 
 				return false;
@@ -81,22 +81,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 			else
 			{
 				//test 2
-				if (this->changeMinosByVector({ 1, 0 }) == true)
+				if (this->changeTilesByVector({ 1, 0 }))
 					return true;
 
 				//test 3 
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 1, 1 }) == true)
+				if (this->changeTilesByVector({ 1, 1 }))
 					return true;
 
 				//test 4
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 0, -2 }) == true)
+				if (this->changeTilesByVector({ 0, -2 }))
 					return true;
 
 				//test 5
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 1, -2 }) == true)
+				if (this->changeTilesByVector({ 1, -2 }))
 					return true;
 
 				return false;
@@ -104,22 +104,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 		case 1:
 		{
 			//test 2
-			if (this->changeMinosByVector({ -1, 0 }) == true)
+			if (this->changeTilesByVector({ -1, 0 }))
 				return true;
 
 			//test 3 
 			this->tiles = prevoiusPosition;
-			if (this->changeMinosByVector({ -1, -1 }) == true)
+			if (this->changeTilesByVector({ -1, -1 }))
 				return true;
 
 			//test 4
 			this->tiles = prevoiusPosition;
-			if (this->changeMinosByVector({ 0, 2 }) == true)
+			if (this->changeTilesByVector({ 0, 2 }))
 				return true;
 
 			//test 5
 			this->tiles = prevoiusPosition;
-			if (this->changeMinosByVector({ -1, 2 }) == true)
+			if (this->changeTilesByVector({ -1, 2 }))
 				return true;
 
 			return false;
@@ -129,22 +129,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 			if (previousRotation == 1)
 			{
 				//test 2
-				if (this->changeMinosByVector({ 1, 0 }) == true)
+				if (this->changeTilesByVector({ 1, 0 }))
 					return true;
 
 				//test 3 
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 1, 1 }) == true)
+				if (this->changeTilesByVector({ 1, 1 }))
 					return true;
 
 				//test 4
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 0, -2 }) == true)
+				if (this->changeTilesByVector({ 0, -2 }))
 					return true;
 
 				//test 5
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 1, -2 }) == true)
+				if (this->changeTilesByVector({ 1, -2 }))
 					return true;
 
 				return false;
@@ -152,22 +152,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 			else
 			{
 				//test 2
-				if (this->changeMinosByVector({ -1, 0 }) == true)
+				if (this->changeTilesByVector({ -1, 0 }))
 					return true;
 
 				//test 3 
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -1, -1 }) == true)
+				if (this->changeTilesByVector({ -1, -1 }))
 					return true;
 
 				//test 4
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 0, -2 }) == true)
+				if (this->changeTilesByVector({ 0, -2 }))
 					return true;
 
 				//test 5
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -1, -2 }) == true)
+				if (this->changeTilesByVector({ -1, -2 }))
 					return true;
 
 				return false;
@@ -175,22 +175,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 		case 3:
 		{
 			//test 2
-			if (this->changeMinosByVector({ 1, 0 }) == true)
+			if (this->changeTilesByVector({ 1, 0 }))
 				return true;
 
 			//test 3 
 			this->tiles = prevoiusPosition;
-			if (this->changeMinosByVector({ 1, -1 }) == true)
+			if (this->changeTilesByVector({ 1, -1 }))
 				return true;
 
 			//test 4
 			this->tiles = prevoiusPosition;
-			if (this->changeMinosByVector({ 0, 2 }) == true)
+			if (this->changeTilesByVector({ 0, 2 }))
 				return true;
 
 			//test 5
 			this->tiles = prevoiusPosition;
-			if (this->changeMinosByVector({ 1, 2 }) == true)
+			if (this->changeTilesByVector({ 1, 2 }))
 				return true;
 
 			return false;
@@ -205,22 +205,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 			if (previousRotation == 3)
 			{
 				//test 2
-				if (this->changeMinosByVector({ 1, 0 }) == true)
+				if (this->changeTilesByVector({ 1, 0 }))
 					return true;
 
 				//test 3 
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -2, 0 }) == true)
+				if (this->changeTilesByVector({ -2, 0 }))
 					return true;
 
 				//test 4
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 1, 2 }) == true)
+				if (this->changeTilesByVector({ 1, 2 }))
 					return true;
 
 				//test 5
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -2, -1 }) == true)
+				if (this->changeTilesByVector({ -2, -1 }))
 					return true;
 
 				return false;
@@ -229,22 +229,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 			else
 			{
 				//test 2
-				if (this->changeMinosByVector({ 2, 0 }) == true)
+				if (this->changeTilesByVector({ 2, 0 }))
 					return true;
 
 				//test 3 
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -1, 0 }) == true)
+				if (this->changeTilesByVector({ -1, 0 }))
 					return true;
 
 				//test 4
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 2, 1 }) == true)
+				if (this->changeTilesByVector({ 2, 1 }))
 					return true;
 
 				//test 5
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -1, -2 }) == true)
+				if (this->changeTilesByVector({ -1, -2 }))
 					return true;
 
 				return false;
@@ -253,22 +253,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 			if (previousRotation == 0)
 			{
 				//test 2
-				if (this->changeMinosByVector({ -2, 0 }) == true)
+				if (this->changeTilesByVector({ -2, 0 }))
 					return true;
 
 				//test 3 
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 1, 0 }) == true)
+				if (this->changeTilesByVector({ 1, 0 }))
 					return true;
 
 				//test 4
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -2, 1 }) == true)
+				if (this->changeTilesByVector({ -2, 1 }))
 					return true;
 
 				//test 5
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 1, -2 }) == true)
+				if (this->changeTilesByVector({ 1, -2 }))
 					return true;
 
 				return false;
@@ -277,22 +277,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 			else
 			{
 				//test 2
-				if (this->changeMinosByVector({ 1, 0 }) == true)
+				if (this->changeTilesByVector({ 1, 0 }))
 					return true;
 
 				//test 3 
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -2, 0 }) == true)
+				if (this->changeTilesByVector({ -2, 0 }))
 					return true;
 
 				//test 4
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 1, 2 }) == true)
+				if (this->changeTilesByVector({ 1, 2 }))
 					return true;
 
 				//test 5
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -2, -1 }) == true)
+				if (this->changeTilesByVector({ -2, -1 }))
 					return true;
 
 				return false;
@@ -301,22 +301,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 			if (previousRotation == 1)
 			{
 				//test 2
-				if (this->changeMinosByVector({ -1, 0 }) == true)
+				if (this->changeTilesByVector({ -1, 0 }))
 					return true;
 
 				//test 3 
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 2, 0 }) == true)
+				if (this->changeTilesByVector({ 2, 0 }))
 					return true;
 
 				//test 4
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -1, -2 }) == true)
+				if (this->changeTilesByVector({ -1, -2 }))
 					return true;
 
 				//test 5
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 2, 1 }) == true)
+				if (this->changeTilesByVector({ 2, 1 }))
 					return true;
 
 				return false;
@@ -325,22 +325,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 			else
 			{
 				//test 2
-				if (this->changeMinosByVector({ -2, 0 }) == true)
+				if (this->changeTilesByVector({ -2, 0 }))
 					return true;
 
 				//test 3 
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 1, 0 }) == true)
+				if (this->changeTilesByVector({ 1, 0 }))
 					return true;
 
 				//test 4
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -2, -1 }) == true)
+				if (this->changeTilesByVector({ -2, -1 }))
 					return true;
 
 				//test 5
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 1, -2 }) == true)
+				if (this->changeTilesByVector({ 1, -2 }))
 					return true;
 
 				return false;
@@ -349,22 +349,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 			if (previousRotation == 2)
 			{
 				//test 2
-				if (this->changeMinosByVector({ 2, 0 }) == true)
+				if (this->changeTilesByVector({ 2, 0 }))
 					return true;
 
 				//test 3 
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -1, 0 }) == true)
+				if (this->changeTilesByVector({ -1, 0 }))
 					return true;
 
 				//test 4
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 2, -1 }) == true)
+				if (this->changeTilesByVector({ 2, -1 }))
 					return true;
 
 				//test 5
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -1, -2 }) == true)
+				if (this->changeTilesByVector({ -1, -2 }))
 					return true;
 
 				return false;
@@ -373,22 +373,22 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 			else
 			{
 				//test 2
-				if (this->changeMinosByVector({ -1, 0 }) == true)
+				if (this->changeTilesByVector({ -1, 0 }))
 					return true;
 
 				//test 3 
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 2, 0 }) == true)
+				if (this->changeTilesByVector({ 2, 0 }))
 					return true;
 
 				//test 4
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ -1, -2 }) == true)
+				if (this->changeTilesByVector({ -1, -2 }))
 					return true;
 
 				//test 5
 				this->tiles = prevoiusPosition;
-				if (this->changeMinosByVector({ 2, 1 }) == true)
+				if (this->changeTilesByVector({ 2, 1 }))
 					return true;
 
 				return false;
@@ -408,18 +408,20 @@ void Tetromino::rotate(bool clockwise)
 	bool legalRotation;
 
 	this->rotation = changeRotation(clockwise, this->rotation);
-	if(this->getShape()!=TetrominoShape::I)
-		legalRotation = rotationAlgorithm(clockwise);
-	else
+	if (this->getShape() == TetrominoShape::I)
 		legalRotation = IrotationAlgorithm(clockwise);
+	else
+		legalRotation = rotationAlgorithm(clockwise);
 
 	if (!legalRotation)
 	{
 		if (wallKick(previousRotation))
 			return;
-
-		this->tiles = prevoiusPosition;
-		this->rotation = previousRotation;
+		else
+		{
+			this->tiles = prevoiusPosition;
+			this->rotation = previousRotation;
+		}		
 	}
 }
 
@@ -455,41 +457,41 @@ bool Tetromino::IrotationAlgorithm(bool clockwise)
 	case 0:
 		if (clockwise)
 		{
-			updateMinosPosition(this->tiles, { -1,-2 }, { 0, -1 }, { 1, 0 }, { 2, 1 });
+			updateTilesPosition(this->tiles, { -1,-2 }, { 0, -1 }, { 1, 0 }, { 2, 1 });
 		}
 		else
 		{
-			updateMinosPosition(this->tiles, { -2, 1 }, { -1, 0 }, { 0, -1 }, { 1, -2 });
+			updateTilesPosition(this->tiles, { -2, 1 }, { -1, 0 }, { 0, -1 }, { 1, -2 });
 		}
 		break;
 	case 1:
 		if (clockwise)
 		{
-			updateMinosPosition(this->tiles, { 2, -1 }, { 1, 0 }, { 0, 1 }, { -1, 2 });
+			updateTilesPosition(this->tiles, { 2, -1 }, { 1, 0 }, { 0, 1 }, { -1, 2 });
 		}
 		else
 		{
-			updateMinosPosition(this->tiles, { -1, -2 }, { 0, -1 }, { 1, 0 }, { 2, 1 });
+			updateTilesPosition(this->tiles, { -1, -2 }, { 0, -1 }, { 1, 0 }, { 2, 1 });
 		}
 		break;
 	case 2:
 		if (clockwise)
 		{
-			updateMinosPosition(this->tiles, { 1, 2 }, { 0, 1 }, { -1, 0 }, { -2, -1 });
+			updateTilesPosition(this->tiles, { 1, 2 }, { 0, 1 }, { -1, 0 }, { -2, -1 });
 		}
 		else
 		{
-			updateMinosPosition(this->tiles, { 2, -1 }, { 1, 0 }, { 0, 1 }, { -1, 2 });
+			updateTilesPosition(this->tiles, { 2, -1 }, { 1, 0 }, { 0, 1 }, { -1, 2 });
 		}
 		break;
 	case 3:
 		if (clockwise)
 		{
-			updateMinosPosition(this->tiles, { -2, 1 }, { -1, 0 }, { 0, -1 }, { 1, -2 });
+			updateTilesPosition(this->tiles, { -2, 1 }, { -1, 0 }, { 0, -1 }, { 1, -2 });
 		}
 		else
 		{
-			updateMinosPosition(this->tiles, { 1, 2 }, { 0, 1 }, { -1, 0 }, { -2, -1 });
+			updateTilesPosition(this->tiles, { 1, 2 }, { 0, 1 }, { -1, 0 }, { -2, -1 });
 		}
 		break;
 	}

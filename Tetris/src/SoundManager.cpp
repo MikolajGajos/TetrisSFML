@@ -53,3 +53,8 @@ void SoundManager::playBackgroundMusic()
 {
 	backgroundMusic.play();
 }
+
+void SoundManager::stopBackgroundMusic()
+{
+	backgroundMusic.stop();
+}

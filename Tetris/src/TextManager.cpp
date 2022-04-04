@@ -35,7 +35,7 @@ TextMenager::TextMenager(std::array<std::array<sf::RectangleShape, 22>, 24>* bac
 	this->scoreText.setFont(this->font);
 
 	this->nextTetrominoText.setCharacterSize(66);
-	this->nextTetrominoText.setPosition((*background)[14][6].getPosition().x - CELL/2, (*background)[14][6].getPosition().y);
+	this->nextTetrominoText.setPosition((*background)[14][6].getPosition().x - CELL_SIZE/2, (*background)[14][6].getPosition().y);
 	this->nextTetrominoText.setFont(this->font);
 	this->nextTetrominoText.setString("next");
 
