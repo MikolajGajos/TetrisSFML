@@ -57,12 +57,10 @@ GameApp::GameApp(int statringLevel)
 	this->tileTexture.loadFromFile("src/rsrc/Tile.png");
 	this->gameOverTexture.loadFromFile("src/rsrc/GameOver.png");
 
-	for (unsigned char i = 0; i < 23; i++)
+	for (unsigned char i = 0; i < this->windowPosition.size(); i++)
 	{
-		for (unsigned char j = 0; j < 22; j++)
+		for (unsigned char j = 0; j < this->windowPosition[i].size(); j++)
 		{
-			/*windowPosition[i][j].setSize(sf::Vector2f(INNER_CELL, INNER_CELL));
-			windowPosition[i][j].setFillColor(sf::Color(150, 150, 150));*/
 			windowPosition[i][j].setPosition(i * (CELL_SIZE), j * (CELL_SIZE));
 		}
 	}
@@ -77,10 +75,10 @@ GameApp::GameApp(int statringLevel)
 			matrix[i][j].setTexture(this->tileTexture);
 		}
 	}
-	if (this->level <= 29)
-		this->level = statringLevel;
-	else
+	if (this->level > 29)
 		this->level = 29;
+	else
+		this->level = statringLevel;
 	setUpSC();
 }
 
@@ -285,8 +283,11 @@ bool GameApp::gameOver(Tetromino& tetromino)
 	return false;
 }
 
-void GameApp::endGame(sf::Sprite& sprite)
+void GameApp::endGame(sf::Sprite& sprite, TextMenager& text,BackgroundManager& bcg)
 {
+	this->window.clear(sf::Color::Black);
+	window.draw(bcg);
+	window.draw(text);
 	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
 		for (unsigned char j = 0; j < ROWS; j++)
@@ -332,7 +333,7 @@ int GameApp::run()
 	{
 		if (gameOverbool)
 		{
-			endGame(gameOverSprite);
+			endGame(gameOverSprite, textManager, background);
 			continue;
 		}
 		

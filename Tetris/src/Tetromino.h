@@ -13,7 +13,7 @@ protected:
 	std::array<sf::Vector2i, 4> tiles;
 	TetrominoShape tShape;
 	TetrominoColor color;
-	unsigned char rotation;
+public: unsigned char rotation;
 
 	sf::RectangleShape cellShape;
 	sf::Texture texture;
@@ -24,7 +24,6 @@ public:
 	
 	Tetromino() {};
 	Tetromino(const TetrominoShape&, std::array<std::array<Cell, ROWS>, COLUMNS>*);
-	Tetromino(const Tetromino&, std::array<std::array<Cell, ROWS>, COLUMNS>*);
 
 	//Moves tetromino one line down. Retruns true if the move was valid.
 	bool update();

@@ -58,7 +58,7 @@ public:
 	//Checks if new tetromino is able to spawn.
 	bool gameOver(Tetromino&);
 	//Ends game when gameOver returns true
-	void endGame(sf::Sprite&);
+	void endGame(sf::Sprite&, TextMenager&, BackgroundManager&);
 	int run();
 
 	void setUpSC();

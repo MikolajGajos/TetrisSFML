@@ -24,18 +24,6 @@ Tetromino::Tetromino(const TetrominoShape& tShape, std::array<std::array<Cell, R
 	this->cellShape.setTexture(&texture);
 }
 
-Tetromino::Tetromino(const Tetromino& tetromio, std::array<std::array<Cell, ROWS>, COLUMNS>* matrix)
-{
-	this->tShape = tetromio.tShape;
-	this->tiles = tetromio.tiles;
-	this->rotation = tetromio.rotation;
-	this->matrix = matrix;
-	this->texture.loadFromFile("src/rsrc/Tile.png");
-	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
-	this->cellShape.setFillColor(this->getColor());
-	this->cellShape.setTexture(&texture);
-}
-
 bool Tetromino::update()
 {
 	//checks if all minos can be moved down
