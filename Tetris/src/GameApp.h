@@ -21,7 +21,6 @@ class GameApp {
 	std::array<std::array<sf::RectangleShape, 22>, 24> windowPosition;
 	sf::Texture tileTexture;
 	sf::Texture gameOverTexture;
-	SoundManager sound;
 
 	float dropTime = 0.9f;			void dropTimeReset();
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }
@@ -48,9 +47,9 @@ public:
 	//Searches game's matrix for full lines. Returns vector with lines number.
 	std::vector<int> fullLines();
 	//Clear full lines and updates the scoreboard.
-	void clearLines(std::vector<int>& linesNumber, TextMenager&);
+	void clearLines(std::vector<int>& linesNumber);
 	//Displaying animation.
-	void animationManager(std::vector<int>& linesNumber, float deltaTime, Animation&);
+	void animationManager(std::vector<int>& linesNumber, float deltaTime);
 	//Drawes game board with tetromino which already fallen.
 	void drawBoard();
 	//Draws every tetromino.
@@ -58,7 +57,12 @@ public:
 	//Checks if new tetromino is able to spawn.
 	bool gameOver(Tetromino&);
 	//Ends game when gameOver returns true
-	void endGame(sf::Sprite&, TextMenager&, BackgroundManager&);
+	void endGame(sf::Sprite&);
+
+	void updateGame(Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear, float deltaTime);
+	void displayGame(Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear);
+	void manageTimers(float& deltaTime, sf::Clock& clock);
+
 	int run();
 
 	void setUpSC();

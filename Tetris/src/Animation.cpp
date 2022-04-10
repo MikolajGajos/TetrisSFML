@@ -1,12 +1,29 @@
 #include "Animation.h"
 
-Animation::Animation(const std::array<std::array<Cell, ROWS>, COLUMNS>& matrix, float animationTime)
+//Animation::Animation(const std::array<std::array<Cell, ROWS>, COLUMNS>& matrix, float animationTime)
+//{
+//	this->animationTime = animationTime;
+//	setSwitchTime();
+//	this->texture.loadFromFile("src/rsrc/animation.png");
+//	currentTexture.height = INNER_CELL;
+//	currentTexture.width = INNER_CELL;
+//	for (unsigned char x = 0; x < COLUMNS; x++)
+//	{
+//		for (unsigned char y = 0; y < ROWS; y++)
+//		{
+//			this->spriteMatrix[x][y].setTexture(texture);
+//			this->spriteMatrix[x][y].setTextureRect(currentTexture);
+//			this->spriteMatrix[x][y].setPosition(matrix[x][y].getPosition());
+//		}
+//	}	
+//}
+void Animation::set(const std::array<std::array<Cell, ROWS>, COLUMNS>& matrix, float animationTime)
 {
 	this->animationTime = animationTime;
 	setSwitchTime();
 	this->texture.loadFromFile("src/rsrc/animation.png");
-	currentTexture.height = 36;
-	currentTexture.width = 36;
+	currentTexture.height = INNER_CELL;
+	currentTexture.width = INNER_CELL;
 	for (unsigned char x = 0; x < COLUMNS; x++)
 	{
 		for (unsigned char y = 0; y < ROWS; y++)
@@ -15,7 +32,7 @@ Animation::Animation(const std::array<std::array<Cell, ROWS>, COLUMNS>& matrix, 
 			this->spriteMatrix[x][y].setTextureRect(currentTexture);
 			this->spriteMatrix[x][y].setPosition(matrix[x][y].getPosition());
 		}
-	}	
+	}
 }
 
 void Animation::update(float deltaTime)
@@ -31,7 +48,7 @@ void Animation::update(float deltaTime)
 void Animation::textureChange()
 {
 	if(currentTexture.left < 143)
-		currentTexture.left += 36;
+		currentTexture.left += INNER_CELL;
 	for (unsigned char x = 0; x < COLUMNS; x++)
 	{
 		for (unsigned char y = 0; y < ROWS; y++)

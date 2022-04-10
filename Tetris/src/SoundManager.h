@@ -18,11 +18,16 @@ class SoundManager
 	sf::SoundBuffer gameOver;
 	sf::Sound sound;
 	sf::Sound transitionSound;
-
 	sf::Music backgroundMusic;
 
-public:
 	SoundManager();
+
+public:
+	static SoundManager& getInstance()
+	{
+		static SoundManager instance;
+		return instance;
+	}
 
 	void play(Sounds sound);
 	void playBackgroundMusic();

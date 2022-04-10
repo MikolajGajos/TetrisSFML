@@ -14,35 +14,40 @@ std::string displayScore(int number)
 	return os.str();
 }
 
-TextMenager::TextMenager(std::array<std::array<sf::RectangleShape, 22>, 24>* background, int* cleanedLines, int* level, int* score)
+TextManager::TextManager()
+{
+	font.loadFromFile("src/rsrc/slkscr.ttf");
+
+	clearedLinesText.setCharacterSize(55);
+	clearedLinesText.setFont(this->font);
+
+	levelText.setCharacterSize(55);
+	levelText.setFont(this->font);
+
+	scoreText.setCharacterSize(63);
+	scoreText.setFont(this->font);
+
+	nextTetrominoText.setCharacterSize(66);
+	nextTetrominoText.setFont(this->font);
+	nextTetrominoText.setString("next");
+}
+
+void TextManager::set(std::array<std::array<sf::RectangleShape, 22>, 24>* background, int* clearedLines, int* level, int* score)
 {
 	this->level = level;
 	this->score = score;
-	this->clearedLines = cleanedLines;
+	this->clearedLines = clearedLines;
 	this->background = background;
-	this->font.loadFromFile("src/rsrc/slkscr.ttf");
 
-	this->clearedLinesText.setCharacterSize(55);
 	this->clearedLinesText.setPosition((*background)[13][12].getPosition());
-	this->clearedLinesText.setFont(this->font);
-
-	this->levelText.setCharacterSize(55);
 	this->levelText.setPosition((*background)[13][14].getPosition());
-	this->levelText.setFont(this->font);
-
-	this->scoreText.setCharacterSize(63);
 	this->scoreText.setPosition((*background)[13][1].getPosition());
-	this->scoreText.setFont(this->font);
-
-	this->nextTetrominoText.setCharacterSize(66);
-	this->nextTetrominoText.setPosition((*background)[14][6].getPosition().x - CELL_SIZE/2, (*background)[14][6].getPosition().y);
-	this->nextTetrominoText.setFont(this->font);
-	this->nextTetrominoText.setString("next");
+	this->nextTetrominoText.setPosition((*background)[14][6].getPosition().x - CELL_SIZE / 2, (*background)[14][6].getPosition().y);
 
 	updateText();
 }
 
-void TextMenager::updateText()
+void TextManager::updateText()
 {
 	std::ostringstream ssClenedLines;
 	ssClenedLines << "lines - " << displayLL(*this->clearedLines);
@@ -57,7 +62,7 @@ void TextMenager::updateText()
 	this->levelText.setString(ssLevel.str());
 }
 
-void TextMenager::draw(sf::RenderTarget& target, sf::RenderStates state) const
+void TextManager::draw(sf::RenderTarget& target, sf::RenderStates state) const
 {
 	target.draw(this->clearedLinesText, state);
 	target.draw(this->levelText, state);

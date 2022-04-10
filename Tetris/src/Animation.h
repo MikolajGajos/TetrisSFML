@@ -16,14 +16,18 @@ class Animation
 private:
 	void textureChange();
 	void setSwitchTime();
+	Animation() {};
 
 public:
-	Animation() {};
-	Animation(const std::array<std::array<Cell, ROWS>, COLUMNS>&, float animationTime);
+	void set(const std::array<std::array<Cell, ROWS>, COLUMNS>&, float animationTime);
 
-	void update(float deltaTime);
-	
+	static Animation& getInstance()
+	{
+		static Animation instance;
+		return instance;
+	}
+
+	void update(float deltaTime);	
 	void reset();
-
 	void display(sf::RenderWindow&, std::vector<int>& linesToDisplay);
 };
