@@ -32,17 +32,16 @@ TextManager::TextManager()
 	nextTetrominoText.setString("next");
 }
 
-void TextManager::set(std::array<std::array<sf::RectangleShape, 22>, 24>* background, int* clearedLines, int* level, int* score)
+void TextManager::set(std::array<std::array<sf::RectangleShape, 22>, 24>& background, int& clearedLines, int& level, int& score)
 {
-	this->level = level;
-	this->score = score;
-	this->clearedLines = clearedLines;
-	this->background = background;
+	this->level = &level;
+	this->score = &score;
+	this->clearedLines = &clearedLines;
 
-	this->clearedLinesText.setPosition((*background)[13][12].getPosition());
-	this->levelText.setPosition((*background)[13][14].getPosition());
-	this->scoreText.setPosition((*background)[13][1].getPosition());
-	this->nextTetrominoText.setPosition((*background)[14][6].getPosition().x - CELL_SIZE / 2, (*background)[14][6].getPosition().y);
+	this->clearedLinesText.setPosition(background[13][12].getPosition());
+	this->levelText.setPosition(background[13][14].getPosition());
+	this->scoreText.setPosition(background[13][1].getPosition());
+	this->nextTetrominoText.setPosition(background[14][6].getPosition().x - CELL_SIZE / 2, background[14][6].getPosition().y);
 
 	updateText();
 }
@@ -76,7 +75,6 @@ BackgroundManager::BackgroundManager()
 {
 	this->backgroundShape.setSize({ WINDOW_SIZE_X, WINDOW_SIZE_Y });
 	this->backgroundTexture.loadFromFile("src/rsrc/Background.png");
-	this->backgroundShape.setFillColor(sf::Color::White);
 	this->backgroundShape.setTexture(&backgroundTexture);
 }
 

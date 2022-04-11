@@ -17,3 +17,20 @@ const int WINDOW_SIZE_X = 2 * CELL_SIZE * (COLUMNS + 2);
 const int WINDOW_SIZE_Y = CELL_SIZE * (ROWS + 2);
 
 const sf::Vector2f SPAWN_POINT = { COLUMNS / 2 - 1, 0 };
+
+class DeltaTime
+{
+	sf::Clock clock;
+	float dt;
+	DeltaTime() { dt = 0.f; };
+
+public:
+	static DeltaTime& getInstance()
+	{
+		static DeltaTime instance;
+		return instance;
+	}
+
+	float getDT() { return dt; }
+	void update() { this->dt = clock.restart().asSeconds(); }
+};

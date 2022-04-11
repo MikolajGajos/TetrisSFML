@@ -27,7 +27,7 @@ public:
 		return instance;
 	}
 
-	void update(float deltaTime);	
+	void update();	
 	void reset();
 	void display(sf::RenderWindow&, std::vector<int>& linesToDisplay);
 };

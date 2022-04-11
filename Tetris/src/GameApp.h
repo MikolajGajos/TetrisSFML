@@ -49,7 +49,7 @@ public:
 	//Clear full lines and updates the scoreboard.
 	void clearLines(std::vector<int>& linesNumber);
 	//Displaying animation.
-	void animationManager(std::vector<int>& linesNumber, float deltaTime);
+	void animationManager(std::vector<int>& linesNumber);
 	//Drawes game board with tetromino which already fallen.
 	void drawBoard();
 	//Draws every tetromino.
@@ -59,9 +59,9 @@ public:
 	//Ends game when gameOver returns true
 	void endGame(sf::Sprite&);
 
-	void updateGame(Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear, float deltaTime);
+	void updateGame(Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear);
 	void displayGame(Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear);
-	void manageTimers(float& deltaTime, sf::Clock& clock);
+	void manageTimers();
 
 	int run();
 

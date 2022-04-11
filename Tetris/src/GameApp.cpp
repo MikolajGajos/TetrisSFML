@@ -232,10 +232,10 @@ void GameApp::clearLines(std::vector<int>& linesNumber)
 	TextManager::getInstance().updateText();
 }
 
-void GameApp::animationManager(std::vector<int>& linesNumber, float deltaTime)
+void GameApp::animationManager(std::vector<int>& linesNumber)
 {
-	this->animationTime -= deltaTime;
-	Animation::getInstance().update(deltaTime);
+	this->animationTime -= DeltaTime::getInstance().getDT();
+	Animation::getInstance().update();
 	if (animationTime <= 0.f)
 	{
 		this->inAnimation = false;
@@ -308,7 +308,7 @@ void GameApp::endGame(sf::Sprite& sprite)
 		this->window.close();
 }
 
-void GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino, std::vector<int>& linesToClear, float deltaTime)
+void GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino, std::vector<int>& linesToClear)
 {
 	sf::Event event;
 	window.pollEvent(event);
@@ -324,7 +324,7 @@ void GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, N
 			linesToClear = fullLines();
 	}
 	else
-		animationManager(linesToClear, deltaTime);
+		animationManager(linesToClear);
 }
 
 void GameApp::displayGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino, std::vector<int>& linesToClear)
@@ -337,31 +337,26 @@ void GameApp::displayGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, 
 	window.display();
 }
 
-void GameApp::manageTimers(float& deltaTime, sf::Clock& clock)
+void GameApp::manageTimers()
 {
-	dropTime -= deltaTime;
-	hardDropCooldown -= deltaTime;
-	softDropCooldown -= deltaTime;
-	moveTimeCooldown -= deltaTime;
-	deltaTime = clock.restart().asSeconds();
+	dropTime -= DeltaTime::getInstance().getDT();
+	hardDropCooldown -= DeltaTime::getInstance().getDT();
+	softDropCooldown -= DeltaTime::getInstance().getDT();
+	moveTimeCooldown -= DeltaTime::getInstance().getDT();
+	DeltaTime::getInstance().update();
 }
 
 int GameApp::run()
 {
-	sf::Event event;
-	sf::Clock clock;
-	float deltaTime = 0.f;
-
 	Tetromino tetromino(getShape(random()), &matrix);
 	GhostTetromino ghostTetromino(tetromino);
 	NextTetromino nextTetromino(getShape(random()), &this->windowPosition);
-	TextManager::getInstance().set(&this->windowPosition, &this->clearedLines, &this->level, &this->score);
+	TextManager::getInstance().set(this->windowPosition, this->clearedLines, this->level, this->score);
 	Animation::getInstance().set(this->matrix, this->animationTime);
+	SoundManager::getInstance().playBackgroundMusic();
 	std::vector<int> linesToClear;
 	sf::Sprite gameOverSprite;
 	gameOverSprite.setTexture(this->gameOverTexture);
-
-	SoundManager::getInstance().playBackgroundMusic();
 
 	FPS fps;
 
@@ -370,15 +365,19 @@ int GameApp::run()
 		if (gameOverbool)
 		{
 			endGame(gameOverSprite);
-			continue;
+			break;
 		}
 
-		updateGame(tetromino, ghostTetromino, nextTetromino, linesToClear, deltaTime);
+		updateGame(tetromino, ghostTetromino, nextTetromino, linesToClear);
 		displayGame(tetromino, ghostTetromino, nextTetromino, linesToClear);		
-		manageTimers(deltaTime, clock);	
+		manageTimers();	
 
 		fps.update();
 		std::cout << fps.getFPS() << std::endl;
 	}
-	return this->score;
+	while (true)
+	{
+		if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			return this->score;
+	}
 }

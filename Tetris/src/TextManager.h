@@ -9,13 +9,10 @@
 
 class TextManager : public sf::Drawable
 {
-	std::array<std::array<sf::RectangleShape, 22>, 24>* background;
 	int* clearedLines;
 	int* score;
 	int* level;
 	sf::Font font;
-
-public:
 	sf::Text clearedLinesText;
 	sf::Text levelText;
 	sf::Text scoreText;
@@ -29,7 +26,7 @@ public:
 		static TextManager instance;
 		return instance;
 	}
-	void set(std::array<std::array<sf::RectangleShape, 22>, 24>* matrix, int* clearedLines, int* level, int* score);
+	void set(std::array<std::array<sf::RectangleShape, 22>, 24>& matrix, int& clearedLines, int& level, int& score);
 	void updateText();
 
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
