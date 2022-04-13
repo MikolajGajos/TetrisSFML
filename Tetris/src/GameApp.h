@@ -21,6 +21,7 @@ class GameApp {
 	std::array<std::array<sf::RectangleShape, 22>, 24> windowPosition;
 	sf::Texture tileTexture;
 	sf::Texture gameOverTexture;
+	sf::Sprite gameOverSprite;
 
 	float dropTime = 0.9f;			void dropTimeReset();
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }

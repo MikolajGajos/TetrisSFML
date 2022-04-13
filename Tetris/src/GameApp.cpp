@@ -56,6 +56,7 @@ GameApp::GameApp(int statringLevel)
 {
 	this->tileTexture.loadFromFile("src/rsrc/Tile.png");
 	this->gameOverTexture.loadFromFile("src/rsrc/GameOver.png");
+	this->gameOverSprite.setTexture(this->gameOverTexture);
 
 	for (unsigned char i = 0; i < this->windowPosition.size(); i++)
 	{
@@ -236,7 +237,7 @@ void GameApp::animationManager(std::vector<int>& linesNumber)
 {
 	this->animationTime -= DeltaTime::getInstance().getDT();
 	Animation::getInstance().update();
-	if (animationTime <= 0.f)
+	if (animationTime < 0.f)
 	{
 		this->inAnimation = false;
 		animationTimeReset();
@@ -310,6 +311,12 @@ void GameApp::endGame(sf::Sprite& sprite)
 
 void GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino, std::vector<int>& linesToClear)
 {
+	if (gameOverbool)
+	{
+		endGame(gameOverSprite);
+		return;
+	}
+
 	sf::Event event;
 	window.pollEvent(event);
 	if (event.type == sf::Event::Closed)
@@ -329,6 +336,10 @@ void GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, N
 
 void GameApp::displayGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino, std::vector<int>& linesToClear)
 {
+	if (gameOverbool)
+	{
+		return;
+	}
 	window.draw(BackgroundManager::getInstance());
 	drawBoard();
 	drawTetromino(tetromino, ghostTetromino, nextTetromino);
@@ -339,6 +350,10 @@ void GameApp::displayGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, 
 
 void GameApp::manageTimers()
 {
+	if (gameOverbool)
+	{
+		return;
+	}
 	dropTime -= DeltaTime::getInstance().getDT();
 	hardDropCooldown -= DeltaTime::getInstance().getDT();
 	softDropCooldown -= DeltaTime::getInstance().getDT();
@@ -355,19 +370,11 @@ int GameApp::run()
 	Animation::getInstance().set(this->matrix, this->animationTime);
 	SoundManager::getInstance().playBackgroundMusic();
 	std::vector<int> linesToClear;
-	sf::Sprite gameOverSprite;
-	gameOverSprite.setTexture(this->gameOverTexture);
 
 	FPS fps;
 
 	while (window.isOpen())
 	{
-		if (gameOverbool)
-		{
-			endGame(gameOverSprite);
-			break;
-		}
-
 		updateGame(tetromino, ghostTetromino, nextTetromino, linesToClear);
 		displayGame(tetromino, ghostTetromino, nextTetromino, linesToClear);		
 		manageTimers();	
@@ -375,9 +382,5 @@ int GameApp::run()
 		fps.update();
 		std::cout << fps.getFPS() << std::endl;
 	}
-	while (true)
-	{
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
-			return this->score;
-	}
+	return this->score;
 }
