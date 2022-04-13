@@ -10,7 +10,7 @@ void setStatringPosition(std::array<sf::Vector2i, 4>& tiles)
 	}
 }
 
-Tetromino::Tetromino(const TetrominoShape& tShape, std::array<std::array<Cell, ROWS>, COLUMNS>* matrix)
+Tetromino::Tetromino(const TetrominoShape& tShape, std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix)
 {
 	this->tShape = tShape;
 	this->tiles = spawnTetromino(tShape);
@@ -29,7 +29,7 @@ bool Tetromino::update()
 	//checks if all minos can be moved down
 	for (auto& tile : this->tiles)
 	{
-		if (tile.y + 1 == ROWS)
+		if (tile.y + 1 == (*matrix)[0].size())
 			return true;
 
 		if ((*matrix)[tile.x][tile.y + 1].isFull() == true)
@@ -94,21 +94,7 @@ void Tetromino::moveRight()
 
 void Tetromino::hardDrop()
 {
-	while (true)
-	{
-		for (auto& tile : this->tiles)
-		{
-			if (tile.y + 1 == ROWS)
-				return;
-
-			if ((*matrix)[tile.x][tile.y + 1].isFull() == true)
-				return;
-		}
-		for (auto& tile : this->tiles)
-		{
-			tile.y++;
-		}
-	}
+	while (!update()) {}
 }
 
 std::array<sf::Vector2i, 4> Tetromino::getPosition()
@@ -155,8 +141,11 @@ void Tetromino::display(sf::RenderWindow& window)
 {
 	for (auto& tile : tiles)
 	{
-		cellShape.setPosition(CELL_SIZE * tile.x + (*matrix)[0][0].getPosition().x, tile.y * CELL_SIZE + (*matrix)[0][0].getPosition().y);
-		window.draw(cellShape);
+		if (tile.y >= 2)
+		{
+			cellShape.setPosition(CELL_SIZE * tile.x + (*matrix)[0][0].getPosition().x, tile.y * CELL_SIZE + (*matrix)[0][0].getPosition().y);
+			window.draw(cellShape);
+		}		
 	}
 }
 
@@ -206,32 +195,17 @@ GhostTetromino::GhostTetromino(Tetromino& tetromino)
 	this->cellShape.setTexture(&texture);
 }
 
-void GhostTetromino::update(Tetromino& tetromino)
+void GhostTetromino::updateGhost(Tetromino& tetromino)
 {
 	this->tiles = tetromino.getPosition();
-
-	while (true)
-	{
-		for (auto& tile : this->tiles)
-		{
-			if (tile.y + 1 == ROWS)
-				return;
-
-			if ((*matrix)[tile.x][tile.y + 1].isFull() == true)
-				return;
-		}
-		for (auto& mino : this->tiles)
-		{
-			mino.y++;
-		}
-	}
+	while (!update()) {}
 }
 
 void GhostTetromino::reset(Tetromino& tetromino)
 {
 	this->tShape = tetromino.getShape();
 	this->tiles = spawnTetromino(this->tShape);
-	this->update(tetromino);
+	this->updateGhost(tetromino);
 	this->setColor();
 	this->cellShape.setFillColor(this->getColor());
 }

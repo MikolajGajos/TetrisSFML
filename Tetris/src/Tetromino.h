@@ -18,12 +18,12 @@ public: unsigned char rotation;
 	sf::RectangleShape cellShape;
 	sf::Texture texture;
 public:
-	std::array<std::array<Cell, ROWS>, COLUMNS>* matrix;
+	std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix;
 
 public:
 	
 	Tetromino() {};
-	Tetromino(const TetrominoShape&, std::array<std::array<Cell, ROWS>, COLUMNS>*);
+	Tetromino(const TetrominoShape&, std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
 
 	//Moves tetromino one line down. Retruns true if the move was valid.
 	bool update();
@@ -66,7 +66,7 @@ class GhostTetromino : public Tetromino
 public:
 	GhostTetromino(Tetromino&);
 	//Updates ghost based on current tetromino's position.
-	void update(Tetromino&);
+	void updateGhost(Tetromino&);
 	//Updates ghost's shape on current tetromino.
 	void reset(Tetromino&);
 };

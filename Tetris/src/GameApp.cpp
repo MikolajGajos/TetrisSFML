@@ -66,10 +66,10 @@ GameApp::GameApp(int statringLevel)
 		}
 	}
 	float x = windowPosition[MATRIX_POS_X][MATRIX_POS_X].getPosition().x / CELL_SIZE;
-	float y = windowPosition[MATRIX_POS_Y][MATRIX_POS_Y].getPosition().y / CELL_SIZE;
+	float y = windowPosition[MATRIX_POS_Y][MATRIX_POS_Y].getPosition().y / CELL_SIZE - 2;
 	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
-		for (unsigned char j = 0; j < ROWS; j++)
+		for (unsigned char j = 0; j < matrix[0].size(); j++)
 		{
 			matrix[i][j].setFull(false);
 			matrix[i][j].setPosition({ CELL_SIZE * (i + x), CELL_SIZE * (j + y) });
@@ -166,7 +166,7 @@ std::vector<int> GameApp::fullLines()
 {
 	std::vector<int> v;
 	//loop begins from bottom
-	for (unsigned char y = ROWS - 1; y > 0; y--)
+	for (unsigned char y = matrix[0].size() - 1; y > 0; y--)
 	{
 		bool full = true;
 		//loop checks every collumn in one row
@@ -242,6 +242,7 @@ void GameApp::animationManager(std::vector<int>& linesNumber)
 		this->inAnimation = false;
 		animationTimeReset();
 		Animation::getInstance().reset();
+		clearLines(linesNumber);
 	}
 }
 
@@ -249,7 +250,7 @@ void GameApp::drawBoard()
 {
 	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
-		for (unsigned char j = 0; j < ROWS; j++)
+		for (unsigned char j = 0; j < matrix[0].size(); j++)
 		{
 			if (matrix[i][j].isFull())
 			{				
@@ -271,15 +272,16 @@ void GameApp::drawTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino
 
 bool GameApp::gameOver(Tetromino& tetromino)
 {
-	for (auto& tile : tetromino.getPosition())
+	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
-		if (this->matrix[tile.x][tile.y].isFull())
+		if (matrix[i][1].isFull())
 		{
 			SoundManager::getInstance().play(Sounds::gameOver);
 			SoundManager::getInstance().stopBackgroundMusic();
 			return true;
 		}
 	}
+
 	return false;
 }
 
@@ -290,7 +292,7 @@ void GameApp::endGame(sf::Sprite& sprite)
 	window.draw(TextManager::getInstance());
 	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
-		for (unsigned char j = 0; j < ROWS; j++)
+		for (unsigned char j = 2; j < matrix[0].size(); j++)
 		{
 			if (matrix[i][j].isFull())
 			{
@@ -324,9 +326,8 @@ void GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, N
 
 	if (!inAnimation)
 	{
-		clearLines(linesToClear);
 		tetromnoMovement(tetromino);
-		ghostTetromino.update(tetromino);
+		ghostTetromino.updateGhost(tetromino);
 		if (fallingTetromino(tetromino, ghostTetromino, nextTetromino))
 			linesToClear = fullLines();
 	}

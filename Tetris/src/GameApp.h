@@ -17,7 +17,7 @@
 class GameApp {
 
 	sf::RenderWindow window;
-	std::array<std::array<Cell, ROWS>, COLUMNS> matrix;
+	std::array<std::array<Cell, ROWS + 2>, COLUMNS> matrix;
 	std::array<std::array<sf::RectangleShape, 22>, 24> windowPosition;
 	sf::Texture tileTexture;
 	sf::Texture gameOverTexture;

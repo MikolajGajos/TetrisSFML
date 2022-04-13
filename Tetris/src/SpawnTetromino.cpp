@@ -73,6 +73,5 @@ std::array<sf::Vector2i, 4> spawnTetromino(const TetrominoShape& tShape)
 		position[3] = { 1, 1 };
 	}
 	}
-
 	return position;
 }
