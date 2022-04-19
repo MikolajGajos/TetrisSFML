@@ -5,7 +5,6 @@
 #include "Cell.h"
 #include "Global.h"
 #include "SpawnTetromino.h"
-#include "Color.h"
 
 class Tetromino
 {

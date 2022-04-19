@@ -8,7 +8,6 @@
 
 #include "Global.h"
 #include "Tetromino.h"
-#include "Color.h"
 #include "Cell.h"
 #include "TextManager.h"
 #include "Animation.h"
@@ -16,7 +15,7 @@
 
 class GameApp {
 
-	sf::RenderWindow window;
+	sf::RenderWindow* window;
 	std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix = new std::array<std::array<Cell, ROWS + 2>, COLUMNS>;
 	std::array<std::array<sf::RectangleShape, 22>, 24>* windowPosition = new std::array<std::array<sf::RectangleShape, 22>, 24>;
 	sf::Texture tileTexture;
@@ -39,7 +38,7 @@ class GameApp {
 	int score = 0;
 
 public:
-	GameApp(int statringLevel = 0);
+	GameApp(sf::RenderWindow*, int statringLevel = 0);
 	~GameApp();
 
 	//Manages all tetromino movement based on user's input.

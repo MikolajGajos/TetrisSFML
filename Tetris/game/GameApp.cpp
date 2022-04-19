@@ -1,4 +1,4 @@
-#include "GameApp.h"
+#include "headers/GameApp.h"
 
 class FPS
 {
@@ -43,6 +43,14 @@ int random()
 	return distr(random_engine);
 }
 
+void closingWindowEvent(sf::RenderWindow* window)
+{
+	sf::Event event;
+	(*window).pollEvent(event);
+	if (event.type == sf::Event::Closed)
+		(*window).close();
+}
+
 void prepareVector(std::vector<int>& v)
 {
 	for (int i = 0; i < v.size(); i++)
@@ -51,11 +59,11 @@ void prepareVector(std::vector<int>& v)
 	}
 }
 
-GameApp::GameApp(int statringLevel)
-	: window({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Close | sf::Style::Default)
+GameApp::GameApp(sf::RenderWindow* window,int statringLevel)
+	: window(window)
 {
-	this->tileTexture.loadFromFile("src/rsrc/Tile.png");
-	this->gameOverTexture.loadFromFile("src/rsrc/GameOver.png");
+	this->tileTexture.loadFromFile("resources/images/Tile.png");
+	this->gameOverTexture.loadFromFile("resources/images/GameOver.png");
 	this->gameOverSprite.setTexture(this->gameOverTexture);
 
 	for (unsigned char i = 0; i < (*windowPosition).size(); i++)
@@ -260,7 +268,7 @@ void GameApp::drawBoard()
 		{
 			if ((*matrix)[i][j].isFull())
 			{				
-				window.draw((*matrix)[i][j]);
+				(*window).draw((*matrix)[i][j]);
 			}
 		}
 	}
@@ -271,9 +279,9 @@ void GameApp::drawTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino
 	if (gameOverbool)
 		return;
 
-	tetromino.display(this->window);
-	ghostTetromino.display(this->window);
-	nextTetromino.display(this->window);
+	tetromino.display(*window);
+	ghostTetromino.display(*window);
+	nextTetromino.display(*window);
 }
 
 bool GameApp::gameOver(Tetromino& tetromino)
@@ -293,9 +301,9 @@ bool GameApp::gameOver(Tetromino& tetromino)
 
 void GameApp::endGame(sf::Sprite& sprite)
 {
-	this->window.clear(sf::Color::Black);
-	window.draw(BackgroundManager::getInstance());
-	window.draw(TextManager::getInstance());
+	(*window).clear(sf::Color::Black);
+	(*window).draw(BackgroundManager::getInstance());
+	(*window).draw(TextManager::getInstance());
 	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
 		for (unsigned char j = 2; j < matrix[0].size(); j++)
@@ -304,17 +312,14 @@ void GameApp::endGame(sf::Sprite& sprite)
 			{
 				(*matrix)[i][j].setTexture(this->tileTexture);
 				(*matrix)[i][j].setColor(sf::Color(70, 70, 70, 255));
-				window.draw((*matrix)[i][j]);
+				(*window).draw((*matrix)[i][j]);
 			}
 		}
 	}
-	this->window.draw(sprite);
-	this->window.display();
+	(*window).draw(sprite);
+	(*window).display();
 
-	sf::Event event;
-	window.pollEvent(event);
-	if (event.type == sf::Event::Closed)
-		this->window.close();
+	closingWindowEvent(window);
 }
 
 void GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino, std::vector<int>& linesToClear)
@@ -325,10 +330,7 @@ void GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, N
 		return;
 	}
 
-	sf::Event event;
-	window.pollEvent(event);
-	if (event.type == sf::Event::Closed)
-		this->window.close();
+	closingWindowEvent(window);
 
 	if (!inAnimation)
 	{
@@ -347,12 +349,12 @@ void GameApp::displayGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, 
 	{
 		return;
 	}
-	window.draw(BackgroundManager::getInstance());
+	(*window).draw(BackgroundManager::getInstance());
 	drawBoard();
 	drawTetromino(tetromino, ghostTetromino, nextTetromino);
-	window.draw(TextManager::getInstance());
-	Animation::getInstance().display(window, linesToClear);
-	window.display();
+	(*window).draw(TextManager::getInstance());
+	Animation::getInstance().display(*window, linesToClear);
+	(*window).display();
 }
 
 void GameApp::manageTimers()
@@ -380,7 +382,7 @@ int GameApp::run()
 
 	FPS fps;
 
-	while (window.isOpen())
+	while ((*window).isOpen())
 	{
 		updateGame(tetromino, ghostTetromino, nextTetromino, linesToClear);
 		displayGame(tetromino, ghostTetromino, nextTetromino, linesToClear);		

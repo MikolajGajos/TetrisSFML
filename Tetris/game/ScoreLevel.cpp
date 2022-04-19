@@ -1,4 +1,4 @@
-#include "GameApp.h"
+#include "headers/GameApp.h"
 
 void GameApp::setUpSC()
 {

@@ -1,4 +1,4 @@
-#include "Tetromino.h"
+#include "headers/Tetromino.h"
 
 void updateTilesPosition(std::array<sf::Vector2i, 4>& minos, const sf::Vector2i& v0, const sf::Vector2i& v1, const sf::Vector2i& v2, const sf::Vector2i& v3)
 {

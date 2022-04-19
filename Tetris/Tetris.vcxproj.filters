@@ -1,78 +1,106 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{304d7ec3-e9e4-494b-ba4b-4be194fc0a3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{85afd0e7-f867-4a70-85fc-dfe44fcdf458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menu">
+      <UniqueIdentifier>{6dbf1fc8-2b4a-4488-817c-62784ec7821e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\AnimationClass">
+      <UniqueIdentifier>{405da942-6a5d-422e-81ec-d4a9ca1b75e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Utility">
+      <UniqueIdentifier>{7104dafc-00ad-4b5b-9d19-92f516eaab73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Tetromino">
+      <UniqueIdentifier>{9f4c3811-37f3-41a3-9b1b-fe0513ce7afd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GameText&amp;Sound">
+      <UniqueIdentifier>{fac7e6ba-eb44-4e82-928c-e03a899e8684}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Tetromino\Headers">
+      <UniqueIdentifier>{18570526-06dd-4551-9ac5-1e619975d70d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GameText&amp;Sound\Headers">
+      <UniqueIdentifier>{391d32b2-8ddc-450d-ae69-560fd2bdb9ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Utility\Headers">
+      <UniqueIdentifier>{25541658-48de-4299-ae84-c891dfb6b594}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Utility\_PauseMenu">
+      <UniqueIdentifier>{4b5eca62-a030-4912-87ce-1b3ffcc8aa84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Cell.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\Animation.cpp">
+      <Filter>Game\AnimationClass</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameApp.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\SoundManager.cpp">
+      <Filter>Game\GameText&amp;Sound</Filter>
     </ClCompile>
-    <ClCompile Include="src\Source.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\TextManager.cpp">
+      <Filter>Game\GameText&amp;Sound</Filter>
     </ClCompile>
-    <ClCompile Include="src\SpawnTetromino.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\SpawnTetromino.cpp">
+      <Filter>Game\Tetromino</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tetromino.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\Tetromino.cpp">
+      <Filter>Game\Tetromino</Filter>
     </ClCompile>
-    <ClCompile Include="src\TetrominoRotation.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\TetrominoRotation.cpp">
+      <Filter>Game\Tetromino</Filter>
     </ClCompile>
-    <ClCompile Include="src\TextManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\Cell.cpp">
+      <Filter>Game\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\ScoreLevel.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\GameApp.cpp">
+      <Filter>Game\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\Animation.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\ScoreLevel.cpp">
+      <Filter>Game\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\SoundManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\Source.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="game\PauseMenu.cpp">
+      <Filter>Game\Utility\_PauseMenu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Cell.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\headers\Animation.h">
+      <Filter>Game\AnimationClass</Filter>
     </ClInclude>
-    <ClInclude Include="src\Color.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\headers\SoundManager.h">
+      <Filter>Game\GameText&amp;Sound\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameApp.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\headers\TextManager.h">
+      <Filter>Game\GameText&amp;Sound\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="src\Global.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\headers\SpawnTetromino.h">
+      <Filter>Game\Tetromino\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="src\SpawnTetromino.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\headers\Tetromino.h">
+      <Filter>Game\Tetromino\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="src\Tetromino.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\headers\Cell.h">
+      <Filter>Game\Utility\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="src\TextManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\headers\GameApp.h">
+      <Filter>Game\Utility\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="src\Animation.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\headers\Global.h">
+      <Filter>Game\Utility\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="src\SoundManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\headers\PauseMenu.h">
+      <Filter>Game\Utility\_PauseMenu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -9,6 +9,11 @@ enum class TetrominoShape
 	I, T, O, L, J, S, Z
 };
 
+enum class TetrominoColor
+{
+	red, cyan, yellow, pink, blue, green, orange
+};
+
 //Gives tetromino a shape based on the the number. The tetromino's shape is defined by the enum class.
 TetrominoShape getShape(unsigned char x);
 

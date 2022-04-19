@@ -1,4 +1,4 @@
-#include "TextManager.h"
+#include "headers/TextManager.h"
 
 std::string displayLL(int number)
 {
@@ -16,7 +16,7 @@ std::string displayScore(int number)
 
 TextManager::TextManager()
 {
-	font.loadFromFile("src/rsrc/slkscr.ttf");
+	font.loadFromFile("resources/images/slkscr.ttf");
 
 	clearedLinesText.setCharacterSize(55);
 	clearedLinesText.setFont(this->font);
@@ -74,7 +74,7 @@ void TextManager::draw(sf::RenderTarget& target, sf::RenderStates state) const
 BackgroundManager::BackgroundManager()
 {
 	this->backgroundShape.setSize({ WINDOW_SIZE_X, WINDOW_SIZE_Y });
-	this->backgroundTexture.loadFromFile("src/rsrc/Background.png");
+	this->backgroundTexture.loadFromFile("resources/images/Background.png");
 	this->backgroundShape.setTexture(&backgroundTexture);
 }
 

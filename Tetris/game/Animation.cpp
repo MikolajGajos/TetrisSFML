@@ -1,10 +1,10 @@
-#include "Animation.h"
+#include "headers/Animation.h"
 
 void Animation::set(const std::array<std::array<Cell, ROWS + 2>, COLUMNS>& matrix, float animationTime)
 {
 	this->animationTime = animationTime;
 	setSwitchTime();
-	this->texture.loadFromFile("src/rsrc/animation.png");
+	this->texture.loadFromFile("resources/images/animation.png");
 	currentTexture.height = INNER_CELL;
 	currentTexture.width = INNER_CELL;
 	for (unsigned char x = 0; x < COLUMNS; x++)

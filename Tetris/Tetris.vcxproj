@@ -19,27 +19,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Animation.cpp" />
-    <ClCompile Include="src\Cell.cpp" />
-    <ClCompile Include="src\GameApp.cpp" />
-    <ClCompile Include="src\ScoreLevel.cpp" />
-    <ClCompile Include="src\SoundManager.cpp" />
-    <ClCompile Include="src\Source.cpp" />
-    <ClCompile Include="src\SpawnTetromino.cpp" />
-    <ClCompile Include="src\Tetromino.cpp" />
-    <ClCompile Include="src\TetrominoRotation.cpp" />
-    <ClCompile Include="src\TextManager.cpp" />
+    <ClCompile Include="game\Animation.cpp" />
+    <ClCompile Include="game\Cell.cpp" />
+    <ClCompile Include="game\GameApp.cpp" />
+    <ClCompile Include="game\PauseMenu.cpp" />
+    <ClCompile Include="game\ScoreLevel.cpp" />
+    <ClCompile Include="game\SoundManager.cpp" />
+    <ClCompile Include="game\Source.cpp" />
+    <ClCompile Include="game\SpawnTetromino.cpp" />
+    <ClCompile Include="game\Tetromino.cpp" />
+    <ClCompile Include="game\TetrominoRotation.cpp" />
+    <ClCompile Include="game\TextManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Animation.h" />
-    <ClInclude Include="src\Cell.h" />
-    <ClInclude Include="src\Color.h" />
-    <ClInclude Include="src\GameApp.h" />
-    <ClInclude Include="src\Global.h" />
-    <ClInclude Include="src\SoundManager.h" />
-    <ClInclude Include="src\SpawnTetromino.h" />
-    <ClInclude Include="src\Tetromino.h" />
-    <ClInclude Include="src\TextManager.h" />
+    <ClInclude Include="game\headers\Animation.h" />
+    <ClInclude Include="game\headers\Cell.h" />
+    <ClInclude Include="game\headers\GameApp.h" />
+    <ClInclude Include="game\headers\Global.h" />
+    <ClInclude Include="game\headers\PauseMenu.h" />
+    <ClInclude Include="game\headers\SoundManager.h" />
+    <ClInclude Include="game\headers\SpawnTetromino.h" />
+    <ClInclude Include="game\headers\Tetromino.h" />
+    <ClInclude Include="game\headers\TextManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
