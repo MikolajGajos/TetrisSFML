@@ -12,6 +12,7 @@
 #include "TextManager.h"
 #include "Animation.h"
 #include "SoundManager.h"
+#include "PauseMenu.h"
 
 class GameApp {
 
@@ -21,12 +22,15 @@ class GameApp {
 	sf::Texture tileTexture;
 	sf::Texture gameOverTexture;
 	sf::Sprite gameOverSprite;
+	PauseMenu* pause;
+	void pauseManagement();
 
 	float dropTime = 0.9f;			void dropTimeReset();
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }
 	float hardDropCooldown = 0.f;	void hardDropCooldownReset() { this->hardDropCooldown = 0.5f; }
 	float softDropCooldown = 0.f;	void softDropCooldownReset() { this->softDropCooldown = 0.05f; }
 	float animationTime = 0.5f;		void animationTimeReset()	 { this->animationTime = 0.5f; }
+	bool pauseAllowed = true;
 	bool update = false;
 	bool rotationAllowed = true;
 	bool gameOverbool = false;

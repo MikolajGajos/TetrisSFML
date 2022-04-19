@@ -59,9 +59,20 @@ void prepareVector(std::vector<int>& v)
 	}
 }
 
-GameApp::GameApp(sf::RenderWindow* window,int statringLevel)
-	: window(window)
+void GameApp::pauseManagement()
 {
+	if (pauseAllowed)
+		if (pause->checkForPause())
+			pauseAllowed = false;
+
+	if (!pauseAllowed)
+		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			pauseAllowed = true;
+}
+
+GameApp::GameApp(sf::RenderWindow* window,int statringLevel): window(window)
+{
+	this->pause = new PauseMenu(window);
 	this->tileTexture.loadFromFile("resources/images/Tile.png");
 	this->gameOverTexture.loadFromFile("resources/images/GameOver.png");
 	this->gameOverSprite.setTexture(this->gameOverTexture);
@@ -95,6 +106,7 @@ GameApp::~GameApp()
 {
 	delete windowPosition;
 	delete matrix;
+	delete pause;
 }
 
 void GameApp::tetromnoMovement(Tetromino& tetromino)
@@ -301,9 +313,9 @@ bool GameApp::gameOver(Tetromino& tetromino)
 
 void GameApp::endGame(sf::Sprite& sprite)
 {
-	(*window).clear(sf::Color::Black);
-	(*window).draw(BackgroundManager::getInstance());
-	(*window).draw(TextManager::getInstance());
+	window->clear(sf::Color::Black);
+	window->draw(BackgroundManager::getInstance());
+	window->draw(TextManager::getInstance());
 	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
 		for (unsigned char j = 2; j < matrix[0].size(); j++)
@@ -312,12 +324,12 @@ void GameApp::endGame(sf::Sprite& sprite)
 			{
 				(*matrix)[i][j].setTexture(this->tileTexture);
 				(*matrix)[i][j].setColor(sf::Color(70, 70, 70, 255));
-				(*window).draw((*matrix)[i][j]);
+				window->draw((*matrix)[i][j]);
 			}
 		}
 	}
-	(*window).draw(sprite);
-	(*window).display();
+	window->draw(sprite);
+	window->display();
 
 	closingWindowEvent(window);
 }
@@ -329,6 +341,8 @@ void GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, N
 		endGame(gameOverSprite);
 		return;
 	}
+
+	pauseManagement();
 
 	closingWindowEvent(window);
 
@@ -382,7 +396,7 @@ int GameApp::run()
 
 	FPS fps;
 
-	while ((*window).isOpen())
+	while (window->isOpen())
 	{
 		updateGame(tetromino, ghostTetromino, nextTetromino, linesToClear);
 		displayGame(tetromino, ghostTetromino, nextTetromino, linesToClear);		
