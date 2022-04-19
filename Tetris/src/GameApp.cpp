@@ -58,22 +58,22 @@ GameApp::GameApp(int statringLevel)
 	this->gameOverTexture.loadFromFile("src/rsrc/GameOver.png");
 	this->gameOverSprite.setTexture(this->gameOverTexture);
 
-	for (unsigned char i = 0; i < this->windowPosition.size(); i++)
+	for (unsigned char i = 0; i < (*windowPosition).size(); i++)
 	{
-		for (unsigned char j = 0; j < this->windowPosition[i].size(); j++)
+		for (unsigned char j = 0; j < (*windowPosition)[i].size(); j++)
 		{
-			windowPosition[i][j].setPosition(i * (CELL_SIZE), j * (CELL_SIZE));
+			(*windowPosition)[i][j].setPosition(i * (CELL_SIZE), j * (CELL_SIZE));
 		}
 	}
-	float x = windowPosition[MATRIX_POS_X][MATRIX_POS_X].getPosition().x / CELL_SIZE;
-	float y = windowPosition[MATRIX_POS_Y][MATRIX_POS_Y].getPosition().y / CELL_SIZE - 2;
-	for (unsigned char i = 0; i < COLUMNS; i++)
+	float x = (*windowPosition)[MATRIX_POS_X][MATRIX_POS_X].getPosition().x / CELL_SIZE;
+	float y = (*windowPosition)[MATRIX_POS_Y][MATRIX_POS_Y].getPosition().y / CELL_SIZE - 2;
+	for (unsigned char i = 0; i < (*matrix).size(); i++)
 	{
-		for (unsigned char j = 0; j < matrix[0].size(); j++)
+		for (unsigned char j = 0; j < (*matrix)[i].size(); j++)
 		{
-			matrix[i][j].setFull(false);
-			matrix[i][j].setPosition({ CELL_SIZE * (i + x), CELL_SIZE * (j + y) });
-			matrix[i][j].setTexture(this->tileTexture);
+			(*matrix)[i][j].setFull(false);
+			(*matrix)[i][j].setPosition({ CELL_SIZE * (i + x), CELL_SIZE * (j + y) });
+			(*matrix)[i][j].setTexture(this->tileTexture);
 		}
 	}
 	if (this->level > 29)
@@ -81,6 +81,12 @@ GameApp::GameApp(int statringLevel)
 	else
 		this->level = statringLevel;
 	setUpSC();
+}
+
+GameApp::~GameApp()
+{
+	delete windowPosition;
+	delete matrix;
 }
 
 void GameApp::tetromnoMovement(Tetromino& tetromino)
@@ -166,14 +172,14 @@ std::vector<int> GameApp::fullLines()
 {
 	std::vector<int> v;
 	//loop begins from bottom
-	for (unsigned char y = matrix[0].size() - 1; y > 0; y--)
+	for (unsigned char y = (*matrix)[0].size() - 1; y > 0; y--)
 	{
 		bool full = true;
 		//loop checks every collumn in one row
 		for (unsigned char x = 0; x < COLUMNS; x++)
 		{
 			//if the tile is not full stops
-			if (!matrix[x][y].isFull())
+			if (!(*matrix)[x][y].isFull())
 			{
 				full = false;
 				break;
@@ -185,7 +191,7 @@ std::vector<int> GameApp::fullLines()
 		{
 			for (unsigned char x = 0; x < COLUMNS; x++)
 			{
-				matrix[x][y].setFull(false);
+				(*matrix)[x][y].setFull(false);
 			}
 
 			v.push_back(y);
@@ -224,8 +230,8 @@ void GameApp::clearLines(std::vector<int>& linesNumber)
 		{
 			for (unsigned char x = 0; x < COLUMNS; x++)
 			{
-				matrix[x][_y].setFull(matrix[x][_y - 1].isFull());
-				matrix[x][_y].setColor(matrix[x][_y - 1].getColor());
+				(*matrix)[x][_y].setFull((*matrix)[x][_y - 1].isFull());
+				(*matrix)[x][_y].setColor((*matrix)[x][_y - 1].getColor());
 			}
 		}
 	}	
@@ -248,13 +254,13 @@ void GameApp::animationManager(std::vector<int>& linesNumber)
 
 void GameApp::drawBoard()
 {
-	for (unsigned char i = 0; i < COLUMNS; i++)
+	for (unsigned char i = 0; i < (*matrix).size(); i++)
 	{
-		for (unsigned char j = 0; j < matrix[0].size(); j++)
+		for (unsigned char j = 0; j < (*matrix)[i].size(); j++)
 		{
-			if (matrix[i][j].isFull())
+			if ((*matrix)[i][j].isFull())
 			{				
-				window.draw(matrix[i][j]);
+				window.draw((*matrix)[i][j]);
 			}
 		}
 	}
@@ -274,7 +280,7 @@ bool GameApp::gameOver(Tetromino& tetromino)
 {
 	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
-		if (matrix[i][1].isFull())
+		if ((*matrix)[i][1].isFull())
 		{
 			SoundManager::getInstance().play(Sounds::gameOver);
 			SoundManager::getInstance().stopBackgroundMusic();
@@ -294,11 +300,11 @@ void GameApp::endGame(sf::Sprite& sprite)
 	{
 		for (unsigned char j = 2; j < matrix[0].size(); j++)
 		{
-			if (matrix[i][j].isFull())
+			if ((*matrix)[i][j].isFull())
 			{
-				matrix[i][j].setTexture(this->tileTexture);
-				matrix[i][j].setColor(sf::Color(70, 70, 70, 255));
-				window.draw(matrix[i][j]);
+				(*matrix)[i][j].setTexture(this->tileTexture);
+				(*matrix)[i][j].setColor(sf::Color(70, 70, 70, 255));
+				window.draw((*matrix)[i][j]);
 			}
 		}
 	}
@@ -364,11 +370,11 @@ void GameApp::manageTimers()
 
 int GameApp::run()
 {
-	Tetromino tetromino(getShape(random()), &matrix);
+	Tetromino tetromino(getShape(random()), matrix);
 	GhostTetromino ghostTetromino(tetromino);
-	NextTetromino nextTetromino(getShape(random()), &this->windowPosition);
-	TextManager::getInstance().set(this->windowPosition, this->clearedLines, this->level, this->score);
-	Animation::getInstance().set(this->matrix, this->animationTime);
+	NextTetromino nextTetromino(getShape(random()), windowPosition);
+	TextManager::getInstance().set(*windowPosition, this->clearedLines, this->level, this->score);
+	Animation::getInstance().set(*matrix, this->animationTime);
 	SoundManager::getInstance().playBackgroundMusic();
 	std::vector<int> linesToClear;
 

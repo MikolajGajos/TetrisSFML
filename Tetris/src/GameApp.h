@@ -17,8 +17,8 @@
 class GameApp {
 
 	sf::RenderWindow window;
-	std::array<std::array<Cell, ROWS + 2>, COLUMNS> matrix;
-	std::array<std::array<sf::RectangleShape, 22>, 24> windowPosition;
+	std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix = new std::array<std::array<Cell, ROWS + 2>, COLUMNS>;
+	std::array<std::array<sf::RectangleShape, 22>, 24>* windowPosition = new std::array<std::array<sf::RectangleShape, 22>, 24>;
 	sf::Texture tileTexture;
 	sf::Texture gameOverTexture;
 	sf::Sprite gameOverSprite;
@@ -40,6 +40,7 @@ class GameApp {
 
 public:
 	GameApp(int statringLevel = 0);
+	~GameApp();
 
 	//Manages all tetromino movement based on user's input.
 	void tetromnoMovement(Tetromino&);
