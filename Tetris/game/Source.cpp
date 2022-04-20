@@ -20,7 +20,4 @@ void main()
         }
         window.display();
     }
-
-
-    
 }

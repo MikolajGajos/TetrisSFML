@@ -24,7 +24,7 @@ class GameApp {
 	sf::Texture gameOverTexture;
 	sf::Sprite gameOverSprite;
 	PauseMenu* pause;
-	bool pauseManagement();
+	unsigned char pauseManagement();
 
 	float dropTime = 0.9f;			void dropTimeReset();
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }
@@ -63,8 +63,8 @@ class GameApp {
 	//Ends game when gameOver returns true
 	void endGame(sf::Sprite&);
 
-	void updateGame(Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear);
-	void displayGame(Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear);
+	bool updateGame(Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear);
+	void drawGame(Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear);
 	void manageTimers();
 	void setUpSC();
 	void transtionLevel();

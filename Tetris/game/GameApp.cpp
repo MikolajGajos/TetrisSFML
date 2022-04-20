@@ -59,24 +59,33 @@ void prepareVector(std::vector<int>& v)
 	}
 }
 
-bool GameApp::pauseManagement()
+unsigned char GameApp::pauseManagement()
 {
-	if (pauseAllowed)
-		if (pause->checkForPause())
-		{
-			pauseAllowed = false;
-			return true;
-		}
-
 	if (!pauseAllowed)
 		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		{
 			pauseAllowed = true;
-	return false;
+			return false;
+		}
+
+	switch (pause->checkForPause())
+	{
+	case 0:
+		return false;
+		break;
+	case 1:
+		pauseAllowed = false;
+		return 1;
+		break;
+	case 2:
+		return 2;
+		break;
+	}
 }
 
 GameApp::GameApp(sf::RenderWindow* window,int statringLevel): window(window)
 {
-	this->pause = new PauseMenu(window);
+	this->pause = new PauseMenu(window, &score, &level, &clearedLines);
 	this->tileTexture.loadFromFile("resources/images/Tile.png");
 	this->gameOverTexture.loadFromFile("resources/images/GameOver.png");
 	this->gameOverSprite.setTexture(this->gameOverTexture);
@@ -126,9 +135,11 @@ void GameApp::wait(float time, Tetromino& tet, GhostTetromino& gh, NextTetromino
 	while (window->isOpen())
 	{
 		closingWindowEvent(window);
-		displayGame(tet, gh, nx, linesToClear);
+		drawGame(tet, gh, nx, linesToClear);
 
-		text.setString(std::to_string((int)std::round(time)));
+		int i = std::round(time);
+
+ 		text.setString(std::to_string(i));
 		window->draw(text);
 		window->display();
 
@@ -363,16 +374,20 @@ void GameApp::endGame(sf::Sprite& sprite)
 	closingWindowEvent(window);
 }
 
-void GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino, std::vector<int>& linesToClear)
+bool GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino, std::vector<int>& linesToClear)
 {
 	if (gameOverbool)
 	{
 		endGame(gameOverSprite);
-		return;
+		return true;
 	}
 
-	if (pauseManagement())
-		wait(5, tetromino, ghostTetromino, nextTetromino, linesToClear);
+	unsigned char c = pauseManagement();
+
+	if (c == 1)
+		wait(3, tetromino, ghostTetromino, nextTetromino, linesToClear);
+	else if (c == 2)
+		return false;
 
 	closingWindowEvent(window);
 
@@ -385,9 +400,10 @@ void GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, N
 	}
 	else
 		animationManager(linesToClear);
+	return true;
 }
 
-void GameApp::displayGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino, std::vector<int>& linesToClear)
+void GameApp::drawGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino, std::vector<int>& linesToClear)
 {
 	if (gameOverbool)
 	{
@@ -427,8 +443,9 @@ int GameApp::run()
 
 	while (window->isOpen())
 	{
-		updateGame(tetromino, ghostTetromino, nextTetromino, linesToClear);
-		displayGame(tetromino, ghostTetromino, nextTetromino, linesToClear);		
+		if(!updateGame(tetromino, ghostTetromino, nextTetromino, linesToClear))
+			return this->score;
+		drawGame(tetromino, ghostTetromino, nextTetromino, linesToClear);		
 		manageTimers();	
 
 		window->display();
