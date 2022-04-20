@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <array>
+#include <string>
 #include <SFML/Graphics.hpp>
 
 #include <random>
@@ -23,7 +24,7 @@ class GameApp {
 	sf::Texture gameOverTexture;
 	sf::Sprite gameOverSprite;
 	PauseMenu* pause;
-	void pauseManagement();
+	bool pauseManagement();
 
 	float dropTime = 0.9f;			void dropTimeReset();
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }
@@ -41,10 +42,8 @@ class GameApp {
 	int linesUntilTransition = 0;
 	int score = 0;
 
-public:
-	GameApp(sf::RenderWindow*, int statringLevel = 0);
-	~GameApp();
-
+	//Waits for a given time and displays the timer.
+	void wait(float time, Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear);
 	//Manages all tetromino movement based on user's input.
 	void tetromnoMovement(Tetromino&);
 	//Manages tetromino falling without user interaction. Updates tetromino if it falls to the end. Returns true if the tetromino hit the ground.
@@ -67,10 +66,11 @@ public:
 	void updateGame(Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear);
 	void displayGame(Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear);
 	void manageTimers();
-
-	int run();
-
 	void setUpSC();
 	void transtionLevel();
 	int scoreIncrease(unsigned char);
+public:
+	GameApp(sf::RenderWindow*, int statringLevel = 0);
+	~GameApp();	
+	int run();
 };

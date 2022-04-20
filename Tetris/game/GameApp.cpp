@@ -59,15 +59,19 @@ void prepareVector(std::vector<int>& v)
 	}
 }
 
-void GameApp::pauseManagement()
+bool GameApp::pauseManagement()
 {
 	if (pauseAllowed)
 		if (pause->checkForPause())
+		{
 			pauseAllowed = false;
+			return true;
+		}
 
 	if (!pauseAllowed)
 		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			pauseAllowed = true;
+	return false;
 }
 
 GameApp::GameApp(sf::RenderWindow* window,int statringLevel): window(window)
@@ -107,6 +111,31 @@ GameApp::~GameApp()
 	delete windowPosition;
 	delete matrix;
 	delete pause;
+}
+
+void GameApp::wait(float time, Tetromino& tet, GhostTetromino& gh, NextTetromino& nx, std::vector<int>& linesToClear)
+{
+	sf::Font font;
+	sf::Text text;
+	font.loadFromFile("resources/images/slkscr.ttf");
+	text.setCharacterSize(600);
+	text.setFont(font);
+	text.setPosition((*windowPosition)[5][0].getPosition());
+	text.setStyle(sf::Text::Bold);
+
+	while (window->isOpen())
+	{
+		closingWindowEvent(window);
+		displayGame(tet, gh, nx, linesToClear);
+
+		text.setString(std::to_string((int)std::round(time)));
+		window->draw(text);
+		window->display();
+
+		time -= DeltaTime::getInstance().getDT();
+		if (time <= 0.f)
+			return;
+	}
 }
 
 void GameApp::tetromnoMovement(Tetromino& tetromino)
@@ -342,7 +371,8 @@ void GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, N
 		return;
 	}
 
-	pauseManagement();
+	if (pauseManagement())
+		wait(5, tetromino, ghostTetromino, nextTetromino, linesToClear);
 
 	closingWindowEvent(window);
 
@@ -363,12 +393,11 @@ void GameApp::displayGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, 
 	{
 		return;
 	}
-	(*window).draw(BackgroundManager::getInstance());
+	window->draw(BackgroundManager::getInstance());
 	drawBoard();
 	drawTetromino(tetromino, ghostTetromino, nextTetromino);
-	(*window).draw(TextManager::getInstance());
+	window->draw(TextManager::getInstance());
 	Animation::getInstance().display(*window, linesToClear);
-	(*window).display();
 }
 
 void GameApp::manageTimers()
@@ -401,6 +430,8 @@ int GameApp::run()
 		updateGame(tetromino, ghostTetromino, nextTetromino, linesToClear);
 		displayGame(tetromino, ghostTetromino, nextTetromino, linesToClear);		
 		manageTimers();	
+
+		window->display();
 
 		fps.update();
 		std::cout << fps.getFPS() << std::endl;

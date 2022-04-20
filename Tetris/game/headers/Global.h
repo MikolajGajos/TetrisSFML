@@ -30,7 +30,6 @@ public:
 		static DeltaTime instance;
 		return instance;
 	}
-
 	float getDT() { return dt; }
 	void update() { this->dt = clock.restart().asSeconds(); }
 };
