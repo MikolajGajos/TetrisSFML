@@ -24,7 +24,7 @@ class GameApp {
 	sf::Texture gameOverTexture;
 	sf::Sprite gameOverSprite;
 	PauseMenu* pause;
-	unsigned char pauseManagement();
+	PauseOutput pauseManagement();
 
 	float dropTime = 0.9f;			void dropTimeReset();
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }

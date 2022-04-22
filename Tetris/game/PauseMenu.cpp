@@ -9,56 +9,9 @@ PauseMenu::PauseMenu(sf::RenderWindow* window, int* score, int* level, int* line
 	this->texture.loadFromFile("resources/images/PauseMenu.png");
 	this->backGround.setTexture(texture);
 
-	this->resume.setSize({ 410,120 });
-	this->resume.setPosition(250, 180);
-	this->exit.setSize({ 410,120 });
-	this->exit.setPosition(250, 380);
-}
-
-unsigned char PauseMenu::checkForPause()
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-	{
-		check = false;	
-		return pause();
-	}
-	return 0;
-}
-
-unsigned char PauseMenu::checkForEnd()
-{
-	if (!escapeAllowed)
-	{
-		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			escapeAllowed = true;
-	}
-	else
-	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-		{
-			escapeAllowed = false;
-			return 1;
-		}
-	}
-	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-	{
-		switch (whatSelected)
-		{
-		case 0:
-			return 1;
-		case 1:
-			return 2;
-		}
-	}
-	return 0;
-}
-
-void PauseMenu::displayText()
-{
-	window->draw(scoreText);
-	window->draw(linesText);
-	window->draw(levelText);
+	resume.set(0, 250, 180, 410, 120);
+	exit.set(1, 250, 380, 410, 120);
+	buttons.set({ resume,exit });
 }
 
 void PauseMenu::setText()
@@ -84,35 +37,58 @@ void PauseMenu::updateText()
 	this->linesText.setString("lines: " + std::to_string(*lines));
 }
 
-void PauseMenu::manageButtons()
+PauseOutput PauseMenu::checkForPause()
 {
-	if (!changeAllowed)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 	{
-		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-			changeAllowed = true;
-		return;
-	}	
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		changeAllowed = false;
-		whatSelected = !whatSelected;
+		check = false;	
+		return pause();
 	}
-
-	switch (whatSelected)
-	{
-	case 0:
-		resume.setFillColor(sf::Color::Red);
-		exit.setFillColor(sf::Color::White);
-		break;
-	case 1:
-		resume.setFillColor(sf::Color::White);
-		exit.setFillColor(sf::Color::Red);
-		break;
-	}
+	return PauseOutput::noPause;
 }
 
-unsigned char PauseMenu::pause()
+bool PauseMenu::checkForEnd()
+{
+	if (!escapeAllowed)
+	{
+		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			escapeAllowed = true;
+	}
+	else
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		{
+			escapeAllowed = false;
+			return false;
+		}
+	}
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+	{
+		return true;
+	}
+	else if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		if (buttons.mouseIntersects(*window))
+			return true;
+	}
+	return false;
+}
+
+void PauseMenu::manageButtons()
+{
+	buttons.update(*window);
+}
+
+PauseOutput PauseMenu::getPressedButton()
+{
+	if (buttons.getSelectedButton() == resume)
+		return PauseOutput::resume;
+	else
+		return PauseOutput::exit;
+}
+
+PauseOutput PauseMenu::pause()
 {
 	updateText();
 
@@ -123,21 +99,26 @@ unsigned char PauseMenu::pause()
 		if (event.type == sf::Event::Closed)
 			(*window).close();
 
+		if (checkForEnd())
+			return getPressedButton();
+
 		manageButtons();
 
-		display();
-		
-		unsigned char c = checkForEnd();
-		if (c != 0)
-			return c;
+		display();		
 	}
+}
+
+void PauseMenu::displayText()
+{
+	window->draw(scoreText);
+	window->draw(linesText);
+	window->draw(levelText);
 }
 
 void PauseMenu::display()
 {
 	window->clear(sf::Color::Black);
-	window->draw(resume);
-	window->draw(exit);
+	window->draw(buttons);
 	window->draw(this->backGround);
 	displayText();
 	window->display();

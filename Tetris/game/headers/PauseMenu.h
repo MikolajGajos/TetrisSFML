@@ -1,5 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Button.h"
+
+enum class PauseOutput
+{
+	noPause, resume, exit
+};
 
 class PauseMenu
 {
@@ -16,23 +22,24 @@ class PauseMenu
 	sf::Texture texture;
 	sf::Sprite backGround;
 
-	sf::RectangleShape resume;
-	sf::RectangleShape exit;
-	bool whatSelected = 0;
+	Button resume;
+	Button exit;
+	ButtonManager buttons;
 	bool changeAllowed = true;
 	bool escapeAllowed = false;
 
 private:
-	unsigned char checkForEnd();
-	void displayText();
 	void setText();
 	void updateText();
+	bool checkForEnd();
 	void manageButtons();
-	unsigned char pause();
+	PauseOutput getPressedButton();
+	PauseOutput pause();
+	void displayText();
 	void display();
 
 public:
 	PauseMenu(sf::RenderWindow*, int* score, int* level, int* lines);
 
-	unsigned char checkForPause();
+	PauseOutput checkForPause();
 };

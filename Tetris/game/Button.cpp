@@ -7,6 +7,13 @@ Button::Button(int id, int posX, int posY, int sizeX, int sizeY)
 	this->id = id;
 }
 
+void Button::set(int id, int posX, int posY, int sizeX, int sizeY)
+{
+	this->buttonShape.setPosition({ (float)posX,(float)posY });
+	this->buttonShape.setSize({ (float)sizeX, (float)sizeY });
+	this->id = id;
+}
+
 int Button::getID() const
 {
 	return id;
@@ -62,6 +69,18 @@ ButtonManager::ButtonManager(std::initializer_list<Button> li)
 	this->buttonArray[0].select();
 }
 
+void ButtonManager::set(std::initializer_list<Button> li)
+{
+	this->buttonArray = new Button[li.size()];
+	this->arraySize = li.size();
+	for (auto& but : li)
+	{
+		this->buttonArray[but.getID()] = but;
+	}
+	this->selectedButton = &this->buttonArray[0];
+	this->buttonArray[0].select();
+}
+
 ButtonManager::~ButtonManager()
 {
 	delete[] buttonArray;
@@ -101,6 +120,13 @@ void ButtonManager::update(sf::RenderWindow& window)
 void ButtonManager::selectButton(Button& but)
 {
 	this->selectedButton = &but;
+}
+
+bool ButtonManager::mouseIntersects(sf::RenderWindow& window)
+{
+	if (getSelectedButton().mouseIntersection(window))
+		return true;
+	return false;
 }
 
 Button ButtonManager::getSelectedButton()

@@ -59,28 +59,16 @@ void prepareVector(std::vector<int>& v)
 	}
 }
 
-unsigned char GameApp::pauseManagement()
+PauseOutput GameApp::pauseManagement()
 {
 	if (!pauseAllowed)
 		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		{
 			pauseAllowed = true;
-			return false;
+			return PauseOutput::noPause;
 		}
 
-	switch (pause->checkForPause())
-	{
-	case 0:
-		return false;
-		break;
-	case 1:
-		pauseAllowed = false;
-		return 1;
-		break;
-	case 2:
-		return 2;
-		break;
-	}
+	return pause->checkForPause();
 }
 
 GameApp::GameApp(sf::RenderWindow* window,int statringLevel): window(window)
@@ -134,6 +122,11 @@ void GameApp::wait(float time, Tetromino& tet, GhostTetromino& gh, NextTetromino
 
 	while (window->isOpen())
 	{
+		DeltaTime::getInstance().update();
+		time -= DeltaTime::getInstance().getDT();
+		if (time <= 0.f)
+			return;
+
 		closingWindowEvent(window);
 		drawGame(tet, gh, nx, linesToClear);
 
@@ -143,10 +136,6 @@ void GameApp::wait(float time, Tetromino& tet, GhostTetromino& gh, NextTetromino
 		window->draw(text);
 		window->display();
 
-		time -= DeltaTime::getInstance().getDT();
-		DeltaTime::getInstance().update();
-		if (time <= 0.f)
-			return;
 	}
 }
 
@@ -382,12 +371,14 @@ bool GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, N
 		return true;
 	}
 
-	unsigned char c = pauseManagement();
-
-	if (c == 1)
+	switch (pauseManagement())
+	{
+	case PauseOutput::resume:
 		wait(3, tetromino, ghostTetromino, nextTetromino, linesToClear);
-	else if (c == 2)
+		break;
+	case PauseOutput::exit:
 		return false;
+	}
 
 	closingWindowEvent(window);
 

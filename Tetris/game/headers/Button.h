@@ -11,6 +11,7 @@ class Button : public sf::Drawable
 public:
 	Button() {};
 	Button(int id, int posX, int posY, int sizeX, int sizeY);
+	void set(int id, int posX, int posY, int sizeX, int sizeY);
 
 	int getID() const;
 	void select();
@@ -31,14 +32,19 @@ class ButtonManager : public sf::Drawable
 	Button* selectedButton;
 	bool legalChange = true;
 
-public:
-	ButtonManager(std::initializer_list<Button> li);
-	~ButtonManager();
-
-	void update(sf::RenderWindow& window);
+private:
 	void selectButton(Button& but);
-	Button getSelectedButton();
 	void selectNext();
 	void selectPrevoius();
+
+public:
+	ButtonManager() {};
+	ButtonManager(std::initializer_list<Button> li);
+	void set(std::initializer_list<Button> li);
+	~ButtonManager();
+
+	bool mouseIntersects(sf::RenderWindow& window);
+	Button getSelectedButton();
+	void update(sf::RenderWindow& window);
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 };
