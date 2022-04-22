@@ -1,5 +1,4 @@
 #include "headers/PauseMenu.h"
-#include <iostream>
 
 PauseMenu::PauseMenu(sf::RenderWindow* window, int* score, int* level, int* lines) : window(window)
 {

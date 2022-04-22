@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game\Animation.cpp" />
+    <ClCompile Include="game\Button.cpp" />
     <ClCompile Include="game\Cell.cpp" />
     <ClCompile Include="game\GameApp.cpp" />
     <ClCompile Include="game\PauseMenu.cpp" />
@@ -33,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\headers\Animation.h" />
+    <ClInclude Include="game\headers\Button.h" />
     <ClInclude Include="game\headers\Cell.h" />
     <ClInclude Include="game\headers\GameApp.h" />
     <ClInclude Include="game\headers\Global.h" />

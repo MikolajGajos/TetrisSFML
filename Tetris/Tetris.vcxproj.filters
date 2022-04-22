@@ -38,6 +38,9 @@
     <Filter Include="Game\Utility\_PauseMenu">
       <UniqueIdentifier>{4b5eca62-a030-4912-87ce-1b3ffcc8aa84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Buttons">
+      <UniqueIdentifier>{b06ab708-899a-4c9a-9178-35ebe9a12573}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game\Animation.cpp">
@@ -73,6 +76,9 @@
     <ClCompile Include="game\PauseMenu.cpp">
       <Filter>Game\Utility\_PauseMenu</Filter>
     </ClCompile>
+    <ClCompile Include="game\Button.cpp">
+      <Filter>Buttons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\headers\Animation.h">
@@ -101,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="game\headers\PauseMenu.h">
       <Filter>Game\Utility\_PauseMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="game\headers\Button.h">
+      <Filter>Buttons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

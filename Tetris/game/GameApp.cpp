@@ -144,6 +144,7 @@ void GameApp::wait(float time, Tetromino& tet, GhostTetromino& gh, NextTetromino
 		window->display();
 
 		time -= DeltaTime::getInstance().getDT();
+		DeltaTime::getInstance().update();
 		if (time <= 0.f)
 			return;
 	}
@@ -369,7 +370,6 @@ void GameApp::endGame(sf::Sprite& sprite)
 		}
 	}
 	window->draw(sprite);
-	window->display();
 
 	closingWindowEvent(window);
 }
