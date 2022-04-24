@@ -71,7 +71,7 @@ PauseOutput GameApp::pauseManagement()
 	return pause->checkForPause();
 }
 
-GameApp::GameApp(sf::RenderWindow* window,int statringLevel): window(window)
+GameApp::GameApp(sf::RenderWindow* window, int statringLevel) : window(window)
 {
 	for (unsigned char i = 0; i < (*windowPosition).size(); i++)
 	{
@@ -96,6 +96,12 @@ GameApp::GameApp(sf::RenderWindow* window,int statringLevel): window(window)
 	this->gameText.set(*windowPosition, this->clearedLines, this->level, this->score);
 	this->gameSound.playBackgroundMusic();
 	this->gameAnimation = new Animation(*matrix, this->animationTime);
+
+	this->nextTetromino = new NextTetromino(getRandomShape(random()), windowPosition);
+	this->tetromino = new Tetromino(matrix);
+	this->tetromino->reset(nextTetromino->getShape());
+	this->ghostTetromino = new GhostTetromino(matrix);
+	this->ghostTetromino->reset(*tetromino);
 }
 
 GameApp::~GameApp()
@@ -104,9 +110,12 @@ GameApp::~GameApp()
 	delete matrix;
 	delete pause;
 	delete gameAnimation;
+	delete tetromino;
+	delete ghostTetromino;
+	delete nextTetromino;
 }
 
-void GameApp::wait(float time, Tetromino& tet, GhostTetromino& gh, NextTetromino& nx, std::vector<int>& linesToClear)
+void GameApp::wait(float time)
 {
 	sf::Font font;
 	sf::Text text;
@@ -121,7 +130,7 @@ void GameApp::wait(float time, Tetromino& tet, GhostTetromino& gh, NextTetromino
 		DeltaTime::getInstance().update();		
 
 		closingWindowEvent(window);
-		drawGame(tet, gh, nx, linesToClear);
+		drawGame();
 
 		int i = std::round(time);
 
@@ -135,19 +144,19 @@ void GameApp::wait(float time, Tetromino& tet, GhostTetromino& gh, NextTetromino
 	}
 }
 
-void GameApp::tetromnoMovement(Tetromino& tetromino)
+void GameApp::tetromnoMovement()
 {	
 	if (rotationAllowed)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
 		{
-			tetromino.rotate(true);
+			tetromino->rotate(true);
 			rotationAllowed = false;
 			gameSound.play(Sounds::rotation);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 		{
-			tetromino.rotate(false);
+			tetromino->rotate(false);
 			rotationAllowed = false;
 			gameSound.play(Sounds::rotation);
 		}
@@ -162,13 +171,13 @@ void GameApp::tetromnoMovement(Tetromino& tetromino)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
-			tetromino.moveLeft();
+			tetromino->moveLeft();
 			moveTimeCooldownReset();
 			gameSound.play(Sounds::moveSound);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
-			tetromino.moveRight();
+			tetromino->moveRight();
 			moveTimeCooldownReset();
 			gameSound.play(Sounds::moveSound);
 		}
@@ -182,31 +191,31 @@ void GameApp::tetromnoMovement(Tetromino& tetromino)
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && hardDropCooldown <= 0.f)
 	{
-		tetromino.hardDrop();
+		tetromino->hardDrop();
 		hardDropCooldownReset();
 		this->dropTime = 0.f;
 		gameSound.play(Sounds::hardDrop);
 	}
 }
 
-bool GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino)
+bool GameApp::fallingTetromino()
 {
 	if (dropTime > 0.f)
 		return false;
 
-	if (tetromino.update()) //true == at the end
+	if (tetromino->update()) //true == at the end
 	{
-		tetromino.updateMatrix();
-		tetromino.reset(nextTetromino.getShape());
+		tetromino->updateMatrix();
+		tetromino->reset(nextTetromino->getShape());
 
-		if (this->gameOver(tetromino)) //check if tetrmino can spawn
+		if (this->gameOver()) //check if tetrmino can spawn
 		{
 			this->gameOverbool = true;
 			return false;
 		}
 
-		nextTetromino.reset(getShape(random()));
-		ghostTetromino.reset(tetromino);
+		nextTetromino->reset(getRandomShape(random()));
+		ghostTetromino->reset(*tetromino);
 		dropTimeReset();
 		return true;
 	}
@@ -214,7 +223,7 @@ bool GameApp::fallingTetromino(Tetromino& tetromino, GhostTetromino& ghostTetrom
 	return false;
 }
 
-std::vector<int> GameApp::fullLines()
+void GameApp::fullLines()
 {
 	std::vector<int> v;
 	//loop begins from bottom
@@ -241,12 +250,15 @@ std::vector<int> GameApp::fullLines()
 			}
 
 			v.push_back(y);
-			inAnimation = true;
 			gameSound.play(Sounds::lineCleared);
 		}
 			
 	}
-	return v;
+	if (!v.empty())
+	{
+		gameAnimation->display(window, v);
+		clearLines(v);
+	}	
 }
 
 void GameApp::clearLines(std::vector<int>& linesNumber)
@@ -285,19 +297,6 @@ void GameApp::clearLines(std::vector<int>& linesNumber)
 	gameText.updateText();
 }
 
-void GameApp::animationManager(std::vector<int>& linesNumber)
-{
-	animationTime -= DeltaTime::getInstance().getDT();
-	gameAnimation->update();
-	if (animationTime < 0.f)
-	{
-		inAnimation = false;
-		animationTimeReset();
-		gameAnimation->reset();
-		clearLines(linesNumber);
-	}
-}
-
 void GameApp::drawBoard()
 {
 	for (unsigned char i = 0; i < (*matrix).size(); i++)
@@ -312,17 +311,17 @@ void GameApp::drawBoard()
 	}
 }
 
-void GameApp::drawTetromino(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino)
+void GameApp::drawTetromino()
 {
 	if (gameOverbool)
 		return;
 
-	tetromino.display(*window);
-	ghostTetromino.display(*window);
-	nextTetromino.display(*window);
+	tetromino->display(*window);
+	ghostTetromino->display(*window);
+	nextTetromino->display(*window);
 }
 
-bool GameApp::gameOver(Tetromino& tetromino)
+bool GameApp::gameOver()
 {
 	for (unsigned char i = 0; i < COLUMNS; i++)
 	{
@@ -354,11 +353,10 @@ void GameApp::endGame()
 	window->draw(gameText);
 	drawBoard();
 	background.displayGameOver(window);
-
 	closingWindowEvent(window);
 }
 
-bool GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino, std::vector<int>& linesToClear)
+bool GameApp::updateGame()
 {
 	if (gameOverbool)
 	{
@@ -369,7 +367,7 @@ bool GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, N
 	switch (pauseManagement())
 	{
 	case PauseOutput::resume:
-		wait(3.5f, tetromino, ghostTetromino, nextTetromino, linesToClear);
+		wait(3.5f);
 		break;
 	case PauseOutput::exit:
 		return false;
@@ -377,19 +375,15 @@ bool GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, N
 
 	closingWindowEvent(window);
 
-	if (!inAnimation)
-	{
-		tetromnoMovement(tetromino);
-		ghostTetromino.updateGhost(tetromino);
-		if (fallingTetromino(tetromino, ghostTetromino, nextTetromino))
-			linesToClear = fullLines();
-	}
-	else
-		animationManager(linesToClear);
+	tetromnoMovement();
+	ghostTetromino->updateGhost(*tetromino);
+	if (fallingTetromino())
+		fullLines();
+
 	return true;
 }
 
-void GameApp::drawGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, NextTetromino& nextTetromino, std::vector<int>& linesToClear)
+void GameApp::drawGame()
 {
 	if (gameOverbool)
 	{
@@ -397,9 +391,9 @@ void GameApp::drawGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, Nex
 	}
 	background.displayBackground(window);
 	drawBoard();
-	drawTetromino(tetromino, ghostTetromino, nextTetromino);
+	drawTetromino();
 	window->draw(gameText);
-	gameAnimation->display(window, linesToClear);
+	window->display();
 }
 
 void GameApp::manageTimers()
@@ -417,21 +411,14 @@ void GameApp::manageTimers()
 
 int GameApp::run()
 {
-	Tetromino tetromino(getShape(random()), matrix);
-	GhostTetromino ghostTetromino(tetromino);
-	NextTetromino nextTetromino(getShape(random()), windowPosition);
-	std::vector<int> linesToClear;
-
 	FPS fps;
 
 	while (window->isOpen())
 	{
-		if(!updateGame(tetromino, ghostTetromino, nextTetromino, linesToClear))
+		if(!updateGame())
 			return this->score;
-		drawGame(tetromino, ghostTetromino, nextTetromino, linesToClear);		
+		drawGame();		
 		manageTimers();	
-
-		window->display();
 
 		fps.update();
 		std::cout << fps.getFPS() << std::endl;

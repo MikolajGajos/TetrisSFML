@@ -20,9 +20,8 @@ public:
 	std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix;
 
 public:
-	
 	Tetromino() {};
-	Tetromino(const TetrominoShape&, std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
+	Tetromino(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
 
 	//Moves tetromino one line down. Retruns true if the move was valid.
 	bool update();
@@ -63,7 +62,7 @@ public:
 class GhostTetromino : public Tetromino
 {
 public:
-	GhostTetromino(Tetromino&);
+	GhostTetromino(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
 	//Updates ghost based on current tetromino's position.
 	void updateGhost(Tetromino&);
 	//Updates ghost's shape on current tetromino.

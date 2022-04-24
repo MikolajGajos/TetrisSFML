@@ -10,15 +10,8 @@ void setStatringPosition(std::array<sf::Vector2i, 4>& tiles)
 	}
 }
 
-Tetromino::Tetromino(const TetrominoShape& tShape, std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix)
+Tetromino::Tetromino(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix)
 {
-	this->tShape = tShape;
-	this->tiles = spawnTetromino(tShape);
-	setStatringPosition(this->tiles);
-	this->rotation = 0;
-	this->setColor();
-	this->cellShape.setFillColor(this->getColor());
-
 	this->matrix = matrix;
 	this->texture.loadFromFile("resources/images/Tile.png");
 	this->cellShape.setTexture(&texture);
@@ -184,15 +177,11 @@ sf::Color Tetromino::getColor()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-GhostTetromino::GhostTetromino(Tetromino& tetromino)
+GhostTetromino::GhostTetromino(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix)
 {
-	this->tShape = tetromino.getShape();
-	this->setColor();
-	this->tiles = spawnTetromino(this->tShape);
-	this->matrix = tetromino.matrix;
+	this->matrix = matrix;
 	this->texture.loadFromFile("resources/images/GhostTile.png");
 	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
-	this->cellShape.setFillColor(this->getColor());
 	this->cellShape.setTexture(&texture);
 }
 

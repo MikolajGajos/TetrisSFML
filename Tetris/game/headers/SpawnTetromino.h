@@ -15,6 +15,6 @@ enum class TetrominoColor
 };
 
 //Gives tetromino a shape based on the the number. The tetromino's shape is defined by the enum class.
-TetrominoShape getShape(unsigned char x);
+TetrominoShape getRandomShape(unsigned char x);
 
 std::array<sf::Vector2i, 4> spawnTetromino(const TetrominoShape& tShape);

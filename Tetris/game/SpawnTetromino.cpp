@@ -1,6 +1,6 @@
 #include "headers/SpawnTetromino.h"
 
-TetrominoShape getShape(unsigned char x)
+TetrominoShape getRandomShape(unsigned char x)
 {
 	return TetrominoShape(x);
 }
