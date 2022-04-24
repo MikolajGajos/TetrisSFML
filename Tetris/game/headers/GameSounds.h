@@ -7,7 +7,7 @@ enum class Sounds
 	rotation, hardDrop, lineCleared, moveSound, softDrop, transition, gameOver
 };
 
-class SoundManager
+class GameSound
 {
 	sf::SoundBuffer rotation;
 	sf::SoundBuffer move;
@@ -22,7 +22,7 @@ class SoundManager
 
 
 public:
-	SoundManager();
+	GameSound();
 
 	void play(Sounds sound);
 	void playBackgroundMusic();

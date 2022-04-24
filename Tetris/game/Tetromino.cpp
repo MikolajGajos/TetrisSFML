@@ -12,7 +12,7 @@ void setStatringPosition(std::array<sf::Vector2i, 4>& tiles)
 
 Tetromino::Tetromino(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix)
 {
-	this->matrix = matrix;
+	this->gameBoard = matrix;
 	this->texture.loadFromFile("resources/images/Tile.png");
 	this->cellShape.setTexture(&texture);
 	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
@@ -23,10 +23,10 @@ bool Tetromino::update()
 	//checks if all minos can be moved down
 	for (auto& tile : this->tiles)
 	{
-		if (tile.y + 1 == (*matrix)[0].size())
+		if (tile.y + 1 == (*gameBoard)[0].size())
 			return true;
 
-		if ((*matrix)[tile.x][tile.y + 1].isFull() == true)
+		if ((*gameBoard)[tile.x][tile.y + 1].isFull() == true)
 			return true;
 	}
 
@@ -41,8 +41,8 @@ void Tetromino::updateMatrix()
 {
 	for (auto& tile : this->tiles)
 	{
-		(*matrix)[tile.x][tile.y].setFull(true);
-		(*matrix)[tile.x][tile.y].setColor(this->getColor());
+		(*gameBoard)[tile.x][tile.y].setFull(true);
+		(*gameBoard)[tile.x][tile.y].setColor(this->getColor());
 	}
 }
 
@@ -62,7 +62,7 @@ void Tetromino::moveLeft()
 	{
 		if (tile.x - 1 < 0)
 			return;
-		if ((*matrix)[tile.x - 1][tile.y].isFull() == true)
+		if ((*gameBoard)[tile.x - 1][tile.y].isFull() == true)
 			return;
 	}
 	for (auto& mino : this->tiles)
@@ -75,9 +75,9 @@ void Tetromino::moveRight()
 {
 	for (auto& tile : this->tiles)
 	{
-		if (tile.x + 1 > (*matrix).size() - 1)
+		if (tile.x + 1 > (*gameBoard).size() - 1)
 			return;
-		if ((*matrix)[tile.x + 1][tile.y].isFull() == true)
+		if ((*gameBoard)[tile.x + 1][tile.y].isFull() == true)
 			return;
 	}
 	for (auto& mino : this->tiles)
@@ -137,7 +137,7 @@ void Tetromino::display(sf::RenderWindow& window)
 	{
 		if (tile.y >= 2)
 		{
-			cellShape.setPosition(CELL_SIZE * tile.x + (*matrix)[0][0].getPosition().x, tile.y * CELL_SIZE + (*matrix)[0][0].getPosition().y);
+			cellShape.setPosition(CELL_SIZE * tile.x + (*gameBoard)[0][0].getPosition().x, tile.y * CELL_SIZE + (*gameBoard)[0][0].getPosition().y);
 			window.draw(cellShape);
 		}		
 	}
@@ -177,9 +177,9 @@ sf::Color Tetromino::getColor()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-GhostTetromino::GhostTetromino(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix)
+GhostTetromino::GhostTetromino(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
 {
-	this->matrix = matrix;
+	this->gameBoard = gameBoard;
 	this->texture.loadFromFile("resources/images/GhostTile.png");
 	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
 	this->cellShape.setTexture(&texture);

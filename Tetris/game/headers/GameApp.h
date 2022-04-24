@@ -18,14 +18,14 @@
 class GameApp {
 
 	sf::RenderWindow* window;
-	std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix = new std::array<std::array<Cell, ROWS + 2>, COLUMNS>;
+	std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard = new std::array<std::array<Cell, ROWS + 2>, COLUMNS>;
 	std::array<std::array<sf::RectangleShape, 22>, 24>* windowPosition = new std::array<std::array<sf::RectangleShape, 22>, 24>;
 	
 	//game objects
 	GameBackground background;
 	PauseMenu* pause;
 	GameText gameText;
-	SoundManager gameSound;
+	GameSound gameSound;
 	Animation* gameAnimation;
 	Tetromino* tetromino;
 	GhostTetromino* ghostTetromino;
@@ -67,6 +67,7 @@ class GameApp {
 	void endGame();
 
 	bool updateGame();
+	void drawGame();
 	void manageTimers();
 	void setUpSC();
 	void transtionLevel();
@@ -75,5 +76,4 @@ public:
 	GameApp(sf::RenderWindow*, int statringLevel = 0);
 	~GameApp();	
 	int run();
-	void drawGame();
 };

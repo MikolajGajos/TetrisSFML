@@ -10,8 +10,7 @@ class Button : public sf::Drawable
 
 public:
 	Button() {};
-	Button(int id, int posX, int posY, int sizeX, int sizeY);
-	void set(int id, int posX, int posY, int sizeX, int sizeY);
+	Button(int id, sf::Vector2f position, sf::Vector2f size);
 
 	int getID() const;
 	void select();

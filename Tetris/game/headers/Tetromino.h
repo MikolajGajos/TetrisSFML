@@ -12,12 +12,11 @@ protected:
 	std::array<sf::Vector2i, 4> tiles;
 	TetrominoShape tShape;
 	TetrominoColor color;
-public: unsigned char rotation;
-
+	unsigned char rotation;
 	sf::RectangleShape cellShape;
 	sf::Texture texture;
 public:
-	std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix;
+	std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard;
 
 public:
 	Tetromino() {};

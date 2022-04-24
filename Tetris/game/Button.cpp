@@ -1,16 +1,9 @@
 #include "headers/Button.h"
 
-Button::Button(int id, int posX, int posY, int sizeX, int sizeY)
+Button::Button(int id, sf::Vector2f position, sf::Vector2f size)
 {
-	this->buttonShape.setPosition({ (float)posX,(float)posY });
-	this->buttonShape.setSize({ (float)sizeX, (float)sizeY });
-	this->id = id;
-}
-
-void Button::set(int id, int posX, int posY, int sizeX, int sizeY)
-{
-	this->buttonShape.setPosition({ (float)posX,(float)posY });
-	this->buttonShape.setSize({ (float)sizeX, (float)sizeY });
+	this->buttonShape.setPosition({ position });
+	this->buttonShape.setSize({ size });
 	this->id = id;
 }
 

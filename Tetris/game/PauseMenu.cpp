@@ -8,11 +8,16 @@ PauseMenu::PauseMenu(sf::RenderWindow* window, int* score, int* level, int* line
 	setText();
 	this->texture.loadFromFile("resources/images/PauseMenu.png");
 	this->backGround.setTexture(texture);
-
-	resume.set(0, 250, 180, 410, 120);
-	exit.set(1, 250, 380, 410, 120);
-	buttons.set({ resume,exit });
+	resume = new Button(0, sf::Vector2f(250, 180), sf::Vector2f(410, 120));
+	exit = new Button(1, sf::Vector2f(250, 380), sf::Vector2f(410, 120));
+	buttons.set({ *resume,*exit });
 	buttons.update(*window);
+}
+
+PauseMenu::~PauseMenu()
+{
+	delete resume;
+	delete exit;
 }
 
 void PauseMenu::setText()
@@ -60,7 +65,7 @@ bool PauseMenu::checkForEnd()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		{
 			escapeAllowed = false;
-			buttons.pressButton(resume);
+			buttons.pressButton(*resume);
 			return true;
 		}
 	}
@@ -84,7 +89,7 @@ void PauseMenu::manageButtons()
 
 PauseOutput PauseMenu::getPressedButton()
 {
-	if (buttons.getSelectedButton() == resume)
+	if (buttons.getSelectedButton() == *resume)
 		return PauseOutput::resume;
 	else
 		return PauseOutput::exit;

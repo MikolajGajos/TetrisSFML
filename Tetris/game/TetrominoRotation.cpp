@@ -36,7 +36,7 @@ bool Tetromino::legalRotation()
 	{
 		if (mino.x < COLUMNS && mino.x >= 0 && mino.y < ROWS && mino.y >= 0)
 		{
-			if ((*matrix)[mino.x][mino.y].isFull())
+			if ((*gameBoard)[mino.x][mino.y].isFull())
 				return false;
 		}
 		else

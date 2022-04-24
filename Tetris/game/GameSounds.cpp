@@ -1,6 +1,6 @@
 #include "headers/GameSounds.h"
 
-SoundManager::SoundManager()
+GameSound::GameSound()
 {
 	rotation.loadFromFile("resources/sounds/Rotate.wav");
 	move.loadFromFile("resources/sounds/MoveSound.wav");
@@ -15,7 +15,7 @@ SoundManager::SoundManager()
 	backgroundMusic.setLoop(true);
 }
 
-void SoundManager::play(Sounds sound)
+void GameSound::play(Sounds sound)
 {
 	switch (sound)
 	{
@@ -49,12 +49,12 @@ void SoundManager::play(Sounds sound)
 	}	
 }
 
-void SoundManager::playBackgroundMusic()
+void GameSound::playBackgroundMusic()
 {
 	backgroundMusic.play();
 }
 
-void SoundManager::stopBackgroundMusic()
+void GameSound::stopBackgroundMusic()
 {
 	backgroundMusic.stop();
 }

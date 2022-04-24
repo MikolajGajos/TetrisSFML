@@ -23,8 +23,8 @@ class PauseMenu
 	sf::Texture texture;
 	sf::Sprite backGround;
 
-	Button resume;
-	Button exit;
+	Button* resume;
+	Button* exit;
 	ButtonManager buttons;
 	bool changeAllowed = true;
 	bool escapeAllowed = false;
@@ -41,6 +41,7 @@ private:
 
 public:
 	PauseMenu(sf::RenderWindow*, int* score, int* level, int* lines);
+	~PauseMenu();
 
 	PauseOutput checkForPause();
 };
