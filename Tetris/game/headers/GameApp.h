@@ -10,9 +10,9 @@
 #include "Global.h"
 #include "Tetromino.h"
 #include "Cell.h"
-#include "TextManager.h"
+#include "TextAndBackground.h"
 #include "Animation.h"
-#include "SoundManager.h"
+#include "GameSounds.h"
 #include "PauseMenu.h"
 
 class GameApp {
@@ -20,11 +20,13 @@ class GameApp {
 	sf::RenderWindow* window;
 	std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix = new std::array<std::array<Cell, ROWS + 2>, COLUMNS>;
 	std::array<std::array<sf::RectangleShape, 22>, 24>* windowPosition = new std::array<std::array<sf::RectangleShape, 22>, 24>;
-	sf::Texture tileTexture;
-	sf::Texture gameOverTexture;
-	sf::Sprite gameOverSprite;
+	
+	//game objects
+	GameBackground background;
 	PauseMenu* pause;
-	PauseOutput pauseManagement();
+	GameText gameText;
+	SoundManager gameSound;
+	Animation* gameAnimation;
 
 	float dropTime = 0.9f;			void dropTimeReset();
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }
@@ -42,6 +44,7 @@ class GameApp {
 	int linesUntilTransition = 0;
 	int score = 0;
 
+	PauseOutput pauseManagement();
 	//Waits for a given time and displays the timer.
 	void wait(float time, Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear);
 	//Manages all tetromino movement based on user's input.
@@ -61,7 +64,7 @@ class GameApp {
 	//Checks if new tetromino is able to spawn.
 	bool gameOver(Tetromino&);
 	//Ends game when gameOver returns true
-	void endGame(sf::Sprite&);
+	void endGame();
 
 	bool updateGame(Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear);
 	void drawGame(Tetromino&, GhostTetromino&, NextTetromino&, std::vector<int>& linesToClear);

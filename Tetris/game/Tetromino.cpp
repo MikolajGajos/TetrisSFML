@@ -16,12 +16,13 @@ Tetromino::Tetromino(const TetrominoShape& tShape, std::array<std::array<Cell, R
 	this->tiles = spawnTetromino(tShape);
 	setStatringPosition(this->tiles);
 	this->rotation = 0;
-	this->setColor();	
+	this->setColor();
+	this->cellShape.setFillColor(this->getColor());
+
 	this->matrix = matrix;
 	this->texture.loadFromFile("resources/images/Tile.png");
-	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
-	this->cellShape.setFillColor(this->getColor());
 	this->cellShape.setTexture(&texture);
+	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
 }
 
 bool Tetromino::update()

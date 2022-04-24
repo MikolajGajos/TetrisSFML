@@ -8,7 +8,7 @@
 class Animation
 {
 	sf::Texture texture;
-	std::array<std::array<sf::Sprite, ROWS + 2>, COLUMNS> spriteMatrix;
+	std::array<std::array<sf::Sprite, ROWS + 2>, COLUMNS> animationBoard;
 	sf::IntRect currentTexture;
 	float animationTime;
 	float switchTime;		
@@ -16,18 +16,11 @@ class Animation
 private:
 	void textureChange();
 	void setSwitchTime();
-	Animation() {};
 
 public:
-	void set(const std::array<std::array<Cell, ROWS + 2>, COLUMNS>&, float animationTime);
-
-	static Animation& getInstance()
-	{
-		static Animation instance;
-		return instance;
-	}
+	Animation(const std::array<std::array<Cell, ROWS + 2>, COLUMNS>&, float animationTime);
 
 	void update();	
 	void reset();
-	void display(sf::RenderWindow&, std::vector<int>& linesToDisplay);
+	void display(sf::RenderWindow*, std::vector<int>& linesToDisplay);
 };

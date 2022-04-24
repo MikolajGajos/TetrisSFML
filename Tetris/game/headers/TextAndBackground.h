@@ -7,7 +7,7 @@
 
 #include "Global.h"
 
-class TextManager : public sf::Drawable
+class GameText : public sf::Drawable
 {
 	int* clearedLines;
 	int* score;
@@ -18,33 +18,27 @@ class TextManager : public sf::Drawable
 	sf::Text scoreText;
 	sf::Text nextTetrominoText;
 
-	TextManager();
 
 public:
-	static TextManager& getInstance()
-	{
-		static TextManager instance;
-		return instance;
-	}
+	GameText();
 	void set(std::array<std::array<sf::RectangleShape, 22>, 24>& matrix, int& clearedLines, int& level, int& score);
 	void updateText();
 
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 };
 
-class BackgroundManager : public sf::Drawable
+class GameBackground
 {
-	sf::RectangleShape backgroundShape;
 	sf::Texture backgroundTexture;
+	sf::Sprite backgroundSprite;
 
-	BackgroundManager();
+	sf::Texture gameOverTexture;
+	sf::Sprite gameOverSprite;
+
 
 public:
-	static BackgroundManager& getInstance()
-	{
-		static BackgroundManager instance;
-		return instance;
-	}
+	GameBackground();
 	
-	void draw(sf::RenderTarget&, sf::RenderStates) const override;
+	void displayBackground(sf::RenderWindow* window);
+	void displayGameOver(sf::RenderWindow* window);
 };

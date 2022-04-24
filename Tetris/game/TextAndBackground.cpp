@@ -1,4 +1,4 @@
-#include "headers/TextManager.h"
+#include "headers/TextAndBackground.h"
 
 std::string displayLL(int number)
 {
@@ -14,7 +14,7 @@ std::string displayScore(int number)
 	return os.str();
 }
 
-TextManager::TextManager()
+GameText::GameText()
 {
 	font.loadFromFile("resources/images/slkscr.ttf");
 
@@ -32,7 +32,7 @@ TextManager::TextManager()
 	nextTetrominoText.setString("next");
 }
 
-void TextManager::set(std::array<std::array<sf::RectangleShape, 22>, 24>& background, int& clearedLines, int& level, int& score)
+void GameText::set(std::array<std::array<sf::RectangleShape, 22>, 24>& background, int& clearedLines, int& level, int& score)
 {
 	this->level = &level;
 	this->score = &score;
@@ -46,7 +46,7 @@ void TextManager::set(std::array<std::array<sf::RectangleShape, 22>, 24>& backgr
 	updateText();
 }
 
-void TextManager::updateText()
+void GameText::updateText()
 {
 	std::ostringstream ssClenedLines;
 	ssClenedLines << "lines - " << displayLL(*this->clearedLines);
@@ -61,7 +61,7 @@ void TextManager::updateText()
 	this->levelText.setString(ssLevel.str());
 }
 
-void TextManager::draw(sf::RenderTarget& target, sf::RenderStates state) const
+void GameText::draw(sf::RenderTarget& target, sf::RenderStates state) const
 {
 	target.draw(this->clearedLinesText, state);
 	target.draw(this->levelText, state);
@@ -71,14 +71,21 @@ void TextManager::draw(sf::RenderTarget& target, sf::RenderStates state) const
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
-BackgroundManager::BackgroundManager()
+GameBackground::GameBackground()
 {
-	this->backgroundShape.setSize({ WINDOW_SIZE_X, WINDOW_SIZE_Y });
 	this->backgroundTexture.loadFromFile("resources/images/Background.png");
-	this->backgroundShape.setTexture(&backgroundTexture);
+	this->backgroundSprite.setTexture(backgroundTexture);
+	this->gameOverTexture.loadFromFile("resources/images/GameOver.png");
+	this->gameOverSprite.setTexture(gameOverTexture);
 }
 
-void BackgroundManager::draw(sf::RenderTarget& target, sf::RenderStates state) const
+void GameBackground::displayBackground(sf::RenderWindow* window)
 {
-	target.draw(this->backgroundShape);
+	window->draw(backgroundSprite);
 }
+
+void GameBackground::displayGameOver(sf::RenderWindow* window)
+{
+	window->draw(gameOverSprite);
+}
+

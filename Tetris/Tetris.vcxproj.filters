@@ -46,10 +46,10 @@
     <ClCompile Include="game\Animation.cpp">
       <Filter>Game\AnimationClass</Filter>
     </ClCompile>
-    <ClCompile Include="game\SoundManager.cpp">
+    <ClCompile Include="game\GameSounds.cpp">
       <Filter>Game\GameText&amp;Sound</Filter>
     </ClCompile>
-    <ClCompile Include="game\TextManager.cpp">
+    <ClCompile Include="game\TextAndBackground.cpp">
       <Filter>Game\GameText&amp;Sound</Filter>
     </ClCompile>
     <ClCompile Include="game\SpawnTetromino.cpp">
@@ -84,10 +84,10 @@
     <ClInclude Include="game\headers\Animation.h">
       <Filter>Game\AnimationClass</Filter>
     </ClInclude>
-    <ClInclude Include="game\headers\SoundManager.h">
+    <ClInclude Include="game\headers\GameSounds.h">
       <Filter>Game\GameText&amp;Sound\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="game\headers\TextManager.h">
+    <ClInclude Include="game\headers\TextAndBackground.h">
       <Filter>Game\GameText&amp;Sound\Headers</Filter>
     </ClInclude>
     <ClInclude Include="game\headers\SpawnTetromino.h">

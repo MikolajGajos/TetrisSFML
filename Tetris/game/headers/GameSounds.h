@@ -20,14 +20,9 @@ class SoundManager
 	sf::Sound transitionSound;
 	sf::Music backgroundMusic;
 
-	SoundManager();
 
 public:
-	static SoundManager& getInstance()
-	{
-		static SoundManager instance;
-		return instance;
-	}
+	SoundManager();
 
 	void play(Sounds sound);
 	void playBackgroundMusic();

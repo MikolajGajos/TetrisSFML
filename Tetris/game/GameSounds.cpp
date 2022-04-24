@@ -1,4 +1,4 @@
-#include "headers/SoundManager.h"
+#include "headers/GameSounds.h"
 
 SoundManager::SoundManager()
 {
