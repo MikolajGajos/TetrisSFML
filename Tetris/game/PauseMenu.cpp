@@ -12,6 +12,7 @@ PauseMenu::PauseMenu(sf::RenderWindow* window, int* score, int* level, int* line
 	resume.set(0, 250, 180, 410, 120);
 	exit.set(1, 250, 380, 410, 120);
 	buttons.set({ resume,exit });
+	buttons.update(*window);
 }
 
 void PauseMenu::setText()
@@ -59,7 +60,8 @@ bool PauseMenu::checkForEnd()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		{
 			escapeAllowed = false;
-			return false;
+			buttons.pressButton(resume);
+			return true;
 		}
 	}
 	
@@ -105,6 +107,7 @@ PauseOutput PauseMenu::pause()
 		manageButtons();
 
 		display();		
+		DeltaTime::getInstance().update();
 	}
 }
 

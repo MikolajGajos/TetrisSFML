@@ -122,10 +122,7 @@ void GameApp::wait(float time, Tetromino& tet, GhostTetromino& gh, NextTetromino
 
 	while (window->isOpen())
 	{
-		DeltaTime::getInstance().update();
-		time -= DeltaTime::getInstance().getDT();
-		if (time <= 0.f)
-			return;
+		DeltaTime::getInstance().update();		
 
 		closingWindowEvent(window);
 		drawGame(tet, gh, nx, linesToClear);
@@ -136,6 +133,9 @@ void GameApp::wait(float time, Tetromino& tet, GhostTetromino& gh, NextTetromino
 		window->draw(text);
 		window->display();
 
+		time -= DeltaTime::getInstance().getDT();
+		if (time <= 0.f)
+			return;
 	}
 }
 
@@ -306,7 +306,7 @@ void GameApp::drawBoard()
 {
 	for (unsigned char i = 0; i < (*matrix).size(); i++)
 	{
-		for (unsigned char j = 0; j < (*matrix)[i].size(); j++)
+		for (unsigned char j = 2; j < (*matrix)[i].size(); j++)
 		{
 			if ((*matrix)[i][j].isFull())
 			{				
@@ -334,6 +334,16 @@ bool GameApp::gameOver(Tetromino& tetromino)
 		{
 			SoundManager::getInstance().play(Sounds::gameOver);
 			SoundManager::getInstance().stopBackgroundMusic();
+			for (unsigned char i = 0; i < (*matrix).size(); i++)
+			{
+				for (unsigned char j = 2; j < (*matrix)[i].size(); j++)
+				{
+					if ((*matrix)[i][j].isFull())
+					{
+						(*matrix)[i][j].setColor(sf::Color(70, 70, 70));
+					}
+				}
+			}
 			return true;
 		}
 	}
@@ -346,18 +356,7 @@ void GameApp::endGame(sf::Sprite& sprite)
 	window->clear(sf::Color::Black);
 	window->draw(BackgroundManager::getInstance());
 	window->draw(TextManager::getInstance());
-	for (unsigned char i = 0; i < COLUMNS; i++)
-	{
-		for (unsigned char j = 2; j < matrix[0].size(); j++)
-		{
-			if ((*matrix)[i][j].isFull())
-			{
-				(*matrix)[i][j].setTexture(this->tileTexture);
-				(*matrix)[i][j].setColor(sf::Color(70, 70, 70, 255));
-				window->draw((*matrix)[i][j]);
-			}
-		}
-	}
+	drawBoard();
 	window->draw(sprite);
 
 	closingWindowEvent(window);
@@ -374,7 +373,7 @@ bool GameApp::updateGame(Tetromino& tetromino, GhostTetromino& ghostTetromino, N
 	switch (pauseManagement())
 	{
 	case PauseOutput::resume:
-		wait(3, tetromino, ghostTetromino, nextTetromino, linesToClear);
+		wait(3.5f, tetromino, ghostTetromino, nextTetromino, linesToClear);
 		break;
 	case PauseOutput::exit:
 		return false;

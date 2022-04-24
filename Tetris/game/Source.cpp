@@ -20,4 +20,25 @@ void main()
         }
         window.display();
     }
+
+    /*Button resume(0, 100, 50, 100, 50);
+    Button but(1, 100, 150, 100, 50);
+    Button exit(2, 100, 250, 100, 50);
+    Button nwm(3, 100, 350, 200, 50);
+    ButtonManager bbbb{ exit, resume, but, nwm };
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        (window).pollEvent(event);
+        if (event.type == sf::Event::Closed)
+            (window).close();
+
+        window.clear(sf::Color::Black);
+
+        bbbb.update(window);
+
+        window.draw(bbbb);
+        window.display();
+    }*/
 }

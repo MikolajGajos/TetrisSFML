@@ -129,6 +129,13 @@ bool ButtonManager::mouseIntersects(sf::RenderWindow& window)
 	return false;
 }
 
+void ButtonManager::pressButton(Button& but)
+{
+	selectedButton->unselect();
+	selectedButton = &but;
+	selectedButton->select();
+}
+
 Button ButtonManager::getSelectedButton()
 {
 	return *selectedButton;

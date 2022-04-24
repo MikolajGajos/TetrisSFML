@@ -44,6 +44,7 @@ public:
 	~ButtonManager();
 
 	bool mouseIntersects(sf::RenderWindow& window);
+	void pressButton(Button&);
 	Button getSelectedButton();
 	void update(sf::RenderWindow& window);
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
