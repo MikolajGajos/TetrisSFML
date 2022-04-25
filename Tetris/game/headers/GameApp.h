@@ -73,7 +73,8 @@ class GameApp {
 	void transtionLevel();
 	int scoreIncrease(unsigned char);
 public:
-	GameApp(sf::RenderWindow*, int statringLevel = 0);
+	GameApp(sf::RenderWindow*);
 	~GameApp();	
 	int run();
+	void setStartingLevel(unsigned char lvl) { this->level = lvl; }
 };

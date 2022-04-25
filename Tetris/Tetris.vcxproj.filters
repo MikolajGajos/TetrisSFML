@@ -79,6 +79,9 @@
     <ClCompile Include="game\Button.cpp">
       <Filter>Buttons</Filter>
     </ClCompile>
+    <ClCompile Include="menu\MenuClass.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\headers\Animation.h">
@@ -110,6 +113,9 @@
     </ClInclude>
     <ClInclude Include="game\headers\Button.h">
       <Filter>Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="menu\MenuClass.h">
+      <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

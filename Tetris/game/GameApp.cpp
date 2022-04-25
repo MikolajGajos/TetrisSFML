@@ -43,20 +43,20 @@ int random()
 	return distr(random_engine);
 }
 
-void closingWindowEvent(sf::RenderWindow* window)
-{
-	sf::Event event;
-	(*window).pollEvent(event);
-	if (event.type == sf::Event::Closed)
-		(*window).close();
-}
-
 void prepareVector(std::vector<int>& v)
 {
 	for (int i = 0; i < v.size(); i++)
 	{
 		v[i] += i;
 	}
+}
+
+void closingWindowEvent(sf::RenderWindow* window)
+{
+	sf::Event event;
+	(*window).pollEvent(event);
+	if (event.type == sf::Event::Closed)
+		(*window).close();
 }
 
 PauseOutput GameApp::pauseManagement()
@@ -71,7 +71,7 @@ PauseOutput GameApp::pauseManagement()
 	return pause->checkForPause();
 }
 
-GameApp::GameApp(sf::RenderWindow* window, int statringLevel) : window(window)
+GameApp::GameApp(sf::RenderWindow* window) : window(window)
 {
 	for (unsigned char i = 0; i < (*windowPosition).size(); i++)
 	{
@@ -90,11 +90,9 @@ GameApp::GameApp(sf::RenderWindow* window, int statringLevel) : window(window)
 			(*gameBoard)[i][j].setPosition({ CELL_SIZE * (i + offsetX), CELL_SIZE * (j + offsetY) });
 		}
 	}
-	this->level = statringLevel;
 	setUpSC();
 	this->pause = new PauseMenu(window, &score, &level, &clearedLines);
 	this->gameText.set(*windowPosition, this->clearedLines, this->level, this->score);
-	this->gameSound.playBackgroundMusic();
 	this->gameAnimation = new Animation(*gameBoard, this->animationTime);
 
 	this->nextTetromino = new NextTetromino(getRandomShape(random()), windowPosition);
@@ -368,6 +366,7 @@ bool GameApp::updateGame()
 		wait(3.5f);
 		break;
 	case PauseOutput::exit:
+		gameSound.stopBackgroundMusic();
 		return false;
 	}
 
@@ -410,11 +409,13 @@ void GameApp::manageTimers()
 int GameApp::run()
 {
 	FPS fps;
+	gameSound.playBackgroundMusic();
 
 	while (window->isOpen())
 	{
 		if(!updateGame())
 			return this->score;
+
 		drawGame();		
 		manageTimers();	
 

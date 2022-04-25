@@ -31,6 +31,7 @@
     <ClCompile Include="game\Tetromino.cpp" />
     <ClCompile Include="game\TetrominoRotation.cpp" />
     <ClCompile Include="game\TextAndBackground.cpp" />
+    <ClCompile Include="menu\MenuClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\headers\Animation.h" />
@@ -43,6 +44,7 @@
     <ClInclude Include="game\headers\SpawnTetromino.h" />
     <ClInclude Include="game\headers\Tetromino.h" />
     <ClInclude Include="game\headers\TextAndBackground.h" />
+    <ClInclude Include="menu\MenuClass.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
