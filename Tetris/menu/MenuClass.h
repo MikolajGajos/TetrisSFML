@@ -5,7 +5,7 @@
 
 enum class MenuOutput
 {
-	play, highscores, exit, noImput
+	play, highscores, options, exit, noImput
 };
 
 class Menu
@@ -14,6 +14,7 @@ class Menu
 	GameApp* game;
 	Button* play;
 	Button* highscores;
+	Button* options;
 	Button* exit;
 	ButtonManager buttons;
 	MenuOutput getPressedButton();

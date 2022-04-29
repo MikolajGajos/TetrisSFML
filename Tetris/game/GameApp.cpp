@@ -364,6 +364,7 @@ bool GameApp::updateGame()
 	{
 	case PauseOutput::resume:
 		wait(3.5f);
+		pauseAllowed = false;
 		break;
 	case PauseOutput::exit:
 		gameSound.stopBackgroundMusic();

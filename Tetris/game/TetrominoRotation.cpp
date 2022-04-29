@@ -49,7 +49,7 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 {
 	std::array<sf::Vector2i, 4> prevoiusPosition = this->tiles;
 
-	if (this->tShape != TetrominoShape::I)
+	if (this->shape != TetrominoShape::I)
 	{
 		switch (this->rotation)
 		{
@@ -400,7 +400,7 @@ bool Tetromino::wallKick(unsigned char previousRotation)
 
 void Tetromino::rotate(bool clockwise)
 {
-	if (this->tShape == TetrominoShape::O)
+	if (this->shape == TetrominoShape::O)
 		return;
 
 	std::array<sf::Vector2i, 4> prevoiusPosition = this->tiles;

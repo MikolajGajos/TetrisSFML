@@ -107,7 +107,10 @@ PauseOutput PauseMenu::pause()
 			(*window).close();
 
 		if (checkForEnd())
+		{
+			reset();
 			return getPressedButton();
+		}
 
 		manageButtons();
 
@@ -130,4 +133,10 @@ void PauseMenu::display()
 	window->draw(this->backGround);
 	displayText();
 	window->display();
+}
+
+void PauseMenu::reset()
+{
+	changeAllowed = true;
+	escapeAllowed = false;
 }

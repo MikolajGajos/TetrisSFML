@@ -4,10 +4,11 @@ Menu::Menu()
 {
 	this->window = new sf::RenderWindow({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Titlebar | sf::Style::Default);
 	this->game = new GameApp(window);
-	this->play = new Button(0, sf::Vector2f(250, 500), sf::Vector2f(410, 80));
-	this->highscores = new Button(1, sf::Vector2f(250, 600), sf::Vector2f(410, 80));
-	this->exit = new Button(2, sf::Vector2f(250, 700), sf::Vector2f(410, 80));
-	buttons.set({ *play,*highscores,*exit });
+	this->play = new Button(0, sf::Vector2f(250, 400), sf::Vector2f(410, 80));
+	this->highscores = new Button(1, sf::Vector2f(250, 500), sf::Vector2f(410, 80));
+	this->options = new Button(2, sf::Vector2f(250, 600), sf::Vector2f(410, 80));
+	this->exit = new Button(3, sf::Vector2f(250, 700), sf::Vector2f(410, 80));
+	buttons.set({ *play,*highscores,*options,*exit });
 }
 
 Menu::~Menu()
@@ -16,6 +17,7 @@ Menu::~Menu()
 	delete game;
 	delete play;
 	delete highscores;
+	delete options;
 	delete exit;
 }
 
@@ -25,6 +27,8 @@ MenuOutput Menu::getPressedButton()
 		return MenuOutput::play;
 	else if (buttons.getSelectedButton() == *highscores)
 		return MenuOutput::highscores;
+	else if (buttons.getSelectedButton() == *options)
+		return MenuOutput::options;
 	else if (buttons.getSelectedButton() == *exit)
 		return MenuOutput::exit;
 }
@@ -68,6 +72,9 @@ void Menu::update()
 		case MenuOutput::highscores:
 			//to do
 			break;
+		case MenuOutput::options:
+			//to do
+			break;
 		case MenuOutput::exit:
 			return;
 		case MenuOutput::noImput:
@@ -80,7 +87,10 @@ void Menu::update()
 int Menu::runGame()
 {
 	game->setStartingLevel(0); // to do
-	return game->run();
+	int score =  game->run();
+	delete game;
+	game = new GameApp(window);
+	return score;
 }
 
 void Menu::display()

@@ -10,7 +10,7 @@ class Tetromino
 {
 protected:
 	std::array<sf::Vector2i, 4> tiles;
-	TetrominoShape tShape;
+	TetrominoShape shape;
 	TetrominoColor color;
 	unsigned char rotation;
 	sf::RectangleShape cellShape;

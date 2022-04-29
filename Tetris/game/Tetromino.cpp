@@ -48,7 +48,7 @@ void Tetromino::updateMatrix()
 
 void Tetromino::reset(const TetrominoShape& tShape)
 {
-	this->tShape = tShape;
+	this->shape = tShape;
 	this->tiles = spawnTetromino(tShape);
 	setStatringPosition(this->tiles);
 	this->rotation = 0;
@@ -98,7 +98,7 @@ std::array<sf::Vector2i, 4> Tetromino::getPosition()
 
 void Tetromino::setColor()
 {
-	switch (this->tShape)
+	switch (this->shape)
 	{
 	case TetrominoShape::I:
 		this->color = TetrominoColor::cyan;
@@ -128,7 +128,7 @@ void Tetromino::setColor()
 
 TetrominoShape Tetromino::getShape()
 {
-	return this->tShape;
+	return this->shape;
 }
 
 void Tetromino::display(sf::RenderWindow& window)
@@ -193,8 +193,8 @@ void GhostTetromino::updateGhost(Tetromino& tetromino)
 
 void GhostTetromino::reset(Tetromino& tetromino)
 {
-	this->tShape = tetromino.getShape();
-	this->tiles = spawnTetromino(this->tShape);
+	this->shape = tetromino.getShape();
+	this->tiles = spawnTetromino(this->shape);
 	this->updateGhost(tetromino);
 	this->setColor();
 	this->cellShape.setFillColor(this->getColor());
@@ -206,7 +206,7 @@ NextTetromino::NextTetromino(const TetrominoShape& tShape, std::array < std::arr
 {
 	this->background = background;
 	this->rotation = 0;
-	this->tShape = tShape;
+	this->shape = tShape;
 	this->setColor();
 	this->tiles = spawnTetromino(tShape);
 	this->setPosition();
@@ -230,14 +230,14 @@ void NextTetromino::reset(const TetrominoShape& tShape)
 	this->tiles = spawnTetromino(tShape);
 	this->setPosition();
 	this->rotation = 0;
-	this->tShape = tShape;
+	this->shape = tShape;
 	this->setColor();
 	this->cellShape.setFillColor(this->getColor());
 }
 
 void NextTetromino::display(sf::RenderWindow& window)
 {
-	if (tShape == TetrominoShape::O)
+	if (shape == TetrominoShape::O)
 	{
 		for (auto& tile : tiles)
 		{
@@ -245,7 +245,7 @@ void NextTetromino::display(sf::RenderWindow& window)
 			window.draw(cellShape);
 		}
 	}
-	else if (tShape == TetrominoShape::I)
+	else if (shape == TetrominoShape::I)
 	{
 		for (auto& tile : tiles)
 		{

@@ -38,6 +38,7 @@ private:
 	PauseOutput pause();
 	void displayText();
 	void display();
+	void reset();
 
 public:
 	PauseMenu(sf::RenderWindow*, int* score, int* level, int* lines);
