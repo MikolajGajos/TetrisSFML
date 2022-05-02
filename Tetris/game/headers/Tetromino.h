@@ -43,7 +43,7 @@ public:
 	bool IrotationAlgorithm(bool);
 	//When the player attempts to rotate a tetromino, but the position it would normally occupy after basic rotation is obstructed, the game will attempt to "kick" the tetromino into an alternative position nearby.
 	bool wallKick(unsigned char);
-	bool changeTilesByVector(const sf::Vector2i&);
+	bool changeTilesByVector1(const sf::Vector2i&);
 	//Checks whether rotation was legel.
 	bool legalRotation();
 

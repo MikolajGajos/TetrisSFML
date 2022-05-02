@@ -41,6 +41,12 @@
     <Filter Include="Buttons">
       <UniqueIdentifier>{b06ab708-899a-4c9a-9178-35ebe9a12573}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Tetromino1">
+      <UniqueIdentifier>{b71dcfef-ed4e-4f55-9b24-205158a8f378}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Tetromino1\Headers">
+      <UniqueIdentifier>{d42af916-3f63-429c-9037-491caa33776d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game\Animation.cpp">
@@ -82,6 +88,15 @@
     <ClCompile Include="menu\MenuClass.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
+    <ClCompile Include="game\Tetromino1.cpp">
+      <Filter>Game\Tetromino1</Filter>
+    </ClCompile>
+    <ClCompile Include="game\FallingTetromino.cpp">
+      <Filter>Game\Tetromino1</Filter>
+    </ClCompile>
+    <ClCompile Include="game\RotationAndWallkicks.cpp">
+      <Filter>Game\Tetromino1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\headers\Animation.h">
@@ -116,6 +131,9 @@
     </ClInclude>
     <ClInclude Include="menu\MenuClass.h">
       <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="game\headers\Tetromino1.h">
+      <Filter>Game\Tetromino1\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -95,11 +95,12 @@ GameApp::GameApp(sf::RenderWindow* window) : window(window)
 	this->gameText.set(*windowPosition, this->clearedLines, this->level, this->score);
 	this->gameAnimation = new Animation(*gameBoard, this->animationTime);
 
-	this->nextTetromino = new NextTetromino(getRandomShape(random()), windowPosition);
+	/*this->nextTetromino = new NextTetromino(getRandomShape(random()), windowPosition);
 	this->tetromino = new Tetromino(gameBoard);
 	this->tetromino->reset(nextTetromino->getShape());
 	this->ghostTetromino = new GhostTetromino(gameBoard);
-	this->ghostTetromino->reset(*tetromino);
+	this->ghostTetromino->reset(*tetromino);*/
+	this->tetromino = tetromino->getNew(random(), gameBoard);
 }
 
 GameApp::~GameApp()
@@ -109,8 +110,8 @@ GameApp::~GameApp()
 	delete pause;
 	delete gameAnimation;
 	delete tetromino;
-	delete ghostTetromino;
-	delete nextTetromino;
+	/*delete ghostTetromino;
+	delete nextTetromino;*/
 }
 
 void GameApp::wait(float time)
@@ -199,19 +200,34 @@ bool GameApp::fallingTetromino()
 	if (dropTime > 0.f)
 		return false;
 
+	//if (tetromino->update()) //true == at the end
+	//{
+	//	tetromino->updateMatrix();
+	//	tetromino->reset(nextTetromino->getShape());
+
+	//	if (this->gameOver()) //check if tetrmino can spawn
+	//	{
+	//		this->gameOverbool = true;
+	//		return false;
+	//	}
+
+	//	nextTetromino->reset(getRandomShape(random()));
+	//	ghostTetromino->reset(*tetromino);
+	//	dropTimeReset();
+	//	return true;
+	//}
 	if (tetromino->update()) //true == at the end
 	{
 		tetromino->updateMatrix();
-		tetromino->reset(nextTetromino->getShape());
 
-		if (this->gameOver()) //check if tetrmino can spawn
+		if (this->gameOver()) //check if new tetrmino can spawn
 		{
-			this->gameOverbool = true;
+			gameOverbool = true;
 			return false;
 		}
 
-		nextTetromino->reset(getRandomShape(random()));
-		ghostTetromino->reset(*tetromino);
+		delete tetromino;
+		tetromino = tetromino->getNew(random(), gameBoard);
 		dropTimeReset();
 		return true;
 	}
@@ -312,9 +328,10 @@ void GameApp::drawTetromino()
 	if (gameOverbool)
 		return;
 
-	tetromino->display(*window);
+	/*tetromino->display(*window);
 	ghostTetromino->display(*window);
-	nextTetromino->display(*window);
+	nextTetromino->display(*window);*/
+	tetromino->display(*window);
 }
 
 bool GameApp::gameOver()
@@ -374,7 +391,7 @@ bool GameApp::updateGame()
 	closingWindowEvent(window);
 
 	tetromnoMovement();
-	ghostTetromino->updateGhost(*tetromino);
+	//ghostTetromino->updateGhost(*tetromino);
 	if (fallingTetromino())
 		fullLines();
 
