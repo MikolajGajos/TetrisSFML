@@ -11,6 +11,8 @@ enum class MenuOutput
 class Menu
 {
 	sf::RenderWindow* window;
+	sf::Texture menuTexture;
+	sf::Sprite menuSprite;
 	GameApp* game;
 	Button* play;
 	Button* highscores;

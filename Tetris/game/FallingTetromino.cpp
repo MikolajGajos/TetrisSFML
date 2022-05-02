@@ -43,8 +43,8 @@ OShape::OShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
 	this->tiles[2] = { 0, 0 };
 	this->tiles[3] = { 1, 1 };
 	this->setTetromio(gameBoard);
-	this->tetrominoTile.setFillColor(sf::Color(255, 255, 0)); //yellow
-	this->ghostTile.setFillColor(sf::Color(255, 255, 0));
+	this->tetrominoTile.setFillColor(sf::Color(255, 255, 40)); //yellow
+	this->ghostTile.setFillColor(sf::Color(255, 255, 40));
 }
 
 LShape::LShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
@@ -65,8 +65,8 @@ JShape::JShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
 	this->tiles[2] = { -1, 0 };
 	this->tiles[3] = { 1, 1 };
 	this->setTetromio(gameBoard);
-	this->tetrominoTile.setFillColor(sf::Color(39, 70, 230)); //blue
-	this->ghostTile.setFillColor(sf::Color(39, 70, 230));
+	this->tetrominoTile.setFillColor(sf::Color(0, 70, 255)); //blue
+	this->ghostTile.setFillColor(sf::Color(0, 70, 255));
 }
 
 SShape::SShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)

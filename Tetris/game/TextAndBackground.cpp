@@ -73,7 +73,7 @@ void GameText::draw(sf::RenderTarget& target, sf::RenderStates state) const
 
 GameBackground::GameBackground()
 {
-	this->backgroundTexture.loadFromFile("resources/images/Background.png");
+	this->backgroundTexture.loadFromFile("resources/images/GameBackground.png");
 	this->backgroundSprite.setTexture(backgroundTexture);
 	this->gameOverTexture.loadFromFile("resources/images/GameOver.png");
 	this->gameOverSprite.setTexture(gameOverTexture);

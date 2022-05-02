@@ -4,6 +4,8 @@ Menu::Menu()
 {
 	this->window = new sf::RenderWindow({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Titlebar | sf::Style::Close);
 	this->game = new GameApp(window);
+	this->menuTexture.loadFromFile("resources/images/Menu.png");
+	this->menuSprite.setTexture(menuTexture);
 	this->play = new Button(0, sf::Vector2f(250, 400), sf::Vector2f(410, 80));
 	this->highscores = new Button(1, sf::Vector2f(250, 500), sf::Vector2f(410, 80));
 	this->options = new Button(2, sf::Vector2f(250, 600), sf::Vector2f(410, 80));
@@ -98,5 +100,6 @@ void Menu::display()
 {
 	window->clear(sf::Color::Black);
 	window->draw(*buttons);
+	window->draw(menuSprite);
 	window->display();
 }

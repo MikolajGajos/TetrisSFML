@@ -71,7 +71,7 @@ void Animation::reset()
 void Animation::drawBoard(sf::RenderWindow* window)
 {
 	sf::Texture emptyTexture;
-	emptyTexture.loadFromFile("resources/images/GameBackground.png");
+	emptyTexture.loadFromFile("resources/images/BackgroundCell.png");
 	sf::Sprite sprite;
 	sprite.setTexture(emptyTexture);
 	sprite.setColor(sf::Color(70, 70, 70));

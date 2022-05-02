@@ -11,7 +11,6 @@ PauseMenu::PauseMenu(sf::RenderWindow* window, int* score, int* level, int* line
 	resume = new Button(0, sf::Vector2f(250, 180), sf::Vector2f(410, 120));
 	exit = new Button(1, sf::Vector2f(250, 380), sf::Vector2f(410, 120));
 	buttons = new ButtonManager({ *resume,*exit });
-	//buttons->set({ *resume,*exit });
 	buttons->update(*window);
 }
 
