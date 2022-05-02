@@ -3,11 +3,15 @@
 void Tetromino1::setTetromio(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
 {
 	this->gameBoard = gameBoard;
-	this->texture.loadFromFile("resources/images/Tile.png");
-	this->cellShape.setTexture(&texture);
-	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
+	this->tileTexture.loadFromFile("resources/images/Tile.png");
+	this->tetrominoTile.setTexture(&tileTexture);
+	this->tetrominoTile.setSize({ INNER_CELL, INNER_CELL });
 	this->setStartingPosition();
+	this->ghostTexture.loadFromFile("resources/images/GhostTile.png");
+	this->ghostTile.setTexture(&ghostTexture);
+	this->ghostTile.setSize({ INNER_CELL, INNER_CELL });
 	this->rotation = 0;
+	updateGhost();
 }
 
 IShape::IShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
@@ -17,7 +21,8 @@ IShape::IShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
 	this->tiles[2] = { 1, 0 };
 	this->tiles[3] = { 2, 0 };
 	this->setTetromio(gameBoard);
-	this->cellShape.setFillColor(sf::Color(0, 255, 255)); //cyan
+	this->tetrominoTile.setFillColor(sf::Color(0, 255, 255)); //cyan
+	this->ghostTile.setFillColor(sf::Color(0, 255, 255));
 }
 
 TShape::TShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
@@ -27,7 +32,8 @@ TShape::TShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
 	this->tiles[2] = { 0, 0 };
 	this->tiles[3] = { 1, 1 };
 	this->setTetromio(gameBoard);
-	this->cellShape.setFillColor(sf::Color(255, 0, 255)); //pink
+	this->tetrominoTile.setFillColor(sf::Color(255, 0, 255)); //pink
+	this->ghostTile.setFillColor(sf::Color(255, 0, 255));
 }
 
 OShape::OShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
@@ -37,7 +43,8 @@ OShape::OShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
 	this->tiles[2] = { 0, 0 };
 	this->tiles[3] = { 1, 1 };
 	this->setTetromio(gameBoard);
-	this->cellShape.setFillColor(sf::Color(255, 255, 0)); //yellow
+	this->tetrominoTile.setFillColor(sf::Color(255, 255, 0)); //yellow
+	this->ghostTile.setFillColor(sf::Color(255, 255, 0));
 }
 
 LShape::LShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
@@ -47,7 +54,8 @@ LShape::LShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
 	this->tiles[2] = { 1, 1 };
 	this->tiles[3] = { 1, 0 };
 	this->setTetromio(gameBoard);
-	this->cellShape.setFillColor(sf::Color(255, 170, 0)); //orange
+	this->tetrominoTile.setFillColor(sf::Color(255, 170, 0)); //orange
+	this->ghostTile.setFillColor(sf::Color(255, 170, 0));
 }
 
 JShape::JShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
@@ -57,7 +65,8 @@ JShape::JShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
 	this->tiles[2] = { -1, 0 };
 	this->tiles[3] = { 1, 1 };
 	this->setTetromio(gameBoard);
-	this->cellShape.setFillColor(sf::Color(39, 39, 160)); //blue
+	this->tetrominoTile.setFillColor(sf::Color(39, 70, 230)); //blue
+	this->ghostTile.setFillColor(sf::Color(39, 70, 230));
 }
 
 SShape::SShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
@@ -67,7 +76,8 @@ SShape::SShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
 	this->tiles[2] = { 0, 0 };
 	this->tiles[3] = { 1, 1 };
 	this->setTetromio(gameBoard);
-	this->cellShape.setFillColor(sf::Color(0, 255, 0)); //green
+	this->tetrominoTile.setFillColor(sf::Color(0, 255, 0)); //green
+	this->ghostTile.setFillColor(sf::Color(0, 255, 0));
 }
 
 ZShape::ZShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
@@ -77,5 +87,6 @@ ZShape::ZShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
 	this->tiles[2] = { -1, 1 };
 	this->tiles[3] = { 1, 0 };
 	this->setTetromio(gameBoard);
-	this->cellShape.setFillColor(sf::Color(255, 0, 0)); //red
+	this->tetrominoTile.setFillColor(sf::Color(255, 0, 0)); //red
+	this->ghostTile.setFillColor(sf::Color(255, 0, 0));
 }

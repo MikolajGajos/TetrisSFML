@@ -14,9 +14,12 @@ class Tetromino1
 {
 protected:
 	std::array<sf::Vector2i, 4> tiles;
+	sf::RectangleShape tetrominoTile;
+	sf::Texture tileTexture;
+	std::array<sf::Vector2i, 4> ghostTiles;
+	sf::RectangleShape ghostTile;
+	sf::Texture ghostTexture;
 	unsigned char rotation;
-	sf::RectangleShape cellShape;
-	sf::Texture texture;
 	std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard;
 
 protected:
@@ -25,8 +28,10 @@ protected:
 	bool legalRotation();
 	virtual bool wallKick(unsigned char);
 	bool legalKick(const sf::Vector2i&);
+	void displayGhost(sf::RenderWindow& window);
 
 public:
+	void updateGhost();
 	//Moves tetromino one line down. Retruns true if the move was valid.
 	bool update();
 	//Updates game matrix when tetromino gets to the end.

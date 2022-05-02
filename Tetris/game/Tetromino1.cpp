@@ -1,5 +1,26 @@
 #include "headers\Tetromino1.h"
 
+void Tetromino1::updateGhost()
+{
+	ghostTiles = tiles;
+	while (true)
+	{
+		for (auto& tile : ghostTiles)
+		{
+			if (tile.y + 1 == (*gameBoard)[0].size())
+				return;
+
+			if ((*gameBoard)[tile.x][tile.y + 1].isFull() == true)
+				return;
+		}
+
+		for (auto& tile : ghostTiles)
+		{
+			tile.y++;
+		}
+	}
+}
+
 bool Tetromino1::update()
 {
 	//checks if all minos can be moved down
@@ -24,7 +45,7 @@ void Tetromino1::updateMatrix()
 	for (auto& tile : this->tiles)
 	{
 		(*gameBoard)[tile.x][tile.y].setFull(true);
-		(*gameBoard)[tile.x][tile.y].setColor(cellShape.getFillColor());
+		(*gameBoard)[tile.x][tile.y].setColor(tetrominoTile.getFillColor());
 	}
 }
 
@@ -41,6 +62,7 @@ void Tetromino1::moveLeft()
 	{
 		mino.x -= 1;
 	}
+	updateGhost();
 }
 
 void Tetromino1::moveRight()
@@ -56,6 +78,7 @@ void Tetromino1::moveRight()
 	{
 		mino.x += 1;
 	}
+	updateGhost();
 }
 
 void Tetromino1::hardDrop()
@@ -70,6 +93,7 @@ void Tetromino1::setStartingPosition()
 		tile.x += SPAWN_POINT.x;
 		tile.y += SPAWN_POINT.y;
 	}
+	ghostTiles = tiles;
 }
 
 Tetromino1* Tetromino1::getNew(int num, std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
@@ -100,14 +124,27 @@ Tetromino1* Tetromino1::getNew(int num, std::array<std::array<Cell, ROWS + 2>, C
 	}
 }
 
+void Tetromino1::displayGhost(sf::RenderWindow& window)
+{
+	for (auto& tile : ghostTiles)
+	{
+		if (tile.y >= 2)
+		{
+			ghostTile.setPosition(CELL_SIZE * tile.x + (*gameBoard)[0][0].getPosition().x, tile.y * CELL_SIZE + (*gameBoard)[0][0].getPosition().y);
+			window.draw(ghostTile);
+		}
+	}
+}
+
 void Tetromino1::display(sf::RenderWindow& window)
 {
+	displayGhost(window);
 	for (auto& tile : tiles)
 	{
 		if (tile.y >= 2)
 		{
-			cellShape.setPosition(CELL_SIZE * tile.x + (*gameBoard)[0][0].getPosition().x, tile.y * CELL_SIZE + (*gameBoard)[0][0].getPosition().y);
-			window.draw(cellShape);
+			tetrominoTile.setPosition(CELL_SIZE * tile.x + (*gameBoard)[0][0].getPosition().x, tile.y * CELL_SIZE + (*gameBoard)[0][0].getPosition().y);
+			window.draw(tetrominoTile);
 		}
 	}
 }

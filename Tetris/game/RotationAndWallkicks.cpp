@@ -228,13 +228,17 @@ void Tetromino1::rotate(bool clockwise)
 	if (!legalRotation)
 	{
 		if (wallKick(previousRotation))
+		{
+			updateGhost();
 			return;
+		}
 		else
 		{
 			this->tiles = prevoiusPosition;
 			this->rotation = previousRotation;
 		}
 	}
+	updateGhost();
 }
 
 bool IShape::wallKick(unsigned char previousRotation)
@@ -496,11 +500,15 @@ void IShape::rotate(bool clockwise)
 	if (!legalRotation)
 	{
 		if (wallKick(previousRotation))
+		{
+			updateGhost();
 			return;
+		}
 		else
 		{
 			this->tiles = prevoiusPosition;
 			this->rotation = previousRotation;
 		}
 	}
+	updateGhost();
 }
