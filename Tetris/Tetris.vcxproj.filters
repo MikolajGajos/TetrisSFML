@@ -20,14 +20,8 @@
     <Filter Include="Game\Utility">
       <UniqueIdentifier>{7104dafc-00ad-4b5b-9d19-92f516eaab73}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Tetromino">
-      <UniqueIdentifier>{9f4c3811-37f3-41a3-9b1b-fe0513ce7afd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\GameText&amp;Sound">
       <UniqueIdentifier>{fac7e6ba-eb44-4e82-928c-e03a899e8684}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Tetromino\Headers">
-      <UniqueIdentifier>{18570526-06dd-4551-9ac5-1e619975d70d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\GameText&amp;Sound\Headers">
       <UniqueIdentifier>{391d32b2-8ddc-450d-ae69-560fd2bdb9ae}</UniqueIdentifier>
@@ -41,10 +35,10 @@
     <Filter Include="Buttons">
       <UniqueIdentifier>{b06ab708-899a-4c9a-9178-35ebe9a12573}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Tetromino1">
+    <Filter Include="Game\Tetromino">
       <UniqueIdentifier>{b71dcfef-ed4e-4f55-9b24-205158a8f378}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Tetromino1\Headers">
+    <Filter Include="Game\Tetromino\Headers">
       <UniqueIdentifier>{d42af916-3f63-429c-9037-491caa33776d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -57,15 +51,6 @@
     </ClCompile>
     <ClCompile Include="game\TextAndBackground.cpp">
       <Filter>Game\GameText&amp;Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="game\SpawnTetromino.cpp">
-      <Filter>Game\Tetromino</Filter>
-    </ClCompile>
-    <ClCompile Include="game\Tetromino.cpp">
-      <Filter>Game\Tetromino</Filter>
-    </ClCompile>
-    <ClCompile Include="game\TetrominoRotation.cpp">
-      <Filter>Game\Tetromino</Filter>
     </ClCompile>
     <ClCompile Include="game\Cell.cpp">
       <Filter>Game\Utility</Filter>
@@ -88,14 +73,14 @@
     <ClCompile Include="menu\MenuClass.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
-    <ClCompile Include="game\Tetromino1.cpp">
-      <Filter>Game\Tetromino1</Filter>
+    <ClCompile Include="game\Tetromino.cpp">
+      <Filter>Game\Tetromino</Filter>
     </ClCompile>
     <ClCompile Include="game\FallingTetromino.cpp">
-      <Filter>Game\Tetromino1</Filter>
+      <Filter>Game\Tetromino</Filter>
     </ClCompile>
     <ClCompile Include="game\RotationAndWallkicks.cpp">
-      <Filter>Game\Tetromino1</Filter>
+      <Filter>Game\Tetromino</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -107,12 +92,6 @@
     </ClInclude>
     <ClInclude Include="game\headers\TextAndBackground.h">
       <Filter>Game\GameText&amp;Sound\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="game\headers\SpawnTetromino.h">
-      <Filter>Game\Tetromino\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="game\headers\Tetromino.h">
-      <Filter>Game\Tetromino\Headers</Filter>
     </ClInclude>
     <ClInclude Include="game\headers\Cell.h">
       <Filter>Game\Utility\Headers</Filter>
@@ -132,8 +111,8 @@
     <ClInclude Include="menu\MenuClass.h">
       <Filter>Menu</Filter>
     </ClInclude>
-    <ClInclude Include="game\headers\Tetromino1.h">
-      <Filter>Game\Tetromino1\Headers</Filter>
+    <ClInclude Include="game\headers\Tetromino.h">
+      <Filter>Game\Tetromino\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

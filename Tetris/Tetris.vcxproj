@@ -25,14 +25,11 @@
     <ClCompile Include="game\FallingTetromino.cpp" />
     <ClCompile Include="game\GameApp.cpp" />
     <ClCompile Include="game\RotationAndWallkicks.cpp" />
-    <ClCompile Include="game\Tetromino1.cpp" />
+    <ClCompile Include="game\Tetromino.cpp" />
     <ClCompile Include="game\PauseMenu.cpp" />
     <ClCompile Include="game\ScoreLevel.cpp" />
     <ClCompile Include="game\GameSounds.cpp" />
     <ClCompile Include="game\Source.cpp" />
-    <ClCompile Include="game\SpawnTetromino.cpp" />
-    <ClCompile Include="game\Tetromino.cpp" />
-    <ClCompile Include="game\TetrominoRotation.cpp" />
     <ClCompile Include="game\TextAndBackground.cpp" />
     <ClCompile Include="menu\MenuClass.cpp" />
   </ItemGroup>
@@ -44,9 +41,7 @@
     <ClInclude Include="game\headers\Global.h" />
     <ClInclude Include="game\headers\PauseMenu.h" />
     <ClInclude Include="game\headers\GameSounds.h" />
-    <ClInclude Include="game\headers\SpawnTetromino.h" />
     <ClInclude Include="game\headers\Tetromino.h" />
-    <ClInclude Include="game\headers\Tetromino1.h" />
     <ClInclude Include="game\headers\TextAndBackground.h" />
     <ClInclude Include="menu\MenuClass.h" />
   </ItemGroup>

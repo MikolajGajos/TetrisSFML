@@ -1,6 +1,6 @@
-#include "headers/Tetromino1.h"
+#include "headers/Tetromino.h"
 
-int changeRotation1(bool clockwise, int rotation)
+int changeRotation(bool clockwise, int rotation)
 {
 	switch (clockwise)
 	{
@@ -12,7 +12,7 @@ int changeRotation1(bool clockwise, int rotation)
 
 }
 
-void updateTilesPosition1(std::array<sf::Vector2i, 4>& minos, const sf::Vector2i& v0, const sf::Vector2i& v1, const sf::Vector2i& v2, const sf::Vector2i& v3)
+void updateTilesPosition(std::array<sf::Vector2i, 4>& minos, const sf::Vector2i& v0, const sf::Vector2i& v1, const sf::Vector2i& v2, const sf::Vector2i& v3)
 {
 	minos[0] += v0;
 	minos[1] += v1;
@@ -20,7 +20,7 @@ void updateTilesPosition1(std::array<sf::Vector2i, 4>& minos, const sf::Vector2i
 	minos[3] += v3;
 }
 
-bool Tetromino1::legalKick(const sf::Vector2i& v)
+bool Tetromino::legalKick(const sf::Vector2i& v)
 {
 	tiles[0] += v;
 	tiles[1] += v;
@@ -29,7 +29,7 @@ bool Tetromino1::legalKick(const sf::Vector2i& v)
 	return this->legalRotation();
 }
 
-bool Tetromino1::legalRotation()
+bool Tetromino::legalRotation()
 {
 	bool legal = true;
 	for (auto& tile : tiles)
@@ -45,7 +45,7 @@ bool Tetromino1::legalRotation()
 	return legal;
 }
 
-bool Tetromino1::wallKick(unsigned char previousRotation)
+bool Tetromino::wallKick(unsigned char previousRotation)
 {
 	std::array<sf::Vector2i, 4> prevoiusPosition = tiles;
 	switch (this->rotation)
@@ -196,13 +196,13 @@ bool Tetromino1::wallKick(unsigned char previousRotation)
 	}
 }
 
-void Tetromino1::rotate(bool clockwise)
+void Tetromino::rotate(bool clockwise)
 {
 	std::array<sf::Vector2i, 4> prevoiusPosition = this->tiles;
 	unsigned char previousRotation = this->rotation;
 	bool legalRotation;
 
-	this->rotation = changeRotation1(clockwise, this->rotation);
+	this->rotation = changeRotation(clockwise, this->rotation);
 	sf::Vector2i position = this->tiles[0];
 	int temp;
 
@@ -448,7 +448,7 @@ void IShape::rotate(bool clockwise)
 	unsigned char previousRotation = this->rotation;
 	bool legalRotation;
 
-	this->rotation = changeRotation1(clockwise, this->rotation);
+	this->rotation = changeRotation(clockwise, this->rotation);
 	sf::Vector2i position = this->tiles[0];
 	int temp;
 
@@ -457,41 +457,41 @@ void IShape::rotate(bool clockwise)
 	case 0:
 		if (clockwise)
 		{
-			updateTilesPosition1(this->tiles, { -1,-2 }, { 0, -1 }, { 1, 0 }, { 2, 1 });
+			updateTilesPosition(this->tiles, { -1,-2 }, { 0, -1 }, { 1, 0 }, { 2, 1 });
 		}
 		else
 		{
-			updateTilesPosition1(this->tiles, { -2, 1 }, { -1, 0 }, { 0, -1 }, { 1, -2 });
+			updateTilesPosition(this->tiles, { -2, 1 }, { -1, 0 }, { 0, -1 }, { 1, -2 });
 		}
 		break;
 	case 1:
 		if (clockwise)
 		{
-			updateTilesPosition1(this->tiles, { 2, -1 }, { 1, 0 }, { 0, 1 }, { -1, 2 });
+			updateTilesPosition(this->tiles, { 2, -1 }, { 1, 0 }, { 0, 1 }, { -1, 2 });
 		}
 		else
 		{
-			updateTilesPosition1(this->tiles, { -1, -2 }, { 0, -1 }, { 1, 0 }, { 2, 1 });
+			updateTilesPosition(this->tiles, { -1, -2 }, { 0, -1 }, { 1, 0 }, { 2, 1 });
 		}
 		break;
 	case 2:
 		if (clockwise)
 		{
-			updateTilesPosition1(this->tiles, { 1, 2 }, { 0, 1 }, { -1, 0 }, { -2, -1 });
+			updateTilesPosition(this->tiles, { 1, 2 }, { 0, 1 }, { -1, 0 }, { -2, -1 });
 		}
 		else
 		{
-			updateTilesPosition1(this->tiles, { 2, -1 }, { 1, 0 }, { 0, 1 }, { -1, 2 });
+			updateTilesPosition(this->tiles, { 2, -1 }, { 1, 0 }, { 0, 1 }, { -1, 2 });
 		}
 		break;
 	case 3:
 		if (clockwise)
 		{
-			updateTilesPosition1(this->tiles, { -2, 1 }, { -1, 0 }, { 0, -1 }, { 1, -2 });
+			updateTilesPosition(this->tiles, { -2, 1 }, { -1, 0 }, { 0, -1 }, { 1, -2 });
 		}
 		else
 		{
-			updateTilesPosition1(this->tiles, { 1, 2 }, { 0, 1 }, { -1, 0 }, { -2, -1 });
+			updateTilesPosition(this->tiles, { 1, 2 }, { 0, 1 }, { -1, 0 }, { -2, -1 });
 		}
 		break;
 	}

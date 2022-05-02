@@ -4,30 +4,38 @@
 
 #include "Cell.h"
 #include "Global.h"
-#include "SpawnTetromino.h"
+
+enum class TetrominoShape1
+{
+	I, T, O, L, J, S, Z
+};
 
 class Tetromino
 {
 protected:
 	std::array<sf::Vector2i, 4> tiles;
-	TetrominoShape shape;
-	TetrominoColor color;
+	sf::RectangleShape tetrominoTile;
+	sf::Texture tileTexture;
+	std::array<sf::Vector2i, 4> ghostTiles;
+	sf::RectangleShape ghostTile;
+	sf::Texture ghostTexture;
 	unsigned char rotation;
-	sf::RectangleShape cellShape;
-	sf::Texture texture;
-public:
 	std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard;
 
-public:
-	Tetromino() {};
-	Tetromino(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
+protected:
+	void setTetromio(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
+	void setStartingPosition();
+	bool legalRotation();
+	virtual bool wallKick(unsigned char);
+	bool legalKick(const sf::Vector2i&);
+	void displayGhost(sf::RenderWindow& window);
 
+public:
+	void updateGhost();
 	//Moves tetromino one line down. Retruns true if the move was valid.
 	bool update();
 	//Updates game matrix when tetromino gets to the end.
 	void updateMatrix();
-	//Resets tetromino shape and sets it to the starting position.
-	void reset(const TetrominoShape&);
 
 	//Moves tetromino left by one tile.
 	void moveLeft();
@@ -35,45 +43,57 @@ public:
 	void moveRight();
 	//Moves tetromino down, to the end of its way.
 	void hardDrop();
-
 	//Rotates tetromino between four states. Put true value to rotate clockwise.
-	void rotate(bool);
-	//Performs the actual rotation.
-	bool rotationAlgorithm(bool);
-	bool IrotationAlgorithm(bool);
-	//When the player attempts to rotate a tetromino, but the position it would normally occupy after basic rotation is obstructed, the game will attempt to "kick" the tetromino into an alternative position nearby.
+	virtual void rotate(bool);
+
+	Tetromino* getNew(int, std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
+	void display(sf::RenderWindow& window);
+	virtual void displayAsNext(sf::RenderWindow& window);
+};
+
+class IShape : public Tetromino
+{
 	bool wallKick(unsigned char);
-	bool changeTilesByVector1(const sf::Vector2i&);
-	//Checks whether rotation was legel.
-	bool legalRotation();
-
-	//Returns tetromino's position.
-	std::array<sf::Vector2i, 4> getPosition();
-	//Retruns tetromino's color.
-	sf::Color getColor();
-	void setColor();
-	//Retruns tetromino's shape.
-	TetrominoShape getShape();
-	int getRotation() { return this->rotation; }
-	void display(sf::RenderWindow& window);
+public:
+	IShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
+	void rotate(bool);
+	void displayAsNext(sf::RenderWindow& window);
 };
 
-class GhostTetromino : public Tetromino
+class TShape : public Tetromino
 {
 public:
-	GhostTetromino(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
-	//Updates ghost based on current tetromino's position.
-	void updateGhost(Tetromino&);
-	//Updates ghost's shape on current tetromino.
-	void reset(Tetromino&);
+	TShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
 };
 
-class NextTetromino : public Tetromino
+class OShape : public Tetromino
 {
-	std::array < std::array < sf::RectangleShape, 22>, 24>* background;
 public:
-	NextTetromino(const TetrominoShape&, std::array < std::array < sf::RectangleShape, 22>, 24>*);
-	void setPosition();
-	void reset(const TetrominoShape&);
-	void display(sf::RenderWindow& window);
+	OShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
+	void rotate(bool) { return; }
+	void displayAsNext(sf::RenderWindow& window);
+};
+
+class LShape : public Tetromino
+{
+public:
+	LShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
+};
+
+class JShape : public Tetromino
+{
+public:
+	JShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
+};
+
+class ZShape : public Tetromino
+{
+public:
+	ZShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
+};
+
+class SShape : public Tetromino
+{
+public:
+	SShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
 };

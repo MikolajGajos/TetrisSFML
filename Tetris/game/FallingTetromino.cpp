@@ -1,6 +1,6 @@
-#include "headers\Tetromino1.h"
+#include "headers\Tetromino.h"
 
-void Tetromino1::setTetromio(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
+void Tetromino::setTetromio(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
 {
 	this->gameBoard = gameBoard;
 	this->tileTexture.loadFromFile("resources/images/Tile.png");

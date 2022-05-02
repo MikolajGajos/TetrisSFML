@@ -8,8 +8,7 @@
 #include <chrono>
 
 #include "Global.h"
-//#include "Tetromino.h"
-#include "Tetromino1.h"
+#include "Tetromino.h"
 #include "Cell.h"
 #include "TextAndBackground.h"
 #include "Animation.h"
@@ -28,8 +27,8 @@ class GameApp {
 	GameText gameText;
 	GameSound gameSound;
 	Animation* gameAnimation;
-	Tetromino1* tetromino;
-	Tetromino1* nextTetromino;
+	Tetromino* tetromino;
+	Tetromino* nextTetromino;
 
 	float dropTime = 0.9f;			void dropTimeReset();
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }

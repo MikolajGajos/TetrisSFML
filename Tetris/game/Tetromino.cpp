@@ -1,21 +1,24 @@
-#include "headers/Tetromino.h"
-#include <iostream>
+#include "headers\Tetromino.h"
 
-void setStatringPosition(std::array<sf::Vector2i, 4>& tiles)
+void Tetromino::updateGhost()
 {
-	for (auto& tile : tiles)
+	ghostTiles = tiles;
+	while (true)
 	{
-		tile.x += SPAWN_POINT.x;
-		tile.y += SPAWN_POINT.y;
-	}
-}
+		for (auto& tile : ghostTiles)
+		{
+			if (tile.y + 1 == (*gameBoard)[0].size())
+				return;
 
-Tetromino::Tetromino(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* matrix)
-{
-	this->gameBoard = matrix;
-	this->texture.loadFromFile("resources/images/Tile.png");
-	this->cellShape.setTexture(&texture);
-	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
+			if ((*gameBoard)[tile.x][tile.y + 1].isFull() == true)
+				return;
+		}
+
+		for (auto& tile : ghostTiles)
+		{
+			tile.y++;
+		}
+	}
 }
 
 bool Tetromino::update()
@@ -42,18 +45,8 @@ void Tetromino::updateMatrix()
 	for (auto& tile : this->tiles)
 	{
 		(*gameBoard)[tile.x][tile.y].setFull(true);
-		(*gameBoard)[tile.x][tile.y].setColor(this->getColor());
+		(*gameBoard)[tile.x][tile.y].setColor(tetrominoTile.getFillColor());
 	}
-}
-
-void Tetromino::reset(const TetrominoShape& tShape)
-{
-	this->shape = tShape;
-	this->tiles = spawnTetromino(tShape);
-	setStatringPosition(this->tiles);
-	this->rotation = 0;
-	this->setColor();
-	this->cellShape.setFillColor(this->getColor());
 }
 
 void Tetromino::moveLeft()
@@ -69,6 +62,7 @@ void Tetromino::moveLeft()
 	{
 		mino.x -= 1;
 	}
+	updateGhost();
 }
 
 void Tetromino::moveRight()
@@ -84,6 +78,7 @@ void Tetromino::moveRight()
 	{
 		mino.x += 1;
 	}
+	updateGhost();
 }
 
 void Tetromino::hardDrop()
@@ -91,174 +86,92 @@ void Tetromino::hardDrop()
 	while (!update()) {}
 }
 
-std::array<sf::Vector2i, 4> Tetromino::getPosition()
+void Tetromino::setStartingPosition()
 {
-	return this->tiles;
+	for (auto& tile : tiles)
+	{
+		tile.x += SPAWN_POINT.x;
+		tile.y += SPAWN_POINT.y;
+	}
+	ghostTiles = tiles;
 }
 
-void Tetromino::setColor()
+Tetromino* Tetromino::getNew(int num, std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
 {
-	switch (this->shape)
+	switch (TetrominoShape1(num))
 	{
-	case TetrominoShape::I:
-		this->color = TetrominoColor::cyan;
-		break;
-	case TetrominoShape::T:
-		this->color = TetrominoColor::pink;
-		break;
-	case TetrominoShape::O:
-		this->color = TetrominoColor::yellow;
-		break;
-	case TetrominoShape::L:
-		this->color = TetrominoColor::orange;
-		break;
-	case TetrominoShape::J:
-		this->color = TetrominoColor::blue;
-		break;
-	case TetrominoShape::S:
-		this->color = TetrominoColor::red;
-		break;
-	case TetrominoShape::Z:
-		this->color = TetrominoColor::green;
-		break;
-	default:
-		break;
+	case TetrominoShape1::I:
+		return new IShape(gameBoard);
+
+	case TetrominoShape1::T:
+		return new TShape(gameBoard);
+
+	case TetrominoShape1::O:
+		return new OShape(gameBoard);
+
+	case TetrominoShape1::L:
+		return new LShape(gameBoard);
+
+	case TetrominoShape1::J:
+		return new JShape(gameBoard);
+
+	case TetrominoShape1::S:
+		return new SShape(gameBoard);
+
+	case TetrominoShape1::Z:
+		return new ZShape(gameBoard);
+
 	}
 }
 
-TetrominoShape Tetromino::getShape()
+void Tetromino::displayGhost(sf::RenderWindow& window)
 {
-	return this->shape;
+	for (auto& tile : ghostTiles)
+	{
+		if (tile.y >= 2)
+		{
+			ghostTile.setPosition(CELL_SIZE * tile.x + (*gameBoard)[0][0].getPosition().x, tile.y * CELL_SIZE + (*gameBoard)[0][0].getPosition().y);
+			window.draw(ghostTile);
+		}
+	}
 }
 
 void Tetromino::display(sf::RenderWindow& window)
 {
+	displayGhost(window);
 	for (auto& tile : tiles)
 	{
 		if (tile.y >= 2)
 		{
-			cellShape.setPosition(CELL_SIZE * tile.x + (*gameBoard)[0][0].getPosition().x, tile.y * CELL_SIZE + (*gameBoard)[0][0].getPosition().y);
-			window.draw(cellShape);
-		}		
-	}
-}
-
-sf::Color Tetromino::getColor()
-{
-	sf::Color color;
-
-	switch (this->color)
-	{
-	case TetrominoColor::red:
-		color = { 255,0,0,255 };
-		break;
-	case TetrominoColor::orange:
-		color = { 255,170,0,255 };
-		break;
-	case TetrominoColor::cyan:
-		color = { 0,255,255,255 };
-		break;
-	case TetrominoColor::yellow:
-		color = { 255,255,0,255 };
-		break;
-	case TetrominoColor::pink:
-		color = { 255,0,255,255 };
-		break;
-	case TetrominoColor::blue:
-		color = { 39,39,160,255 };
-		break;
-	case TetrominoColor::green:
-		color = { 0,255,0,255 };
-		break;
-	}
-
-	return color;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-GhostTetromino::GhostTetromino(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)
-{
-	this->gameBoard = gameBoard;
-	this->texture.loadFromFile("resources/images/GhostTile.png");
-	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
-	this->cellShape.setTexture(&texture);
-}
-
-void GhostTetromino::updateGhost(Tetromino& tetromino)
-{
-	this->tiles = tetromino.getPosition();
-	while (!update()) {}
-}
-
-void GhostTetromino::reset(Tetromino& tetromino)
-{
-	this->shape = tetromino.getShape();
-	this->tiles = spawnTetromino(this->shape);
-	this->updateGhost(tetromino);
-	this->setColor();
-	this->cellShape.setFillColor(this->getColor());
-}
-
-/// ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-NextTetromino::NextTetromino(const TetrominoShape& tShape, std::array < std::array < sf::RectangleShape, 22>, 24>* background)
-{
-	this->background = background;
-	this->rotation = 0;
-	this->shape = tShape;
-	this->setColor();
-	this->tiles = spawnTetromino(tShape);
-	this->setPosition();
-	this->texture.loadFromFile("resources/images/Tile.png");
-	this->cellShape.setSize({ INNER_CELL, INNER_CELL });
-	this->cellShape.setFillColor(this->getColor());
-	this->cellShape.setTexture(&texture);
-}
-
-void NextTetromino::setPosition()
-{
-	for (auto& tile : this->tiles)
-	{
-		tile.x += 15;
-		tile.y += 8;
-	}
-}
-
-void NextTetromino::reset(const TetrominoShape& tShape)
-{
-	this->tiles = spawnTetromino(tShape);
-	this->setPosition();
-	this->rotation = 0;
-	this->shape = tShape;
-	this->setColor();
-	this->cellShape.setFillColor(this->getColor());
-}
-
-void NextTetromino::display(sf::RenderWindow& window)
-{
-	if (shape == TetrominoShape::O)
-	{
-		for (auto& tile : tiles)
-		{
-			cellShape.setPosition(tile.x * (CELL_SIZE), tile.y * CELL_SIZE);
-			window.draw(cellShape);
+			tetrominoTile.setPosition(CELL_SIZE * tile.x + (*gameBoard)[0][0].getPosition().x, tile.y * CELL_SIZE + (*gameBoard)[0][0].getPosition().y);
+			window.draw(tetrominoTile);
 		}
 	}
-	else if (shape == TetrominoShape::I)
+}
+
+void Tetromino::displayAsNext(sf::RenderWindow& window)
+{
+	for (auto& tile : tiles)
 	{
-		for (auto& tile : tiles)
-		{
-			cellShape.setPosition(tile.x * (CELL_SIZE), (tile.y + 0.5) * CELL_SIZE);
-			window.draw(cellShape);
-		}
+		tetrominoTile.setPosition((tile.x + 11.5f) * CELL_SIZE, (tile.y + 8.f) * CELL_SIZE);
+		window.draw(tetrominoTile);
 	}
-	else
+}
+
+void IShape::displayAsNext(sf::RenderWindow& window)
+{
+	for (auto& tile : tiles)
 	{
-		for (auto& tile : tiles)
-		{
-			cellShape.setPosition((tile.x + 0.5f) * CELL_SIZE, tile.y * CELL_SIZE);
-			window.draw(cellShape);
-		}
+		tetrominoTile.setPosition((tile.x + 11.f) * (CELL_SIZE), (tile.y + 8.5f) * CELL_SIZE);
+		window.draw(tetrominoTile);
+	}
+}
+
+void OShape::displayAsNext(sf::RenderWindow& window)
+{
+	for (auto& tile : tiles)
+	{
+		tetrominoTile.setPosition((tile.x + 11.f) * (CELL_SIZE), (tile.y + 8.f) * CELL_SIZE);
+		window.draw(tetrominoTile);
 	}
 }
