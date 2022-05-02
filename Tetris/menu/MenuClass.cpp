@@ -8,7 +8,7 @@ Menu::Menu()
 	this->highscores = new Button(1, sf::Vector2f(250, 500), sf::Vector2f(410, 80));
 	this->options = new Button(2, sf::Vector2f(250, 600), sf::Vector2f(410, 80));
 	this->exit = new Button(3, sf::Vector2f(250, 700), sf::Vector2f(410, 80));
-	buttons.set({ *play,*highscores,*options,*exit });
+	this->buttons = new ButtonManager({*play,*highscores,*options,*exit});
 }
 
 Menu::~Menu()
@@ -19,17 +19,18 @@ Menu::~Menu()
 	delete highscores;
 	delete options;
 	delete exit;
+	delete buttons;
 }
 
 MenuOutput Menu::getPressedButton()
 {
-	if (buttons.getSelectedButton() == *play)
+	if (buttons->getSelectedButton() == *play)
 		return MenuOutput::play;
-	else if (buttons.getSelectedButton() == *highscores)
+	else if (buttons->getSelectedButton() == *highscores)
 		return MenuOutput::highscores;
-	else if (buttons.getSelectedButton() == *options)
+	else if (buttons->getSelectedButton() == *options)
 		return MenuOutput::options;
-	else if (buttons.getSelectedButton() == *exit)
+	else if (buttons->getSelectedButton() == *exit)
 		return MenuOutput::exit;
 }
 
@@ -41,7 +42,7 @@ bool Menu::checkIfButtonPressed()
 	}
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		if (buttons.mouseIntersects(*window))
+		if (buttons->mouseIntersects(*window))
 			return true;
 	}
 	return false;
@@ -63,7 +64,7 @@ void Menu::update()
 		if (event.type == sf::Event::Closed)
 			(*window).close();
 
-		buttons.update(*window);
+		buttons->update(*window);
 		switch (userInput())
 		{
 		case MenuOutput::play:
@@ -96,6 +97,6 @@ int Menu::runGame()
 void Menu::display()
 {
 	window->clear(sf::Color::Black);
-	window->draw(buttons);
+	window->draw(*buttons);
 	window->display();
 }

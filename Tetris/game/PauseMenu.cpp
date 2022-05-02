@@ -10,14 +10,16 @@ PauseMenu::PauseMenu(sf::RenderWindow* window, int* score, int* level, int* line
 	this->backGround.setTexture(texture);
 	resume = new Button(0, sf::Vector2f(250, 180), sf::Vector2f(410, 120));
 	exit = new Button(1, sf::Vector2f(250, 380), sf::Vector2f(410, 120));
-	buttons.set({ *resume,*exit });
-	buttons.update(*window);
+	buttons = new ButtonManager({ *resume,*exit });
+	//buttons->set({ *resume,*exit });
+	buttons->update(*window);
 }
 
 PauseMenu::~PauseMenu()
 {
 	delete resume;
 	delete exit;
+	delete buttons;
 }
 
 void PauseMenu::setText()
@@ -65,7 +67,7 @@ bool PauseMenu::checkForEnd()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		{
 			escapeAllowed = false;
-			buttons.pressButton(*resume);
+			buttons->pressButton(*resume);
 			return true;
 		}
 	}
@@ -76,7 +78,7 @@ bool PauseMenu::checkForEnd()
 	}
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		if (buttons.mouseIntersects(*window))
+		if (buttons->mouseIntersects(*window))
 			return true;
 	}
 	return false;
@@ -84,12 +86,12 @@ bool PauseMenu::checkForEnd()
 
 void PauseMenu::manageButtons()
 {
-	buttons.update(*window);
+	buttons->update(*window);
 }
 
 PauseOutput PauseMenu::getPressedButton()
 {
-	if (buttons.getSelectedButton() == *resume)
+	if (buttons->getSelectedButton() == *resume)
 		return PauseOutput::resume;
 	else
 		return PauseOutput::exit;
@@ -129,7 +131,7 @@ void PauseMenu::displayText()
 void PauseMenu::display()
 {
 	window->clear(sf::Color::Black);
-	window->draw(buttons);
+	window->draw(*buttons);
 	window->draw(this->backGround);
 	displayText();
 	window->display();

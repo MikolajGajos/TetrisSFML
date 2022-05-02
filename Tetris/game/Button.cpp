@@ -60,23 +60,19 @@ ButtonManager::ButtonManager(std::initializer_list<Button> li)
 	}
 	this->selectedButton = &this->buttonArray[0];
 	this->buttonArray[0].select();
-}
-
-void ButtonManager::set(std::initializer_list<Button> li)
-{
-	this->buttonArray = new Button[li.size()];
-	this->arraySize = li.size();
-	for (auto& but : li)
-	{
-		this->buttonArray[but.getID()] = but;
-	}
-	this->selectedButton = &this->buttonArray[0];
-	this->buttonArray[0].select();
+	this->buffer.loadFromFile("resources/sounds/ButtonSound.wav");
+	this->sound.setBuffer(buffer);
 }
 
 ButtonManager::~ButtonManager()
 {
 	delete[] buttonArray;
+}
+
+void ButtonManager::playSoundIfButtonChanged(Button& b1, Button& b2)
+{
+	if (b1 != b2)
+		sound.play();
 }
 
 void ButtonManager::update(sf::RenderWindow& window)
@@ -85,9 +81,11 @@ void ButtonManager::update(sf::RenderWindow& window)
 	{
 		if (buttonArray[i].mouseIntersection(window))
 		{
+			Button b = *selectedButton;
 			selectedButton->unselect();
 			buttonArray[i].select();
 			selectButton(buttonArray[i]);
+			playSoundIfButtonChanged(b, *selectedButton);
 			return;
 		}
 	}
@@ -101,11 +99,13 @@ void ButtonManager::update(sf::RenderWindow& window)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
 		selectNext();
+		sound.play();
 		legalChange = false;
 	}
 	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		selectPrevoius();
+		sound.play();
 		legalChange = false;
 	}
 }
@@ -171,5 +171,3 @@ void ButtonManager::draw(sf::RenderTarget& target, sf::RenderStates) const
 		target.draw(buttonArray[i]);
 	}
 }
-
-

@@ -25,7 +25,7 @@ class PauseMenu
 
 	Button* resume;
 	Button* exit;
-	ButtonManager buttons;
+	ButtonManager* buttons;
 	bool changeAllowed = true;
 	bool escapeAllowed = false;
 

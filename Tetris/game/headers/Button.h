@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 
 class Button : public sf::Drawable
@@ -30,16 +31,17 @@ class ButtonManager : public sf::Drawable
 	int arraySize;
 	Button* selectedButton;
 	bool legalChange = true;
+	sf::SoundBuffer buffer;
+	sf::Sound sound;
 
 private:
 	void selectButton(Button& but);
 	void selectNext();
 	void selectPrevoius();
+	void playSoundIfButtonChanged(Button& b1, Button& b2);
 
 public:
-	ButtonManager() {};
 	ButtonManager(std::initializer_list<Button> li);
-	void set(std::initializer_list<Button> li);
 	~ButtonManager();
 
 	bool mouseIntersects(sf::RenderWindow& window);

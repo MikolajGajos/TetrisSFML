@@ -16,7 +16,7 @@ class Menu
 	Button* highscores;
 	Button* options;
 	Button* exit;
-	ButtonManager buttons;
+	ButtonManager* buttons;
 	MenuOutput getPressedButton();
 	bool checkIfButtonPressed();
 	MenuOutput userInput();
