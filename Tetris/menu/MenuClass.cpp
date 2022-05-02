@@ -2,7 +2,7 @@
 
 Menu::Menu()
 {
-	this->window = new sf::RenderWindow({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Titlebar | sf::Style::Default);
+	this->window = new sf::RenderWindow({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Titlebar | sf::Style::Close);
 	this->game = new GameApp(window);
 	this->play = new Button(0, sf::Vector2f(250, 400), sf::Vector2f(410, 80));
 	this->highscores = new Button(1, sf::Vector2f(250, 500), sf::Vector2f(410, 80));

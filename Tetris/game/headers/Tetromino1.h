@@ -48,6 +48,7 @@ public:
 
 	Tetromino1* getNew(int, std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
 	void display(sf::RenderWindow& window);
+	virtual void displayAsNext(sf::RenderWindow& window);
 };
 
 class IShape : public Tetromino1
@@ -56,6 +57,7 @@ class IShape : public Tetromino1
 public:
 	IShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
 	void rotate(bool);
+	void displayAsNext(sf::RenderWindow& window);
 };
 
 class TShape : public Tetromino1
@@ -69,6 +71,7 @@ class OShape : public Tetromino1
 public:
 	OShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
 	void rotate(bool) { return; }
+	void displayAsNext(sf::RenderWindow& window);
 };
 
 class LShape : public Tetromino1

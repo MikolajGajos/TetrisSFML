@@ -7,9 +7,6 @@ public:
 	///
 	FPS() : mFrame(0), mFps(0) {}
 
-	/// @brief Update the frame count.
-	/// 
-
 
 	/// @brief Get the current FPS count.
 	/// @return FPS count.
@@ -21,6 +18,9 @@ private:
 	sf::Clock mClock;
 
 public:
+
+	/// @brief Update the frame count.
+	/// 
 	void update()
 	{
 		if (mClock.getElapsedTime().asSeconds() >= 1.f)
@@ -94,6 +94,7 @@ GameApp::GameApp(sf::RenderWindow* window) : window(window)
 	this->pause = new PauseMenu(window, &score, &level, &clearedLines);
 	this->gameText.set(*windowPosition, this->clearedLines, this->level, this->score);
 	this->gameAnimation = new Animation(*gameBoard, this->animationTime);
+	this->nextTetromino = tetromino->getNew(random(), gameBoard);
 	this->tetromino = tetromino->getNew(random(), gameBoard);
 }
 
@@ -104,6 +105,7 @@ GameApp::~GameApp()
 	delete pause;
 	delete gameAnimation;
 	delete tetromino;
+	delete nextTetromino;
 }
 
 void GameApp::wait(float time)
@@ -203,7 +205,9 @@ bool GameApp::fallingTetromino()
 		}
 
 		delete tetromino;
-		tetromino = tetromino->getNew(random(), gameBoard);
+		tetromino = nextTetromino;
+		tetromino->updateGhost();
+		nextTetromino = tetromino->getNew(random(), gameBoard);
 		dropTimeReset();
 		return true;
 	}
@@ -306,6 +310,7 @@ void GameApp::drawTetromino()
 		return;
 
 	tetromino->display(*window);
+	nextTetromino->displayAsNext(*window);
 }
 
 bool GameApp::gameOver()
@@ -377,7 +382,6 @@ void GameApp::drawGame()
 	{
 		return;
 	}
-	//window->clear(sf::Color::Black);
 	background.displayBackground(window);
 	drawBoard();
 	drawTetromino();

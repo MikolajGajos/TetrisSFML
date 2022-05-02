@@ -28,10 +28,8 @@ class GameApp {
 	GameText gameText;
 	GameSound gameSound;
 	Animation* gameAnimation;
-	/*Tetromino* tetromino;
-	GhostTetromino* ghostTetromino;
-	NextTetromino* nextTetromino;*/
 	Tetromino1* tetromino;
+	Tetromino1* nextTetromino;
 
 	float dropTime = 0.9f;			void dropTimeReset();
 	float moveTimeCooldown = 0.f;	void moveTimeCooldownReset() { this->moveTimeCooldown = 0.06f; }

@@ -149,3 +149,29 @@ void Tetromino1::display(sf::RenderWindow& window)
 	}
 }
 
+void Tetromino1::displayAsNext(sf::RenderWindow& window)
+{
+	for (auto& tile : tiles)
+	{
+		tetrominoTile.setPosition((tile.x + 11.5f) * CELL_SIZE, (tile.y + 8.f) * CELL_SIZE);
+		window.draw(tetrominoTile);
+	}
+}
+
+void IShape::displayAsNext(sf::RenderWindow& window)
+{
+	for (auto& tile : tiles)
+	{
+		tetrominoTile.setPosition((tile.x + 11.f) * (CELL_SIZE), (tile.y + 8.5f) * CELL_SIZE);
+		window.draw(tetrominoTile);
+	}
+}
+
+void OShape::displayAsNext(sf::RenderWindow& window)
+{
+	for (auto& tile : tiles)
+	{
+		tetrominoTile.setPosition((tile.x + 11.f) * (CELL_SIZE), (tile.y + 8.f) * CELL_SIZE);
+		window.draw(tetrominoTile);
+	}
+}
