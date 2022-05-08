@@ -338,7 +338,7 @@ bool GameApp::gameOver()
 	return false;
 }
 
-void GameApp::endGame()
+bool GameApp::endGame()
 {
 	window->clear(sf::Color::Black);
 	background.displayBackground(window);
@@ -346,15 +346,14 @@ void GameApp::endGame()
 	drawBoard();
 	background.displayGameOver(window);
 	closingWindowEvent(window);
+	return !(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter));
 }
 
 bool GameApp::updateGame()
 {
-	if (gameOverbool)
-	{
-		endGame();
-		return true;
-	}
+	if (gameOverbool)		
+		return endGame();
+
 
 	switch (pauseManagement())
 	{
@@ -405,6 +404,7 @@ int GameApp::run()
 {
 	FPS fps;
 	gameSound.playBackgroundMusic();
+	gameText.updateText();
 
 	while (window->isOpen())
 	{

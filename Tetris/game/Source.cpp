@@ -10,12 +10,12 @@ void main()
     menu.update();
 
     /*sf::Text a;
-    a.setString("is");
+    a.setString("select level");
     sf::Font c;
     c.loadFromFile("resources/images/slkscr.ttf");
     a.setPosition({ 100,200 });
     a.setFont(c);
-    a.setCharacterSize(300);
+    a.setCharacterSize(100);
     sf::RenderWindow window({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Titlebar | sf::Style::Close);
     while (true)
     {

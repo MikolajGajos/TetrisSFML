@@ -1,5 +1,7 @@
 #include "headers/Animation.h"
 
+void closingWindowEvent(sf::RenderWindow* window);
+
 Animation::Animation(std::array<std::array<Cell, ROWS + 2>, COLUMNS>& gameBoard, float animationTime)
 {
 	this->gameBoard = &gameBoard;
@@ -97,6 +99,7 @@ void Animation::display(sf::RenderWindow* window, std::vector<int> linesToDispla
 {
 	while (window->isOpen())
 	{
+		closingWindowEvent(window);
 		if (update())
 		{
 			reset();

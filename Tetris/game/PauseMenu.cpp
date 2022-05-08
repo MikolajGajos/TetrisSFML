@@ -1,17 +1,19 @@
 #include "headers/PauseMenu.h"
 
+void closingWindowEvent(sf::RenderWindow* window);
+
 PauseMenu::PauseMenu(sf::RenderWindow* window, int* score, int* level, int* lines) : window(window)
 {
 	this->score = score;
 	this->level = level;
 	this->lines = lines;
-	setText();
+	this->setText();
 	this->texture.loadFromFile("resources/images/PauseMenu.png");
 	this->backGround.setTexture(texture);
-	resume = new Button(0, sf::Vector2f(250, 180), sf::Vector2f(410, 120));
-	exit = new Button(1, sf::Vector2f(250, 380), sf::Vector2f(410, 120));
-	buttons = new ButtonManager({ *resume,*exit });
-	buttons->update(*window);
+	this->resume = new Button(0, sf::Vector2f(250, 180), sf::Vector2f(410, 120));
+	this->exit = new Button(1, sf::Vector2f(250, 380), sf::Vector2f(410, 120));
+	this->buttons = new ButtonManager({ *resume,*exit });
+	this->buttons->update(*window);
 }
 
 PauseMenu::~PauseMenu()
@@ -102,10 +104,7 @@ PauseOutput PauseMenu::pause()
 
 	while (window->isOpen())
 	{
-		sf::Event event;
-		(*window).pollEvent(event);
-		if (event.type == sf::Event::Closed)
-			(*window).close();
+		closingWindowEvent(window);
 
 		if (checkForEnd())
 		{
@@ -131,7 +130,7 @@ void PauseMenu::display()
 {
 	window->clear(sf::Color::Black);
 	window->draw(*buttons);
-	window->draw(this->backGround);
+	window->draw(backGround);
 	displayText();
 	window->display();
 }

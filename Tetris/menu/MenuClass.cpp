@@ -1,5 +1,7 @@
 #include "MenuClass.h"
 
+void closingWindowEvent(sf::RenderWindow* window);
+
 Menu::Menu()
 {
 	this->window = new sf::RenderWindow({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Titlebar | sf::Style::Close);
@@ -61,10 +63,7 @@ void Menu::update()
 {
 	while (window->isOpen())
 	{
-		sf::Event event;
-		(*window).pollEvent(event);
-		if (event.type == sf::Event::Closed)
-			(*window).close();
+		closingWindowEvent(window);
 
 		buttons->update(*window);
 		switch (userInput())
@@ -87,9 +86,94 @@ void Menu::update()
 	}
 }
 
+int Menu::levelSelector()
+{
+	int level = 0;
+	Button up(0, { 356,200 }, { 200,100 });
+	Button down(1, { 356,600 }, { 200,100 });
+	sf::Text text;
+	sf::Font font;
+	font.loadFromFile("resources/images/slkscr.ttf");
+	text.setCharacterSize(200);
+	text.setPosition({ 320,310 });
+	text.setFont(font);
+	sf::SoundBuffer buffer;
+	sf::Sound sound;
+	buffer.loadFromFile("resources/sounds/UpDownButtonSound.wav");
+	sound.setBuffer(buffer);
+	sf::Sprite sprite;
+	sf::Texture texture;
+	texture.loadFromFile("resources/images/levelSelector.png");
+	sprite.setTexture(texture);
+
+	float cooldown = 0.1f;
+	bool enterUnpressed = false;
+
+	while (window->isOpen())
+	{
+		window->clear(sf::Color::Black);
+
+		closingWindowEvent(window);
+		
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || up.mouseIntersection(*window))
+		{
+			if (cooldown > 0.1f && level < 19)
+			{
+				up.select();
+				down.unselect();
+				cooldown = 0.f;
+				level++;
+				sound.play();
+			}
+		}
+		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !up.mouseIntersection(*window))
+			up.unselect();
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || down.mouseIntersection(*window))
+		{
+			if (cooldown > 0.1f && level > 0)
+			{
+				down.select();
+				up.unselect();
+				cooldown = 0.f;
+				level--;
+				sound.play();
+			}			
+		}
+		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !down.mouseIntersection(*window))
+			down.unselect();
+
+		std::ostringstream os;
+		os << std::setfill('0') << std::setw(2) << level;
+		text.setString(os.str());
+
+		window->draw(up);
+		window->draw(down);
+		window->draw(sprite);
+		window->draw(text);		
+
+		window->display();
+		DeltaTime::getInstance().update();
+		cooldown += DeltaTime::getInstance().getDT();
+		
+		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+			enterUnpressed = true;
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && enterUnpressed)
+			break;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && enterUnpressed)
+			return -1;
+	}
+
+	return level;
+}
+
 int Menu::runGame()
 {
-	game->setStartingLevel(0); // to do
+	int startringLevel = levelSelector();
+	if (startringLevel == -1)
+		return 0;
+	game->setStartingLevel(startringLevel); 
 	int score =  game->run();
 	delete game;
 	game = new GameApp(window);

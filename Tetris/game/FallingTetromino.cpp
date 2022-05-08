@@ -11,7 +11,7 @@ void Tetromino::setTetromio(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gam
 	this->ghostTile.setTexture(&ghostTexture);
 	this->ghostTile.setSize({ INNER_CELL, INNER_CELL });
 	this->rotation = 0;
-	updateGhost();
+	this->updateGhost();
 }
 
 IShape::IShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard)

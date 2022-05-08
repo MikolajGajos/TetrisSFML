@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include "../game/headers/Button.h"
 #include "../game/headers/GameApp.h"
 
@@ -23,6 +24,7 @@ class Menu
 	bool checkIfButtonPressed();
 	MenuOutput userInput();
 	int runGame();
+	int levelSelector();
 	void display();
 
 public:

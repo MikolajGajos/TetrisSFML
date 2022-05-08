@@ -62,8 +62,8 @@ class GameApp {
 	void drawTetromino();
 	//Checks if new tetromino is able to spawn.
 	bool gameOver();
-	//Ends game when gameOver returns true
-	void endGame();
+	//Draws game ending screen.
+	bool endGame();
 
 	bool updateGame();
 	void drawGame();
