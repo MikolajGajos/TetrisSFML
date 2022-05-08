@@ -4,11 +4,6 @@
 #include "../game/headers/Button.h"
 #include "../game/headers/GameApp.h"
 
-enum class MenuOutput
-{
-	play, highscores, options, exit, noImput
-};
-
 class Menu
 {
 	sf::RenderWindow* window;
@@ -20,12 +15,11 @@ class Menu
 	Button* options;
 	Button* exit;
 	ButtonManager* buttons;
-	MenuOutput getPressedButton();
 	bool checkIfButtonPressed();
-	MenuOutput userInput();
 	int runGame();
 	int levelSelector();
 	void display();
+	void close();
 
 public:
 	Menu();

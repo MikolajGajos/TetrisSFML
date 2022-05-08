@@ -2,16 +2,21 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <vector>
+#include <functional>
 
 class Button : public sf::Drawable
 {
 	sf::RectangleShape buttonShape;
 	bool selected = false;
 	int id;
+	std::function<void()> onClickFunction = nullptr;
 
 public:
 	Button() {};
 	Button(int id, sf::Vector2f position, sf::Vector2f size);
+
+	void setOnClickFunction(std::function<void()> function);
+	void onClick();
 
 	int getID() const;
 	void select();

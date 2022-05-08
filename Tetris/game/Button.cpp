@@ -7,6 +7,17 @@ Button::Button(int id, sf::Vector2f position, sf::Vector2f size)
 	this->id = id;
 }
 
+void Button::setOnClickFunction(std::function<void()> function)
+{
+	this->onClickFunction = function;
+}
+
+void Button::onClick()
+{
+	if(onClickFunction != nullptr)
+		onClickFunction();
+}
+
 int Button::getID() const
 {
 	return id;

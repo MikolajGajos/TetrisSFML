@@ -9,9 +9,11 @@ Menu::Menu()
 	this->menuTexture.loadFromFile("resources/images/Menu.png");
 	this->menuSprite.setTexture(menuTexture);
 	this->play = new Button(0, sf::Vector2f(250, 400), sf::Vector2f(410, 80));
+	this->play->setOnClickFunction(std::bind(&Menu::runGame, this));
 	this->highscores = new Button(1, sf::Vector2f(250, 500), sf::Vector2f(410, 80));
 	this->options = new Button(2, sf::Vector2f(250, 600), sf::Vector2f(410, 80));
 	this->exit = new Button(3, sf::Vector2f(250, 700), sf::Vector2f(410, 80));
+	this->exit->setOnClickFunction(std::bind(&Menu::close, this));
 	this->buttons = new ButtonManager({*play,*highscores,*options,*exit});
 }
 
@@ -24,18 +26,6 @@ Menu::~Menu()
 	delete options;
 	delete exit;
 	delete buttons;
-}
-
-MenuOutput Menu::getPressedButton()
-{
-	if (buttons->getSelectedButton() == *play)
-		return MenuOutput::play;
-	else if (buttons->getSelectedButton() == *highscores)
-		return MenuOutput::highscores;
-	else if (buttons->getSelectedButton() == *options)
-		return MenuOutput::options;
-	else if (buttons->getSelectedButton() == *exit)
-		return MenuOutput::exit;
 }
 
 bool Menu::checkIfButtonPressed()
@@ -52,13 +42,6 @@ bool Menu::checkIfButtonPressed()
 	return false;
 }
 
-MenuOutput Menu::userInput()
-{
-	if (checkIfButtonPressed())
-		return (getPressedButton());
-	else return MenuOutput::noImput;
-}
-
 void Menu::update()
 {
 	while (window->isOpen())
@@ -66,22 +49,10 @@ void Menu::update()
 		closingWindowEvent(window);
 
 		buttons->update(*window);
-		switch (userInput())
-		{
-		case MenuOutput::play:
-			runGame();
-			break;
-		case MenuOutput::highscores:
-			//to do
-			break;
-		case MenuOutput::options:
-			//to do
-			break;
-		case MenuOutput::exit:
-			return;
-		case MenuOutput::noImput:
-			break;
-		}
+
+		if (checkIfButtonPressed())
+			buttons->getSelectedButton().onClick();
+
 		display();
 	}
 }
@@ -186,4 +157,9 @@ void Menu::display()
 	window->draw(*buttons);
 	window->draw(menuSprite);
 	window->display();
+}
+
+void Menu::close()
+{
+	window->close();
 }
