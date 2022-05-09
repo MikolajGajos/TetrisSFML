@@ -14,7 +14,7 @@ Menu::Menu()
 	this->options = new Button(2, sf::Vector2f(250, 600), sf::Vector2f(410, 80));
 	this->exit = new Button(3, sf::Vector2f(250, 700), sf::Vector2f(410, 80));
 	this->exit->setOnClickFunction(std::bind(&Menu::close, this));
-	this->buttons = new ButtonManager({*play,*highscores,*options,*exit});
+	this->buttons = new ButtonManager({ *play,*highscores,*options,*exit });
 }
 
 Menu::~Menu()
@@ -66,7 +66,6 @@ int Menu::levelSelector()
 	sf::Font font;
 	font.loadFromFile("resources/images/slkscr.ttf");
 	text.setCharacterSize(200);
-	text.setPosition({ 320,310 });
 	text.setFont(font);
 	sf::SoundBuffer buffer;
 	sf::Sound sound;
@@ -85,7 +84,7 @@ int Menu::levelSelector()
 		window->clear(sf::Color::Black);
 
 		closingWindowEvent(window);
-		
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || up.mouseIntersection(*window))
 		{
 			if (cooldown > 0.1f && level < 19)
@@ -114,9 +113,11 @@ int Menu::levelSelector()
 		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !down.mouseIntersection(*window))
 			down.unselect();
 
-		std::ostringstream os;
-		os << std::setfill('0') << std::setw(2) << level;
-		text.setString(os.str());
+		if (level < 10)
+			text.setPosition({ 390,310 });
+		else
+			text.setPosition({ 325,310 });
+		text.setString(std::to_string(level));
 
 		window->draw(up);
 		window->draw(down);
