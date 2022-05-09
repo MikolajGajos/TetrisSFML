@@ -1,5 +1,4 @@
 #include "headers/GameApp.h"
-
 class FPS
 {
 public:
@@ -59,16 +58,15 @@ void closingWindowEvent(sf::RenderWindow* window)
 		(*window).close();
 }
 
-PauseOutput GameApp::pauseManagement()
+void GameApp::pauseManagement()
 {
 	if (!pauseAllowed)
 		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		{
 			pauseAllowed = true;
-			return PauseOutput::noPause;
+			return;
 		}
-
-	return pause->checkForPause();
+	pause->checkForPause();
 }
 
 GameApp::GameApp(sf::RenderWindow* window) : window(window)
@@ -91,7 +89,7 @@ GameApp::GameApp(sf::RenderWindow* window) : window(window)
 		}
 	}
 	setUpSC();
-	this->pause = new PauseMenu(window, &score, &level, &clearedLines);
+	this->pause = new PauseMenu(window, this);
 	this->gameText.set(*windowPosition, this->clearedLines, this->level, this->score);
 	this->gameAnimation = new Animation(*gameBoard, this->animationTime);
 	this->nextTetromino = tetromino->getNew(random(), gameBoard);
@@ -108,8 +106,9 @@ GameApp::~GameApp()
 	delete nextTetromino;
 }
 
-void GameApp::wait(float time)
+void GameApp::resume()
 {
+	float time = 3.2f;
 	sf::Font font;
 	sf::Text text;
 	font.loadFromFile("resources/images/slkscr.ttf");
@@ -117,6 +116,7 @@ void GameApp::wait(float time)
 	text.setFont(font);
 	text.setPosition((*windowPosition)[5][0].getPosition());
 	text.setStyle(sf::Text::Bold);
+	pauseAllowed = false;
 
 	while (window->isOpen())
 	{
@@ -346,28 +346,22 @@ bool GameApp::endGame()
 	drawBoard();
 	background.displayGameOver(window);
 	closingWindowEvent(window);
-	return !(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter));
+	return !(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) || sf::Mouse::isButtonPressed(sf::Mouse::Left));
+}
+
+void GameApp::exitGame()
+{
+	gameOverbool = true;
 }
 
 bool GameApp::updateGame()
 {
+	closingWindowEvent(window);
+
 	if (gameOverbool)		
 		return endGame();
 
-
-	switch (pauseManagement())
-	{
-	case PauseOutput::resume:
-		wait(3.2f);
-		pauseAllowed = false;
-		break;
-	case PauseOutput::exit:
-		gameSound.stopBackgroundMusic();
-		return false;
-	}
-
-	closingWindowEvent(window);
-
+	pauseManagement();
 	tetromnoMovement();
 	if (fallingTetromino())
 		fullLines();

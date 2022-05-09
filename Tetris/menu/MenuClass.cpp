@@ -145,7 +145,13 @@ int Menu::runGame()
 	if (startringLevel == -1)
 		return 0;
 	game->setStartingLevel(startringLevel); 
-	int score =  game->run();
+	game->run();
+	return exitGame();
+}
+
+int Menu::exitGame()
+{
+	int score = game->score;
 	delete game;
 	game = new GameApp(window);
 	return score;

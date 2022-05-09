@@ -1,17 +1,18 @@
 #include "headers/PauseMenu.h"
+#include "headers/GameApp.h"
 
 void closingWindowEvent(sf::RenderWindow* window);
 
-PauseMenu::PauseMenu(sf::RenderWindow* window, int* score, int* level, int* lines) : window(window)
+PauseMenu::PauseMenu(sf::RenderWindow* window, GameApp* game) : window(window)
 {
-	this->score = score;
-	this->level = level;
-	this->lines = lines;
+	this->game = game;
 	this->setText();
 	this->texture.loadFromFile("resources/images/PauseMenu.png");
 	this->backGround.setTexture(texture);
 	this->resume = new Button(0, sf::Vector2f(250, 180), sf::Vector2f(410, 120));
+	this->resume->setOnClickFunction(std::bind(&GameApp::resume, this->game));
 	this->exit = new Button(1, sf::Vector2f(250, 380), sf::Vector2f(410, 120));
+	this->exit->setOnClickFunction(std::bind(&GameApp::exitGame, this->game));
 	this->buttons = new ButtonManager({ *resume,*exit });
 	this->buttons->update(*window);
 }
@@ -41,19 +42,18 @@ void PauseMenu::setText()
 
 void PauseMenu::updateText()
 {
-	this->scoreText.setString("score: " + std::to_string(*score));
-	this->levelText.setString("level: " + std::to_string(*level));
-	this->linesText.setString("lines: " + std::to_string(*lines));
+	this->scoreText.setString("score: " + std::to_string(game->score));
+	this->levelText.setString("level: " + std::to_string(game->level));
+	this->linesText.setString("lines: " + std::to_string(game->clearedLines));
 }
 
-PauseOutput PauseMenu::checkForPause()
+void PauseMenu::checkForPause()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 	{
 		check = false;	
-		return pause();
+		this->pause();
 	}
-	return PauseOutput::noPause;
 }
 
 bool PauseMenu::checkForEnd()
@@ -90,15 +90,7 @@ void PauseMenu::manageButtons()
 	buttons->update(*window);
 }
 
-PauseOutput PauseMenu::getPressedButton()
-{
-	if (buttons->getSelectedButton() == *resume)
-		return PauseOutput::resume;
-	else
-		return PauseOutput::exit;
-}
-
-PauseOutput PauseMenu::pause()
+void PauseMenu::pause()
 {
 	updateText();
 
@@ -109,7 +101,8 @@ PauseOutput PauseMenu::pause()
 		if (checkForEnd())
 		{
 			reset();
-			return getPressedButton();
+			buttons->getSelectedButton().onClick();
+			break;
 		}
 
 		manageButtons();

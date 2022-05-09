@@ -15,8 +15,8 @@
 #include "GameSounds.h"
 #include "PauseMenu.h"
 
-class GameApp {
-
+class GameApp 
+{
 	sf::RenderWindow* window;
 	std::array<std::array<Cell, ROWS + 2>, COLUMNS>* gameBoard = new std::array<std::array<Cell, ROWS + 2>, COLUMNS>;
 	std::array<std::array<sf::RectangleShape, 22>, 24>* windowPosition = new std::array<std::array<sf::RectangleShape, 22>, 24>;
@@ -39,15 +39,9 @@ class GameApp {
 	bool update = false;
 	bool rotationAllowed = true;
 	bool gameOverbool = false;
-
-	int clearedLines = 0;
-	int level = 0;
 	int linesUntilTransition = 0;
-	int score = 0;
 
-	PauseOutput pauseManagement();
-	//Waits for a given time and displays the timer.
-	void wait(float time);
+	void pauseManagement();
 	//Manages all tetromino movement based on user's input.
 	void tetromnoMovement();
 	//Manages tetromino falling without user interaction. Updates tetromino if it falls to the end. Returns true if the tetromino hit the ground.
@@ -74,6 +68,14 @@ class GameApp {
 public:
 	GameApp(sf::RenderWindow*);
 	~GameApp();	
+
+	int clearedLines = 0;
+	int level = 0;
+	int score = 0;
+
 	int run();
+	//Waits for a given time and displays the timer.
+	void resume();
+	void exitGame();
 	void setStartingLevel(unsigned char lvl) { this->level = lvl; }
 };

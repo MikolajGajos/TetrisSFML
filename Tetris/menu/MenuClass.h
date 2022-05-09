@@ -15,6 +15,8 @@ class Menu
 	Button* options;
 	Button* exit;
 	ButtonManager* buttons;
+
+private:
 	bool checkIfButtonPressed();
 	int runGame();
 	int levelSelector();
@@ -24,5 +26,6 @@ class Menu
 public:
 	Menu();
 	~Menu();
+	int exitGame();
 	void update();
 };
