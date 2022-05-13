@@ -26,6 +26,9 @@ public:
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
 	bool operator== (Button& but); 
+
+	//no manager methods
+	bool isClicked(sf::RenderWindow& window);
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////

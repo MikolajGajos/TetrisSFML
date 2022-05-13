@@ -32,6 +32,7 @@
     <ClCompile Include="game\Source.cpp" />
     <ClCompile Include="game\TextAndBackground.cpp" />
     <ClCompile Include="menu\MenuClass.cpp" />
+    <ClCompile Include="menu\MenuScenes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\headers\Animation.h" />

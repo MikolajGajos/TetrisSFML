@@ -59,6 +59,13 @@ bool Button::operator==(Button& but)
 	return false;
 }
 
+bool Button::isClicked(sf::RenderWindow& window)
+{
+	if (mouseIntersection(window) && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		return true;
+	return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 ButtonManager::ButtonManager(std::initializer_list<Button> li)

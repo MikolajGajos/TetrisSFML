@@ -82,6 +82,7 @@
     <ClCompile Include="game\RotationAndWallkicks.cpp">
       <Filter>Game\Tetromino</Filter>
     </ClCompile>
+    <ClCompile Include="menu\MenuScenes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\headers\Animation.h">
