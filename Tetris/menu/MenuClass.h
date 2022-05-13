@@ -3,6 +3,7 @@
 #include "SFML/Audio.hpp"
 #include "../game/headers/Button.h"
 #include "../game/headers/GameApp.h"
+#include "../game/headers/Global.h"
 
 class Menu
 {
@@ -37,13 +38,39 @@ class Menu
 		void decrementLevel();
 		void userInput(sf::RenderWindow* window);
 		void display(sf::RenderWindow* window);
-	} levelSelctor;
+	} lvlSelector;
+	class OptionsMenu
+	{
+	public:
+		sf::RenderWindow* window;
+		Button* menuUp; void incrementMenu() { changeVolumeOpt(Volume::menu, 10); }
+		Button* menuDown; void decrementMenu() { changeVolumeOpt(Volume::menu, -10); }
+		Button* effectsUp; void incrementEffects() { changeVolumeOpt(Volume::effects, 10); }
+		Button* effectsDown; void decrementEffects() { changeVolumeOpt(Volume::effects, -10); }
+		Button* musicUp; void incrementMusic() { changeVolumeOpt(Volume::music, 10); }
+		Button* musicDown; void decrementMusic() { changeVolumeOpt(Volume::music, -10); }
+		Button* Controls; 
+		ButtonManager* buttons; 
+		float clickCooldown = -0.5f;
+		sf::Font font;
+		sf::Text menuText;
+		sf::Text musicText;
+		sf::Text effectsText;
+		sf::Sprite controlsSprite;
+
+		OptionsMenu();
+		~OptionsMenu();
+		void updateText();
+		void changeVolumeOpt(Volume vol, int val);
+		void displayControls();
+		void display(sf::RenderWindow* window);
+	} optionsMenu;
 
 private:
-
-	bool checkIfButtonPressed();
+	bool checkIfButtonPressed(ButtonManager* buttons);
 	int runGame();
 	int levelSelector();
+	void optionsMenuScene();
 	void display();
 	void close();
 

@@ -33,3 +33,52 @@ public:
 	float getDT() { return dt; }
 	void update() { this->dt = clock.restart().asSeconds(); }
 };
+
+enum class Volume
+{
+	menu, music, effects
+};
+
+class SoundVolume
+{
+	int music = 100;
+	int effects = 100;
+	int menu = 100;
+
+public:
+	static SoundVolume& getInstance()
+	{
+		static SoundVolume instance;
+		return instance;
+	}
+	int getVolume(Volume vol)
+	{
+		switch (vol)
+		{
+		case Volume::menu:
+			return this->menu;
+		case Volume::music:
+			return this->music;
+		case Volume::effects:
+			return this->effects;
+		}
+	}
+	void changeVolume(Volume vol, int val)
+	{
+		switch (vol)
+		{
+		case Volume::menu:
+			if((this->menu + val) >= 0 && (this->menu + val) <= 100)
+				this->menu += val;
+			break;
+		case Volume::music:
+			if ((this->music + val) >= 0 && (this->music + val) <= 100)
+			this->music += val;
+			break;
+		case Volume::effects:
+			if ((this->effects + val) >= 0 && (this->effects + val) <= 100)
+			this->effects += val;
+			break;
+		}
+	}
+};

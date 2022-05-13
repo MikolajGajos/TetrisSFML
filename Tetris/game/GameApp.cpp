@@ -399,6 +399,7 @@ int GameApp::run()
 	FPS fps;
 	gameSound.playBackgroundMusic();
 	gameText.updateText();
+	gameSound.setVolume();
 
 	while (window->isOpen())
 	{

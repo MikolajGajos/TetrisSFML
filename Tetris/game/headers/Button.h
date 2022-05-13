@@ -57,4 +57,6 @@ public:
 	Button getSelectedButton();
 	void update(sf::RenderWindow& window);
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
+
+	void setVolume(int val);
 };

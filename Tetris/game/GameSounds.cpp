@@ -15,6 +15,13 @@ GameSound::GameSound()
 	backgroundMusic.setLoop(true);
 }
 
+void GameSound::setVolume()
+{
+	sound.setVolume(SoundVolume::getInstance().getVolume(Volume::effects));
+	transitionSound.setVolume(SoundVolume::getInstance().getVolume(Volume::effects));
+	backgroundMusic.setVolume(SoundVolume::getInstance().getVolume(Volume::music));
+}
+
 void GameSound::play(Sounds sound)
 {
 	switch (sound)

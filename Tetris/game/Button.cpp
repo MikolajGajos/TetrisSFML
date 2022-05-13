@@ -189,3 +189,8 @@ void ButtonManager::draw(sf::RenderTarget& target, sf::RenderStates) const
 		target.draw(buttonArray[i]);
 	}
 }
+
+void ButtonManager::setVolume(int val)
+{
+	sound.setVolume(val);
+}

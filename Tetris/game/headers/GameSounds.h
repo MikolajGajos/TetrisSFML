@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "Global.h"
 
 enum class Sounds
 {
@@ -24,6 +25,7 @@ class GameSound
 public:
 	GameSound();
 
+	void setVolume();
 	void play(Sounds sound);
 	void playBackgroundMusic();
 	void stopBackgroundMusic();

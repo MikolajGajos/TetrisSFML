@@ -93,6 +93,7 @@ void PauseMenu::manageButtons()
 void PauseMenu::pause()
 {
 	updateText();
+	this->buttons->setVolume(SoundVolume::getInstance().getVolume(Volume::menu));
 
 	while (window->isOpen())
 	{
