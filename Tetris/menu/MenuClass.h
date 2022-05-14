@@ -18,6 +18,7 @@ class HighscoreManager
 	std::array < sf::Text, 5> scoreTexts;
 	sf::Texture texture;
 	sf::Sprite sprite;
+	sf::Texture nameTexture;
 	sf::Sprite enterName;
 
 	void setTexts();

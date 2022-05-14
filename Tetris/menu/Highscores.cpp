@@ -166,8 +166,8 @@ HighscoreManager::HighscoreManager()
 	std::filesystem::path path = std::filesystem::current_path().append("resources/highscore.txt");
     texture.loadFromFile(std::filesystem::current_path().append("resources/images/Highscores.png").string());
     sprite.setTexture(texture);
-    texture.loadFromFile(std::filesystem::current_path().append("resources/images/EnterName.png").string());
-    enterName.setTexture(texture);
+    nameTexture.loadFromFile(std::filesystem::current_path().append("resources/images/EnterName.png").string());
+    enterName.setTexture(nameTexture);
 
 	std::ifstream file;
 	file.open(path.string());
