@@ -145,11 +145,13 @@ void Menu::OptionsMenu::changeVolumeOpt(Volume vol, int val)
 
 void Menu::OptionsMenu::displayControls()
 {
+	textureControls.loadFromFile("resources/images/Controls.png");
+	controlsSprite.setTexture(textureControls);
 	while (window->isOpen())
 	{
 		closingWindowEvent(window);
 
-		window->clear();
+		window->draw(controlsSprite);
 		window->display();
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))

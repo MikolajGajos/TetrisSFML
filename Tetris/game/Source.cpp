@@ -104,18 +104,10 @@ void main()
     Menu menu;
     menu.update();
 
-    sf::Text a;
-    a.setString("select level");
-    sf::Font c;
-    c.loadFromFile("resources/images/slkscr.ttf");
-    a.setPosition({ 100,200 });
-    a.setFont(c);
-    a.setCharacterSize(22);
+    /*sf::RenderWindow window({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Titlebar | sf::Style::Close);
+    TextBox textbox({ 100,100 }, 30, &window);
 
-    sf::RenderWindow window({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Titlebar | sf::Style::Close);
-    TextBox textbox({ 100,100 }, 120, &window);
-
-    /*std::string name = "";
+    std::string name = "";
     while (window.isOpen())
     {
         window.clear();
