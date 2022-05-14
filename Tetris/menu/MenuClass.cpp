@@ -123,7 +123,8 @@ int Menu::runGame()
 		return 0;
 	game->setStartingLevel(startringLevel); 
 	game->run();
-	return exitGame();
+	highscoresMan.update(exitGame());
+	return 0;
 }
 
 int Menu::exitGame()

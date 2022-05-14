@@ -83,6 +83,7 @@
       <Filter>Game\Tetromino</Filter>
     </ClCompile>
     <ClCompile Include="menu\MenuScenes.cpp" />
+    <ClCompile Include="menu\Highscores.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\headers\Animation.h">

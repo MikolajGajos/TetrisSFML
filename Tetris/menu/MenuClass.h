@@ -5,6 +5,21 @@
 #include "../game/headers/GameApp.h"
 #include "../game/headers/Global.h"
 
+class HighscoreManager
+{
+	struct highscores
+	{
+		std::array < std::pair<int, std::string>, 5> arr;
+		void saveSocore(std::pair<int, std::string>);
+		int getLowest();
+	} highScores;
+public:
+	HighscoreManager();
+	~HighscoreManager();
+
+	void update(int score);
+};
+
 class Menu
 {
 	sf::RenderWindow* window;
@@ -65,6 +80,7 @@ class Menu
 		void displayControls();
 		void display(sf::RenderWindow* window);
 	} optionsMenu;
+	HighscoreManager highscoresMan;
 
 private:
 	bool checkIfButtonPressed(ButtonManager* buttons);

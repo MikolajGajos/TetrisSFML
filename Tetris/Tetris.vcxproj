@@ -31,6 +31,7 @@
     <ClCompile Include="game\GameSounds.cpp" />
     <ClCompile Include="game\Source.cpp" />
     <ClCompile Include="game\TextAndBackground.cpp" />
+    <ClCompile Include="menu\Highscores.cpp" />
     <ClCompile Include="menu\MenuClass.cpp" />
     <ClCompile Include="menu\MenuScenes.cpp" />
   </ItemGroup>
