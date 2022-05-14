@@ -13,11 +13,18 @@ class HighscoreManager
 		void saveSocore(std::pair<int, std::string>);
 		int getLowest();
 	} highScores;
+	sf::Font font;
+	std::array < sf::Text, 5> texts;
+	void setTexts();
+	void setTextString();
+	std::string getName(sf::RenderWindow* window);
+
 public:
 	HighscoreManager();
 	~HighscoreManager();
 
-	void update(int score);
+	void update(int score, sf::RenderWindow* window);
+	void display(sf::RenderWindow* window);
 };
 
 class Menu
@@ -84,11 +91,13 @@ class Menu
 
 private:
 	bool checkIfButtonPressed(ButtonManager* buttons);
-	int runGame();
+	void runGame();
 	int levelSelector();
 	void optionsMenuScene();
+	void highscoresScene();
 	void display();
 	void close();
+	void wait(float time);
 
 public:
 	Menu();

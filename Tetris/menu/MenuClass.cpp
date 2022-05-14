@@ -11,6 +11,7 @@ Menu::Menu()
 	this->play = new Button(0, sf::Vector2f(250, 400), sf::Vector2f(410, 80));
 	this->play->setOnClickFunction(std::bind(&Menu::runGame, this));
 	this->highscores = new Button(1, sf::Vector2f(250, 500), sf::Vector2f(410, 80));
+	this->highscores->setOnClickFunction(std::bind(&Menu::highscoresScene, this));
 	this->options = new Button(2, sf::Vector2f(250, 600), sf::Vector2f(410, 80));
 	this->options->setOnClickFunction(std::bind(&Menu::optionsMenuScene, this));
 	this->exit = new Button(3, sf::Vector2f(250, 700), sf::Vector2f(410, 80));
@@ -43,6 +44,18 @@ bool Menu::checkIfButtonPressed(ButtonManager* buttons)
 	return false;
 }
 
+void Menu::wait(float time)
+{
+	while (window->isOpen())
+	{
+		DeltaTime::getInstance().update();
+		time -= DeltaTime::getInstance().getDT();
+		display();
+		if (time < 0.f)
+			return;
+	}
+}
+
 void Menu::update()
 {
 	while (window->isOpen())
@@ -52,7 +65,10 @@ void Menu::update()
 		buttons->update(*window);
 
 		if (checkIfButtonPressed(buttons))
+		{
 			buttons->getSelectedButton().onClick();
+			wait(0.5f);
+		}
 
 		display();
 	}
@@ -116,15 +132,29 @@ void Menu::optionsMenuScene()
 	buttons->setVolume(SoundVolume::getInstance().getVolume(Volume::menu));
 }
 
-int Menu::runGame()
+void Menu::highscoresScene()
+{
+	while (window->isOpen())
+	{
+		window->clear();
+		closingWindowEvent(window);
+
+		highscoresMan.display(window);
+		window->display();
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			break;
+	}
+}
+
+void Menu::runGame()
 {
 	int startringLevel = levelSelector();
 	if (startringLevel < 0)
-		return 0;
+		return;
 	game->setStartingLevel(startringLevel); 
 	game->run();
-	highscoresMan.update(exitGame());
-	return 0;
+	highscoresMan.update(exitGame(), window);
 }
 
 int Menu::exitGame()

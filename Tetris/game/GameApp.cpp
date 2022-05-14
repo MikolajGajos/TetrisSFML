@@ -53,9 +53,9 @@ void prepareVector(std::vector<int>& v)
 void closingWindowEvent(sf::RenderWindow* window)
 {
 	sf::Event event;
-	(*window).pollEvent(event);
+	window->pollEvent(event);
 	if (event.type == sf::Event::Closed)
-		(*window).close();
+		window->close();
 }
 
 void GameApp::pauseManagement()

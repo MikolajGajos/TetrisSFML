@@ -1,6 +1,102 @@
 #include "MenuClass.h"
 #include <filesystem>
 #include <fstream>
+#include <regex>
+#include <iomanip>
+
+constexpr auto BACKSPACE = 8;
+constexpr auto ENTER = 13;
+constexpr auto ESC = 27;
+
+class TextBox
+{
+    sf::Text text;
+    sf::Font font;
+    std::string str;
+    float timer = 0.f;
+    bool showSlash = false;
+
+public:
+    TextBox(sf::Vector2f position, int size)
+    {
+        font.loadFromFile("resources/images/slkscr.ttf");
+        text.setPosition(position);
+        text.setFont(font);
+        text.setCharacterSize(size);
+    }
+
+    void update(sf::RenderWindow* window)
+    {
+        sf::Event event;
+        while (window->pollEvent(event))
+        {
+            switch (event.type)
+            {
+            case sf::Event::Closed:
+                window->close();
+                break;
+            case sf::Event::TextEntered:
+                updateText(event);
+                break;
+            }
+        }
+        slashMangement();
+    }
+
+    void slashMangement()
+    {
+        DeltaTime::getInstance().update();
+        timer += DeltaTime::getInstance().getDT();
+        if (timer > 0.5f && timer < 1.f)
+            showSlash = true;
+        else if (timer > 1.f)
+        {
+            showSlash = false;
+            timer = 0.f;
+        }
+    }
+
+    void updateText(sf::Event event)
+    {
+        std::string temp = str;
+        if (event.text.unicode == BACKSPACE && temp.size() > 0)
+            temp.pop_back();
+        else if (event.text.unicode != BACKSPACE && event.text.unicode != ENTER && event.text.unicode != ESC && temp.size() < 10)
+            temp.push_back(event.text.unicode);
+
+        str = temp;
+        text.setString(str);
+        timer = 0.5f;
+        if (!validateText(temp))
+            text.setFillColor(sf::Color::Red);
+        else
+            text.setFillColor(sf::Color::White);
+    }
+
+    bool validateText(std::string& temp)
+    {
+        std::regex nameReg("[0-9A-Za-z]{3,10}");
+        return std::regex_match(temp, nameReg);
+    }
+    bool goodName()
+    {
+        std::regex nameReg("[0-9A-Za-z]{3,10}");
+        return std::regex_match(str, nameReg);
+    }
+
+    sf::Text getText()
+    {
+        if (showSlash)
+            text.setString(str + "|");
+        else
+            text.setString(str);
+        return text;
+    }
+    std::string* getString()
+    {
+        return &str;
+    }
+};
 
 void HighscoreManager::highscores::saveSocore(std::pair<int, std::string> score)
 {
@@ -27,9 +123,39 @@ int HighscoreManager::highscores::getLowest()
 	return arr[4].first;
 }
 
+void HighscoreManager::setTexts()
+{
+	font.loadFromFile(std::filesystem::current_path().append("resources/images/slkscr.ttf").string());
+
+	for (unsigned char i = 0; i < texts.size(); i++)
+	{
+		texts[i].setFont(font);
+		texts[i].setCharacterSize(50);
+		texts[i].setPosition(100, i * 100 + 100);
+	}
+}
+
+void HighscoreManager::setTextString()
+{
+	for (unsigned char i = 0; i < highScores.arr.size(); i++)
+	{
+        if (highScores.arr[i].first != 0)
+        {
+            std::ostringstream num;
+            num << std::setfill('0') << std::setw(6) << highScores.arr[i].first;
+            std::ostringstream name;
+            name << std::left << std::setw(15) << highScores.arr[i].second;
+
+            texts[i].setString(std::to_string(i +1 ) + ". " + name.str() + num.str());
+        }
+		else
+			texts[i].setString("empty");
+	}
+}
+
 HighscoreManager::HighscoreManager()
 {
-	std::filesystem::path path = std::filesystem::current_path().append("resources/cipeczka.txt");
+	std::filesystem::path path = std::filesystem::current_path().append("resources/highscore.txt");
 
 	std::ifstream file;
 	file.open(path.string());
@@ -47,11 +173,13 @@ HighscoreManager::HighscoreManager()
 		}
 	}
 	file.close();
+	setTexts();
+	setTextString();
 }
 
 HighscoreManager::~HighscoreManager()
 {
-	std::filesystem::path path = std::filesystem::current_path().append("resources/cipeczka.txt");
+	std::filesystem::path path = std::filesystem::current_path().append("resources/highscore.txt");
 
 	std::ofstream file;
 	file.open(path.string());
@@ -65,12 +193,36 @@ HighscoreManager::~HighscoreManager()
 	file.close();
 }
 
-void HighscoreManager::update(int score)
+std::string HighscoreManager::getName(sf::RenderWindow* window)
+{
+    TextBox textBox({ 100, 300 }, 70);
+    while (window->isOpen())
+    {
+        window->clear();
+        textBox.update(window);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && textBox.goodName())
+        {
+            break;
+        }
+        window->draw(textBox.getText());
+        window->display();
+    }
+	return *textBox.getString();
+}
+
+void HighscoreManager::update(int score, sf::RenderWindow* window)
 {
 	if (highScores.getLowest() < score)
 	{
-		std::string name = "as";
-		highScores.saveSocore(std::make_pair(score, name));
+		highScores.saveSocore(std::make_pair(score, getName(window)));
 	}
+	setTextString();
 }
 
+void HighscoreManager::display(sf::RenderWindow* window)
+{
+	for (auto& el : texts)
+	{
+		window->draw(el);
+	}
+}

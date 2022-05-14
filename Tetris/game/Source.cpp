@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
-
 #include "../menu/MenuClass.h"
+#include <regex>
 
 void main()
 {
@@ -9,17 +9,29 @@ void main()
     Menu menu;
     menu.update();
 
-    /*sf::Text a;
-    a.setString("select level");
-    sf::Font c;
-    c.loadFromFile("resources/images/slkscr.ttf");
-    a.setPosition({ 100,200 });
-    a.setFont(c);
-    a.setCharacterSize(100);
+    //sf::Text a;
+    //a.setString("select level");
+    //sf::Font c;
+    //c.loadFromFile("resources/images/slkscr.ttf");
+    //a.setPosition({ 100,200 });
+    //a.setFont(c);
+    //a.setCharacterSize(50);
+
+    /*TextBox textbox({ 100,100 }, 50);
+
     sf::RenderWindow window({ WINDOW_SIZE_X, WINDOW_SIZE_Y }, "Tetris", sf::Style::Titlebar | sf::Style::Close);
-    while (true)
+
+    std::string name = "";
+    while (window.isOpen())
     {
-        window.draw(a);
+        window.clear();
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+            window.close();
+
+        textbox.update(&window);
+
+        window.draw(textbox.getText());
         window.display();
     }*/
 }
