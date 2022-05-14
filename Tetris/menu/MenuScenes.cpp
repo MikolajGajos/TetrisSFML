@@ -99,15 +99,15 @@ Menu::OptionsMenu::OptionsMenu()
 	buttons = new ButtonManager({ *menuUp, *menuDown, *effectsUp, *effectsDown, *musicUp, *musicDown, *Controls });
 
 	font.loadFromFile("resources/images/slkscr.ttf");
-	menuText.setCharacterSize(50);
+	menuText.setCharacterSize(60);
 	menuText.setFont(font);
-	menuText.setPosition(400, 100);
-	effectsText.setCharacterSize(50);
+	menuText.setPosition(380, 110);
+	effectsText.setCharacterSize(60);
 	effectsText.setFont(font);
-	effectsText.setPosition(400, 300);
-	musicText.setCharacterSize(50);
+	effectsText.setPosition(380, 310);
+	musicText.setCharacterSize(60);
 	musicText.setFont(font);
-	musicText.setPosition(400, 500);
+	musicText.setPosition(380, 510);
 }
 
 Menu::OptionsMenu::~OptionsMenu()
@@ -124,9 +124,15 @@ Menu::OptionsMenu::~OptionsMenu()
 
 void Menu::OptionsMenu::updateText()
 {
-	menuText.setString(std::to_string(SoundVolume::getInstance().getVolume(Volume::menu)));
-	musicText.setString(std::to_string(SoundVolume::getInstance().getVolume(Volume::music)));
-	effectsText.setString(std::to_string(SoundVolume::getInstance().getVolume(Volume::effects)));
+	std::ostringstream num;
+	num << std::setfill('0') << std::setw(3) << SoundVolume::getInstance().getVolume(Volume::menu) << "%";
+	menuText.setString(num.str());
+	std::ostringstream num1;
+	num1 << std::setfill('0') << std::setw(3) << SoundVolume::getInstance().getVolume(Volume::music) << "%";
+	musicText.setString(num1.str());
+	std::ostringstream num2;
+	num2 << std::setfill('0') << std::setw(3) << SoundVolume::getInstance().getVolume(Volume::effects) << "%";
+	effectsText.setString(num2.str());
 }
 
 void Menu::OptionsMenu::changeVolumeOpt(Volume vol, int val)

@@ -67,7 +67,7 @@ void Menu::update()
 		if (checkIfButtonPressed(buttons))
 		{
 			buttons->getSelectedButton().onClick();
-			wait(0.5f);
+			wait(0.2f);
 		}
 
 		display();

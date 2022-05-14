@@ -14,7 +14,9 @@ class HighscoreManager
 		int getLowest();
 	} highScores;
 	sf::Font font;
-	std::array < sf::Text, 5> texts;
+	std::array < sf::Text, 5> nameTexts;
+	std::array < sf::Text, 5> scoreTexts;
+
 	void setTexts();
 	void setTextString();
 	std::string getName(sf::RenderWindow* window);

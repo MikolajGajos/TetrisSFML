@@ -17,12 +17,13 @@ class TextBox
     bool showSlash = false;
 
 public:
-    TextBox(sf::Vector2f position, int size)
+    TextBox(sf::Vector2f position, int size, sf::RenderWindow* window)
     {
         font.loadFromFile("resources/images/slkscr.ttf");
         text.setPosition(position);
         text.setFont(font);
         text.setCharacterSize(size);
+        update(window);
     }
 
     void update(sf::RenderWindow* window)
@@ -127,11 +128,14 @@ void HighscoreManager::setTexts()
 {
 	font.loadFromFile(std::filesystem::current_path().append("resources/images/slkscr.ttf").string());
 
-	for (unsigned char i = 0; i < texts.size(); i++)
+	for (unsigned char i = 0; i < nameTexts.size(); i++)
 	{
-		texts[i].setFont(font);
-		texts[i].setCharacterSize(50);
-		texts[i].setPosition(100, i * 100 + 100);
+		nameTexts[i].setFont(font);
+		nameTexts[i].setCharacterSize(50);
+		nameTexts[i].setPosition(100, i * 100 + 250);
+        scoreTexts[i].setFont(font);
+        scoreTexts[i].setCharacterSize(50);
+        scoreTexts[i].setPosition(600, i * 100 + 250);
 	}
 }
 
@@ -146,10 +150,14 @@ void HighscoreManager::setTextString()
             std::ostringstream name;
             name << std::left << std::setw(15) << highScores.arr[i].second;
 
-            texts[i].setString(std::to_string(i +1 ) + ". " + name.str() + num.str());
+            nameTexts[i].setString(std::to_string(i +1 ) + ". " + name.str());
+            scoreTexts[i].setString(num.str());
         }
-		else
-			texts[i].setString("empty");
+        else
+        {
+            scoreTexts[i].setString("000000");
+			nameTexts[i].setString(std::to_string(i + 1) + ". empty");
+        }
 	}
 }
 
@@ -195,7 +203,7 @@ HighscoreManager::~HighscoreManager()
 
 std::string HighscoreManager::getName(sf::RenderWindow* window)
 {
-    TextBox textBox({ 100, 300 }, 70);
+    TextBox textBox({ 90, 300 }, 83, window);
     while (window->isOpen())
     {
         window->clear();
@@ -221,8 +229,9 @@ void HighscoreManager::update(int score, sf::RenderWindow* window)
 
 void HighscoreManager::display(sf::RenderWindow* window)
 {
-	for (auto& el : texts)
-	{
-		window->draw(el);
-	}
+    for (unsigned char i = 0; i < nameTexts.size(); i++)
+    {
+        window->draw(nameTexts[i]);
+        window->draw(scoreTexts[i]);
+    }
 }
