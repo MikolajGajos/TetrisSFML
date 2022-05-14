@@ -16,6 +16,9 @@ class HighscoreManager
 	sf::Font font;
 	std::array < sf::Text, 5> nameTexts;
 	std::array < sf::Text, 5> scoreTexts;
+	sf::Texture texture;
+	sf::Sprite sprite;
+	sf::Sprite enterName;
 
 	void setTexts();
 	void setTextString();
@@ -80,6 +83,9 @@ class Menu
 		sf::Text menuText;
 		sf::Text musicText;
 		sf::Text effectsText;
+		sf::Texture textureOptions;
+		sf::Sprite optionsSprite;
+		sf::Texture textureControls;
 		sf::Sprite controlsSprite;
 
 		OptionsMenu();

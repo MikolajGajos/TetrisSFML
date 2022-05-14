@@ -79,6 +79,9 @@ void Menu::LvlSelector::display(sf::RenderWindow* window)
 
 Menu::OptionsMenu::OptionsMenu()
 {
+	textureOptions.loadFromFile("resources/images/Options.png");
+	optionsSprite.setTexture(textureOptions);
+
 	menuDown = new Button(0, { 200,100 }, { 100,100 });
 	menuDown->setOnClickFunction(std::bind(&Menu::OptionsMenu::decrementMenu, this));
 	menuUp = new Button(1, { 612,100 }, { 100,100 });
@@ -94,7 +97,7 @@ Menu::OptionsMenu::OptionsMenu()
 	musicUp = new Button(5, { 612,500 }, { 100,100 });
 	musicUp->setOnClickFunction(std::bind(&Menu::OptionsMenu::incrementMusic, this));
 
-	Controls = new Button(6, { 600,700 }, { 200,100 });
+	Controls = new Button(6, { 500,700 }, { 400,100 });
 	Controls->setOnClickFunction(std::bind(&Menu::OptionsMenu::displayControls, this));
 	buttons = new ButtonManager({ *menuUp, *menuDown, *effectsUp, *effectsDown, *musicUp, *musicDown, *Controls });
 
@@ -156,8 +159,9 @@ void Menu::OptionsMenu::displayControls()
 
 void Menu::OptionsMenu::display(sf::RenderWindow* window)
 {
+	window->draw(*buttons);
+	window->draw(optionsSprite);
 	window->draw(menuText);
 	window->draw(musicText);
 	window->draw(effectsText);
-	window->draw(*buttons);
 }

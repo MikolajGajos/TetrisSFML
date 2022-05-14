@@ -164,6 +164,10 @@ void HighscoreManager::setTextString()
 HighscoreManager::HighscoreManager()
 {
 	std::filesystem::path path = std::filesystem::current_path().append("resources/highscore.txt");
+    texture.loadFromFile(std::filesystem::current_path().append("resources/images/Highscores.png").string());
+    sprite.setTexture(texture);
+    texture.loadFromFile(std::filesystem::current_path().append("resources/images/EnterName.png").string());
+    enterName.setTexture(texture);
 
 	std::ifstream file;
 	file.open(path.string());
@@ -203,7 +207,7 @@ HighscoreManager::~HighscoreManager()
 
 std::string HighscoreManager::getName(sf::RenderWindow* window)
 {
-    TextBox textBox({ 90, 300 }, 83, window);
+    TextBox textBox({ 100, 290 }, 83, window);
     while (window->isOpen())
     {
         window->clear();
@@ -212,6 +216,7 @@ std::string HighscoreManager::getName(sf::RenderWindow* window)
         {
             break;
         }
+        window->draw(enterName);
         window->draw(textBox.getText());
         window->display();
     }
@@ -229,6 +234,7 @@ void HighscoreManager::update(int score, sf::RenderWindow* window)
 
 void HighscoreManager::display(sf::RenderWindow* window)
 {
+    window->draw(sprite);
     for (unsigned char i = 0; i < nameTexts.size(); i++)
     {
         window->draw(nameTexts[i]);
