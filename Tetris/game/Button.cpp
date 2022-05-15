@@ -190,6 +190,11 @@ void ButtonManager::draw(sf::RenderTarget& target, sf::RenderStates) const
 	}
 }
 
+void ButtonManager::reset()
+{
+	pressButton(buttonArray[0]);
+}
+
 void ButtonManager::setVolume(int val)
 {
 	sound.setVolume(val);

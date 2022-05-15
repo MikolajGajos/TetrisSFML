@@ -98,7 +98,9 @@ int Menu::levelSelector()
 			return -1;
 		}
 	}
-	return lvlSelector.level;
+	int i = lvlSelector.level;
+	lvlSelector.level = 0;
+	return i;
 }
 
 void Menu::optionsMenuScene()
@@ -125,11 +127,15 @@ void Menu::optionsMenuScene()
 		window->display();
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			break;
+		{
+			buttons->setVolume(SoundVolume::getInstance().getVolume(Volume::menu));
+			optionsMenu.buttons->reset();
+			optionsMenu.display(window);
+			return;
+		}
 		DeltaTime::getInstance().update();
 		optionsMenu.clickCooldown += DeltaTime::getInstance().getDT();
-	}
-	buttons->setVolume(SoundVolume::getInstance().getVolume(Volume::menu));
+	}	
 }
 
 void Menu::highscoresScene()

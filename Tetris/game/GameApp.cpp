@@ -88,7 +88,6 @@ GameApp::GameApp(sf::RenderWindow* window) : window(window)
 			(*gameBoard)[i][j].setPosition({ CELL_SIZE * (i + offsetX), CELL_SIZE * (j + offsetY) });
 		}
 	}
-	setUpSC();
 	this->pause = new PauseMenu(window, this);
 	this->gameText.set(*windowPosition, this->clearedLines, this->level, this->score);
 	this->gameAnimation = new Animation(*gameBoard, this->animationTime);
@@ -400,6 +399,7 @@ int GameApp::run()
 	gameSound.playBackgroundMusic();
 	gameText.updateText();
 	gameSound.setVolume();
+	setUpSC();
 
 	while (window->isOpen())
 	{

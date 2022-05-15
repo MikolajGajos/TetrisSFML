@@ -82,19 +82,19 @@ Menu::OptionsMenu::OptionsMenu()
 	textureOptions.loadFromFile("resources/images/Options.png");
 	optionsSprite.setTexture(textureOptions);
 
-	menuDown = new Button(0, { 200,100 }, { 100,100 });
+	menuDown = new Button(1, { 200,100 }, { 100,100 });
 	menuDown->setOnClickFunction(std::bind(&Menu::OptionsMenu::decrementMenu, this));
-	menuUp = new Button(1, { 612,100 }, { 100,100 });
-
-	effectsDown = new Button(2, { 200,300 }, { 100,100 });
-	effectsDown->setOnClickFunction(std::bind(&Menu::OptionsMenu::decrementEffects, this));
+	menuUp = new Button(0, { 612,100 }, { 100,100 });
 	menuUp->setOnClickFunction(std::bind(&Menu::OptionsMenu::incrementMenu, this));
-	effectsUp = new Button(3, { 612,300 }, { 100,100 });
 
+	effectsDown = new Button(3, { 200,300 }, { 100,100 });
+	effectsDown->setOnClickFunction(std::bind(&Menu::OptionsMenu::decrementEffects, this));
+	effectsUp = new Button(2, { 612,300 }, { 100,100 });
 	effectsUp->setOnClickFunction(std::bind(&Menu::OptionsMenu::incrementEffects, this));
-	musicDown = new Button(4, { 200,500 }, { 100,100 });
+
+	musicDown = new Button(5, { 200,500 }, { 100,100 });
 	musicDown->setOnClickFunction(std::bind(&Menu::OptionsMenu::decrementMusic, this));
-	musicUp = new Button(5, { 612,500 }, { 100,100 });
+	musicUp = new Button(4, { 612,500 }, { 100,100 });
 	musicUp->setOnClickFunction(std::bind(&Menu::OptionsMenu::incrementMusic, this));
 
 	Controls = new Button(6, { 500,700 }, { 400,100 });
