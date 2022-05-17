@@ -114,6 +114,5 @@ void Animation::display(sf::RenderWindow* window, std::vector<int> linesToDispla
 			}
 		}
 		window->display();
-	}
-	
+	}	
 }

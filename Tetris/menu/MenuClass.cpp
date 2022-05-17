@@ -69,7 +69,6 @@ void Menu::update()
 			buttons->getSelectedButton().onClick();
 			wait(0.2f);
 		}
-
 		display();
 	}
 }

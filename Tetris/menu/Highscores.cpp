@@ -163,7 +163,7 @@ void HighscoreManager::setTextString()
 
 HighscoreManager::HighscoreManager()
 {
-	std::filesystem::path path = std::filesystem::current_path().append("resources/highscore.txt");
+	std::filesystem::path path = std::filesystem::current_path().append("resources/highscore.xd");
     texture.loadFromFile(std::filesystem::current_path().append("resources/images/Highscores.png").string());
     sprite.setTexture(texture);
     nameTexture.loadFromFile(std::filesystem::current_path().append("resources/images/EnterName.png").string());
@@ -191,7 +191,7 @@ HighscoreManager::HighscoreManager()
 
 HighscoreManager::~HighscoreManager()
 {
-	std::filesystem::path path = std::filesystem::current_path().append("resources/highscore.txt");
+	std::filesystem::path path = std::filesystem::current_path().append("resources/highscore.xd");
 
 	std::ofstream file;
 	file.open(path.string());
