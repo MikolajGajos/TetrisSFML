@@ -1,37 +1,6 @@
 #include "headers/GameApp.h"
-class FPS
-{
-public:
-	/// @brief Constructor with initialization.
-	///
-	FPS() : mFrame(0), mFps(0) {}
-
-
-	/// @brief Get the current FPS count.
-	/// @return FPS count.
-	const unsigned int getFPS() const { return mFps; }
-
-private:
-	unsigned int mFrame;
-	unsigned int mFps;
-	sf::Clock mClock;
-
-public:
-
-	/// @brief Update the frame count.
-	/// 
-	void update()
-	{
-		if (mClock.getElapsedTime().asSeconds() >= 1.f)
-		{
-			mFps = mFrame;
-			mFrame = 0;
-			mClock.restart();
-		}
-
-		++mFrame;
-	}
-};
+#include <random>
+#include <chrono>
 
 //Returns random number between [0,6].
 int random()
@@ -395,7 +364,6 @@ void GameApp::manageTimers()
 
 int GameApp::run()
 {
-	FPS fps;
 	gameSound.playBackgroundMusic();
 	gameText.updateText();
 	gameSound.setVolume();
@@ -410,8 +378,6 @@ int GameApp::run()
 		manageTimers();	
 
 		window->display();
-		fps.update();
-		std::cout << fps.getFPS() << std::endl;
 	}
 	return this->score;
 }

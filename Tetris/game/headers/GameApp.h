@@ -3,10 +3,6 @@
 #include <array>
 #include <string>
 #include <SFML/Graphics.hpp>
-
-#include <random>
-#include <chrono>
-
 #include "Global.h"
 #include "Tetromino.h"
 #include "Cell.h"
