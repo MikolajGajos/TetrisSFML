@@ -1,11 +1,5 @@
-#include <SFML/Graphics.hpp>
 #include "../menu/MenuClass.h"
-#include <regex>
 #include <Windows.h>
-
-constexpr auto BACKSPACE = 8;
-constexpr auto ENTER = 13;
-constexpr auto ESC = 27;
 
 void main()
 {
