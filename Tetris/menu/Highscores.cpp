@@ -4,9 +4,9 @@
 #include <regex>
 #include <iomanip>
 
-constexpr auto BACKSPACE = 8;
-constexpr auto ENTER = 13;
-constexpr auto ESC = 27;
+constexpr int BACKSPACE = 8;
+constexpr int ENTER = 13;
+constexpr int ESC = 27;
 
 class TextBox
 {
@@ -68,13 +68,13 @@ public:
         str = temp;
         text.setString(str);
         timer = 0.5f;
-        if (!validateText(temp))
+        if (!validText(temp))
             text.setFillColor(sf::Color::Red);
         else
             text.setFillColor(sf::Color::White);
     }
 
-    bool validateText(std::string& temp)
+    bool validText(std::string& temp)
     {
         std::regex nameReg("[0-9A-Za-z]{3,10}");
         return std::regex_match(temp, nameReg);
@@ -161,30 +161,33 @@ void HighscoreManager::setTextString()
 	}
 }
 
+void HighscoreManager::loadFromFile()
+{
+    std::ifstream file(std::filesystem::current_path().append("resources/highscore.xd").string());
+    if (file.is_open())
+    {
+        std::string line;
+        int i = 0;
+        while (std::getline(file, line))
+        {
+            std::stringstream ss;
+            ss << line;
+            ss >> highScores.arr[i].first;
+            ss >> highScores.arr[i].second;
+            i++;
+        }
+    }
+    file.close();
+}
+
 HighscoreManager::HighscoreManager()
 {
-	std::filesystem::path path = std::filesystem::current_path().append("resources/highscore.xd");
-    texture.loadFromFile(std::filesystem::current_path().append("resources/images/Highscores.png").string());
-    sprite.setTexture(texture);
+    backTexture.loadFromFile(std::filesystem::current_path().append("resources/images/Highscores.png").string());
     nameTexture.loadFromFile(std::filesystem::current_path().append("resources/images/EnterName.png").string());
-    enterName.setTexture(nameTexture);
+    backSprite.setTexture(backTexture);
+    nameSprite.setTexture(nameTexture);
 
-	std::ifstream file;
-	file.open(path.string());
-	if (file.is_open())
-	{
-		std::string line;
-		int i = 0;
-		while (std::getline(file, line))
-		{
-			std::stringstream ss;
-			ss << line;
-			ss >> highScores.arr[i].first;
-			ss >> highScores.arr[i].second;
-			i++;
-		}
-	}
-	file.close();
+    loadFromFile();
 	setTexts();
 	setTextString();
 }
@@ -205,9 +208,16 @@ HighscoreManager::~HighscoreManager()
 	file.close();
 }
 
-std::string HighscoreManager::getName(sf::RenderWindow* window)
+std::string HighscoreManager::getName(sf::RenderWindow* window, int score)
 {
     TextBox textBox({ 100, 290 }, 83, window);
+    sf::Text scoreText;
+    std::ostringstream os;
+    os << std::setfill('0') << std::setw(6) << score;
+    scoreText.setString("your score: " + os.str());
+    scoreText.setCharacterSize(70);
+    scoreText.setPosition(33,400);
+    scoreText.setFont(font);
     while (window->isOpen())
     {
         window->clear();
@@ -216,7 +226,8 @@ std::string HighscoreManager::getName(sf::RenderWindow* window)
         {
             break;
         }
-        window->draw(enterName);
+        window->draw(nameSprite);
+        window->draw(scoreText);
         window->draw(textBox.getText());
         window->display();
     }
@@ -227,14 +238,14 @@ void HighscoreManager::update(int score, sf::RenderWindow* window)
 {
 	if (highScores.getLowest() < score)
 	{
-		highScores.saveSocore(std::make_pair(score, getName(window)));
+		highScores.saveSocore(std::make_pair(score, getName(window, score)));
 	}
 	setTextString();
 }
 
 void HighscoreManager::display(sf::RenderWindow* window)
 {
-    window->draw(sprite);
+    window->draw(backSprite);
     for (unsigned char i = 0; i < nameTexts.size(); i++)
     {
         window->draw(nameTexts[i]);

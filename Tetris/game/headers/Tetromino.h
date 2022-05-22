@@ -31,17 +31,18 @@ protected:
 	void displayGhost(sf::RenderWindow& window);
 
 public:
+	//Updates ghost based on tetromino position.
 	void updateGhost();
 	//Moves tetromino one line down. Retruns true if the move was valid.
 	bool update();
 	//Updates game matrix when tetromino gets to the end.
 	void updateMatrix();
 
-	//Moves tetromino left by one tile.
+	//Moves tetromino left.
 	void moveLeft();
-	//Moves tetromino right by one tile.
+	//Moves tetromino right.
 	void moveRight();
-	//Moves tetromino down, to the end of its way.
+	//Moves tetromino all the way to the end.
 	void hardDrop();
 	//Rotates tetromino between four states. Put true value to rotate clockwise.
 	virtual void rotate(bool);
@@ -97,3 +98,4 @@ class SShape : public Tetromino
 public:
 	SShape(std::array<std::array<Cell, ROWS + 2>, COLUMNS>*);
 };
+

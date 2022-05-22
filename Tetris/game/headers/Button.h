@@ -24,11 +24,9 @@ public:
 	void unselect();
 	bool mouseIntersection(sf::RenderWindow& window);
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
+	bool isClicked(sf::RenderWindow& window);
 
 	bool operator== (Button& but); 
-
-	//no manager methods
-	bool isClicked(sf::RenderWindow& window);
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////

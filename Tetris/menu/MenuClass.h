@@ -16,14 +16,15 @@ class HighscoreManager
 	sf::Font font;
 	std::array < sf::Text, 5> nameTexts;
 	std::array < sf::Text, 5> scoreTexts;
-	sf::Texture texture;
-	sf::Sprite sprite;
+	sf::Texture backTexture;
+	sf::Sprite backSprite;
 	sf::Texture nameTexture;
-	sf::Sprite enterName;
+	sf::Sprite nameSprite;
 
+	void loadFromFile();
 	void setTexts();
 	void setTextString();
-	std::string getName(sf::RenderWindow* window);
+	std::string getName(sf::RenderWindow* window, int score);
 
 public:
 	HighscoreManager();
