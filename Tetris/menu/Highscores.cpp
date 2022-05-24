@@ -12,7 +12,7 @@ class TextBox
 {
     sf::Text text;
     sf::Font font;
-    std::string str;
+    std::string name;
     float timer = 0.f;
     bool showSlash = false;
 
@@ -48,24 +48,25 @@ public:
     {
         DeltaTime::getInstance().update();
         timer += DeltaTime::getInstance().getDT();
-        if (timer > 0.5f && timer < 1.f)
+        if (timer < 0.5f)
             showSlash = true;
-        else if (timer > 1.f)
+        else
         {
             showSlash = false;
-            timer = 0.f;
+            if(timer > 1.f)
+                timer = 0.f;
         }
     }
 
     void updateText(sf::Event event)
     {
-        if (event.text.unicode == BACKSPACE && str.size() > 0)
-            str.pop_back();
-        else if (event.text.unicode != BACKSPACE && event.text.unicode != ENTER && event.text.unicode != ESC && str.size() < 10)
-            str.push_back(event.text.unicode);
+        if (event.text.unicode == BACKSPACE && name.size() > 0)
+            name.pop_back();
+        else if (event.text.unicode != BACKSPACE && event.text.unicode != ENTER && event.text.unicode != ESC && name.size() < 10)
+            name.push_back(event.text.unicode);
 
-        text.setString(str);
-        timer = 0.5f;
+        text.setString(name);
+        timer = 0.f;
         if (!validName())
             text.setFillColor(sf::Color::Red);
         else
@@ -75,20 +76,20 @@ public:
     bool validName()
     {
         std::regex nameReg("[0-9A-Za-z]{3,10}");
-        return std::regex_match(str, nameReg);
+        return std::regex_match(name, nameReg);
     }
 
     sf::Text getText()
     {
         if (showSlash)
-            text.setString(str + "|");
+            text.setString(name + "|");
         else
-            text.setString(str);
+            text.setString(name);
         return text;
     }
     std::string* getName()
     {
-        return &str;
+        return &name;
     }
 };
 
@@ -224,7 +225,10 @@ std::string HighscoreManager::getName(sf::RenderWindow* window, int score)
         window->draw(textBox.getText());
         window->display();
     }
-	return *textBox.getName();
+    if (textBox.validName())
+        return *textBox.getName();
+    else
+        return "unnamed";
 }
 
 void HighscoreManager::update(int score, sf::RenderWindow* window)
