@@ -59,27 +59,20 @@ public:
 
     void updateText(sf::Event event)
     {
-        std::string temp = str;
-        if (event.text.unicode == BACKSPACE && temp.size() > 0)
-            temp.pop_back();
-        else if (event.text.unicode != BACKSPACE && event.text.unicode != ENTER && event.text.unicode != ESC && temp.size() < 10)
-            temp.push_back(event.text.unicode);
+        if (event.text.unicode == BACKSPACE && str.size() > 0)
+            str.pop_back();
+        else if (event.text.unicode != BACKSPACE && event.text.unicode != ENTER && event.text.unicode != ESC && str.size() < 10)
+            str.push_back(event.text.unicode);
 
-        str = temp;
         text.setString(str);
         timer = 0.5f;
-        if (!validText(temp))
+        if (!validName())
             text.setFillColor(sf::Color::Red);
         else
             text.setFillColor(sf::Color::White);
     }
 
-    bool validText(std::string& temp)
-    {
-        std::regex nameReg("[0-9A-Za-z]{3,10}");
-        return std::regex_match(temp, nameReg);
-    }
-    bool goodName()
+    bool validName()
     {
         std::regex nameReg("[0-9A-Za-z]{3,10}");
         return std::regex_match(str, nameReg);
@@ -93,7 +86,7 @@ public:
             text.setString(str);
         return text;
     }
-    std::string* getString()
+    std::string* getName()
     {
         return &str;
     }
@@ -222,7 +215,7 @@ std::string HighscoreManager::getName(sf::RenderWindow* window, int score)
     {
         window->clear();
         textBox.update(window);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && textBox.goodName())
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && textBox.validName())
         {
             break;
         }
@@ -231,7 +224,7 @@ std::string HighscoreManager::getName(sf::RenderWindow* window, int score)
         window->draw(textBox.getText());
         window->display();
     }
-	return *textBox.getString();
+	return *textBox.getName();
 }
 
 void HighscoreManager::update(int score, sf::RenderWindow* window)
