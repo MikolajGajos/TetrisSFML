@@ -48,8 +48,6 @@ class GameApp
 	void clearLines(std::vector<int>& linesNumber);
 	//Drawes game board with tetromino which already fallen.
 	void drawBoard();
-	//Draws every tetromino.
-	void drawTetromino();
 	//Checks if new tetromino is able to spawn.
 	bool gameOver();
 	//Draws game ending screen.

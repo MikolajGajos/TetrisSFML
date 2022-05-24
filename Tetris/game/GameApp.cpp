@@ -272,15 +272,6 @@ void GameApp::drawBoard()
 	}
 }
 
-void GameApp::drawTetromino()
-{
-	if (gameOverbool)
-		return;
-
-	tetromino->display(*window);
-	nextTetromino->displayAsNext(*window);
-}
-
 bool GameApp::gameOver()
 {
 	for (unsigned char i = 0; i < COLUMNS; i++)
@@ -340,12 +331,12 @@ bool GameApp::updateGame()
 void GameApp::drawGame()
 {
 	if (gameOverbool)
-	{
 		return;
-	}
+
 	background.displayBackground(window);
 	drawBoard();
-	drawTetromino();
+	tetromino->display(*window);
+	nextTetromino->displayAsNext(*window);
 	window->draw(gameText);
 }
 
