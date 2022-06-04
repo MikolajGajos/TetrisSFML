@@ -1,0 +1,10 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "d:\\studia\\github\\tetrissfml\\tetris\\game\\randmodule.ixx",
+        "ProvidedModule": "RandModule",
+        "Includes": [],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
