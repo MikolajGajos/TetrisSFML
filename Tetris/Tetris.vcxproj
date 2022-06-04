@@ -46,6 +46,13 @@
     <ClInclude Include="game\headers\Tetromino.h" />
     <ClInclude Include="game\headers\TextAndBackground.h" />
     <ClInclude Include="menu\MenuClass.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Tetris.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\icon.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
