@@ -1,9 +1,0 @@
-{
-    "Version": "1.1",
-    "Data": {
-        "Source": "d:\\studia\\github\\tetrissfml\\tetris\\game\\gg.ixx",
-        "ProvidedModule": "gg",
-        "ImportedModules": [],
-        "ImportedHeaderUnits": []
-    }
-}
