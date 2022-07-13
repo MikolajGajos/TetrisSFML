@@ -7,4 +7,4 @@ It is a C++ implementatino of Tetris Game made for my university assignment.
 
 ## Installation
 
-Project was made in Visual Studio 2022. You don't need to install SFML every file is already in project folder.
+Project was made in Visual Studio 2022. You don't need to install SFML every file is already in the project folder.
